@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container">
         <div className="footer-content">
           <div>
-            <Link to='/' className="footer-brand">
+            <Link to="/" className="footer-brand">
               Primart<span>.</span>
             </Link>
             <p className="body-text-2">
@@ -33,65 +33,66 @@ const Footer = () => {
           <div>
             <ul>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
               <li>
-                <Link to='/'>Link</Link>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <Link to='/'>Link</Link>
-              </li>
-              <li>
-                <Link to='/'>Link</Link>
-              </li>
-              <li>
-                <Link to='/'>Link</Link>
-              </li>
-              <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
             </ul>
             <ul>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
             </ul>
             <ul>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
               </li>
               <li>
-                <Link to='/'>Link</Link>
+                <Link to="/">Link</Link>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Link to="/">Link</Link>
+              </li>
+              <li>
+                <Link to="/">Link</Link>
+              </li>
+              <li>
+                <Link to="/">Link</Link>
+              </li>
+              <li>
+                <Link to="/">Link</Link>
               </li>
             </ul>
           </div>
         </div>
         <div className="footer-copyright">
           <p>
-            Copyright &copy; 2025. All Rights Reserved. - <a href="/">Aayush Dobriyal</a>
+            Copyright &copy; 2025. All Rights Reserved. -{" "}
+            <a href="/">Aayush Dobriyal</a>
           </p>
         </div>
       </div>
