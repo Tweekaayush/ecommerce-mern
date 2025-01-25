@@ -1,0 +1,27 @@
+{
+  "name": "ecommerce-mern",
+  "version": "1.0.0",
+  "description": "eCommerce application built using MERN stack",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "data:import":"node backend/seeder.js",
+    "data:destroy":"node backend/seeder.js -d"
+
+  },
+  "author": "Aayush Dobriyal",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5",
+    "nodemon": "^3.1.9"
+  }
+}
