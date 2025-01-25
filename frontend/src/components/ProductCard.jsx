@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Rating from "./Rating";
 
 const ProductCard = ({ _id, name, image, price, rating, slider }) => {
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const [width, setWidth] = useState(0);
 
   const handleProductClick = (e) => {

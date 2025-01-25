@@ -1,8 +1,14 @@
-import products from "../products";
+import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "./ProductCard";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { useEffect } from "react";
+import { getTrendingProducts } from "../slices/productSlice";
 
 const TrendingProducts = () => {
+
+  const {trendingProducts: products} = useSelector(state=>state.products.data)
+  const dispatch = useDispatch()
+
   const slideLeft = () => {
     let slider = document.getElementById("slider");
     slider.scrollLeft = slider.scrollLeft - slider.offsetWidth - 16;
@@ -11,7 +17,7 @@ const TrendingProducts = () => {
     let slider = document.getElementById("slider");
     slider.scrollLeft = slider.scrollLeft + slider.offsetWidth + 16;
   };
-
+  
   return (
     <section id="trending-products">
       <div className="container">

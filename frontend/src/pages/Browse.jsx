@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import products from "../products";
 import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../slices/productSlice";
 
 const Browse = () => {
+  const {data: {products}} = useSelector(state=>state.products)
+  const dispatch = useDispatch()
   const [page, setPage] = useState(1);
   const paginate = 3;
   const [currentCategory, setCurrentCategory] = useState('');
@@ -16,6 +19,10 @@ const Browse = () => {
   useEffect(()=>{
     window.scrollTo(0, 0)
   }, [pathname])
+
+  useEffect(()=>{
+    dispatch(getProducts())
+  }, [])
 
   return (
     <>

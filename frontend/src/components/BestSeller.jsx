@@ -1,8 +1,11 @@
 import React from "react";
-import products from "../products";
 import ProductCard from "./ProductCard";
+import { useSelector } from "react-redux";
 
 const BestSeller = () => {
+
+  const {bestSellingProducts: products} = useSelector(state=>state.products.data)
+
   return (
     <section id="bestseller">
       <div className="container">
