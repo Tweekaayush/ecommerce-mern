@@ -4,7 +4,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { LuShoppingCart, LuUser } from "react-icons/lu";
 import { LuHeart } from "react-icons/lu";
 
-const Navbar = () => {
+const Navbar = ({setCartStatus}) => {
   const [toggle, setToggle] = useState(false);
   let resizeTimer;
 
@@ -79,10 +79,8 @@ const Navbar = () => {
               <LuUser />
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/">
+          <li onClick={()=>setCartStatus(true)}>
               <LuShoppingCart />
-            </NavLink>
           </li>
         </ul>
       </div>

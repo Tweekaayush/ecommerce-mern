@@ -13,12 +13,12 @@ const Pagination = ({ totalPages, page, setPage }) => {
   useEffect(() => {
     const prevArray = Array.from({ length: 2 }, (_, i) => page - 1 - i).filter(
       (p) => p > 0
-    );
+    ).reverse();
     const nextArray = Array.from({ length: 3 }, (_, i) => page + i).filter(
       (p) => p <= totalPages
     );
     setPaginationArray([...prevArray, ...nextArray]);
-  }, [totalPages]);
+  }, [page, totalPages]);
 
   return (
     <div className="pagination-container">

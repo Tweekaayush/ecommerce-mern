@@ -3,16 +3,13 @@ import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../slices/productSlice";
+import { getAllCategories, getProducts } from "../slices/productSlice";
 
 const Browse = () => {
-  const {data: {products}} = useSelector(state=>state.products)
+  const {data: {products, categories, totalPages}} = useSelector(state=>state.products)
   const dispatch = useDispatch()
   const [page, setPage] = useState(1);
-  const paginate = 3;
   const [currentCategory, setCurrentCategory] = useState('');
-  //   const categories = new Array(new Set(products.map((p)=>p.category)))
-  const categories = products.map((p) => p.category);
   const {pathname} = useLocation()
 
 
@@ -21,7 +18,11 @@ const Browse = () => {
   }, [pathname])
 
   useEffect(()=>{
-    dispatch(getProducts())
+    dispatch(getProducts({page, category: currentCategory}))
+  }, [page, currentCategory])
+  
+  useEffect(()=>{
+    dispatch(getAllCategories())
   }, [])
 
   return (
@@ -39,7 +40,7 @@ const Browse = () => {
                     className={
                       currentCategory === category ? "active-category" : ""
                     }
-                    onClick={()=>setCurrentCategory(category)}
+                    onClick={()=>[setCurrentCategory(category), setPage(1)]}
                   >
                     {category}
                   </span>
@@ -53,7 +54,6 @@ const Browse = () => {
       <section id="browse-results">
         <div className="container">
           {products
-            .slice((page - 1) * paginate, page * paginate)
             .map((product) => {
               return (
                 <ProductCard key={product._id} {...product} slider={false} />
@@ -66,7 +66,7 @@ const Browse = () => {
           <Pagination
             page={page}
             setPage={setPage}
-            totalPages={Math.ceil(products.length / paginate)}
+            totalPages={totalPages}
           />
         </div>
       </section>

@@ -43,8 +43,26 @@ exports.getUserProfile = asyncHandler(async(req, res)=>{
     user
    })
 })
+
 exports.updateUserProfile = asyncHandler(async(req, res)=>{
-    res.send('update user profile')
+
+    const user = await User.findById(req.user.id)
+
+    if(user){
+        user.name = req.body.name || user.name
+        user.email = req.body.email || user.email
+        user.fullAddress = req.body.fullAddress || user.fullAddress
+
+        const updatedUser = await user.save()
+
+        res.status(200).json({
+            success: true,
+            message: 'User Profile Updated!'
+        })
+    }else{
+        res.status(404)
+        throw new Error('User not found!')
+    }
 })
 exports.getUsers = asyncHandler(async(req,res)=>{
     res.send('get all users')

@@ -17,7 +17,6 @@ const Home = () => {
   }, [pathname])
 
   useEffect(()=>{
-    dispatch(getProducts())
     dispatch(getTrendingProducts())
     dispatch(getBestSellingProducts())
   },[])
