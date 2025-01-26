@@ -255,6 +255,8 @@ nav > .container {
   margin: 8px;
   display: flex;
   align-items: center;
+  position: relative;
+  cursor: pointer;
 }
 
 .nav-page-links > li > a,
@@ -303,6 +305,82 @@ nav > .container {
 .toggle-collapse > svg {
   height: 24px;
   width: 24px;
+}
+
+.badge{
+  position: absolute;
+  right: -15px;
+  top: -15px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--danger);
+  color: var(--main);
+  text-align: center;
+  border-radius: 50%;
+  font-size: 12px;
+  padding: 4px;
+}
+
+.nav-profile-link{
+  position: relative;
+}
+.nav-profile-badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.nav-profile-badge >img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.nav-profile-options{
+  position: absolute;
+  bottom: -128px;
+  right: 0;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px 0 5px 5px;
+  box-shadow: 1px 1px 10px var(--overlay-1);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.nav-profile-options > li{
+  display: flex;
+  align-items: center;
+  text-transform: capitalize;
+  gap: 4px;
+  color: var(--dark);
+  cursor: pointer;
+}
+
+.nav-profile-options > li:last-of-type{
+  padding: 8px 4px;
+}
+
+.nav-profile-options > li:hover{
+  background-color: var(--main);
+}
+
+.nav-profile-options > li > a{
+  padding: 8px 4px;
+  width: 100%;
+  color: inherit;
+  text-transform: capitalize;
+}
+
+.nav-profile-options-active{
+  visibility: visible;
+  opacity: 1;
 }
 
 /* --------------------Hero-------------------- */

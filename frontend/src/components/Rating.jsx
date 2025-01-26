@@ -8,11 +8,11 @@ const Rating = ({ rating }) => {
         const index = i + 1;
 
         return index <= rating ? (
-          <FaStar className="active-star" />
+          <FaStar key={i} className="active-star" />
         ) : index - rating >= 1 ? (
-          <FaStar className="inactive-star" />
+          <FaStar key={i} className="inactive-star" />
         ) : (
-          <FaStarHalfStroke className="active-star" />
+          <FaStarHalfStroke key={i} className="active-star" />
         );
       })}
     </div>

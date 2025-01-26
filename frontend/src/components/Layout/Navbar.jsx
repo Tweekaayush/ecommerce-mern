@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { LuShoppingCart, LuUser } from "react-icons/lu";
 import { LuHeart } from "react-icons/lu";
+import { useSelector } from "react-redux";
+import { LuLogOut } from "react-icons/lu";
 
-const Navbar = ({setCartStatus}) => {
+const Navbar = ({ setCartStatus }) => {
+  const { cartItems } = useSelector((state) => state.cart);
+  const { _id, image, isAdmin, name } = useSelector((state) => state.user.data);
   const [toggle, setToggle] = useState(false);
+  const [open, setOpen] = useState(false)
   let resizeTimer;
+  const ref = useRef(null)
 
   const handleResize = () => {
     document.body.classList.add("resize-animation-stopper");
@@ -23,9 +29,23 @@ const Navbar = ({setCartStatus}) => {
     }
   };
 
+  const handleLogout = () =>{
+    setOpen(false)
+  }
+
+  const handleClickOutside = (e) =>{
+    if(ref.current && !ref.current.contains(e.target)){
+      setOpen(false)
+    }
+  }
+
   useEffect(() => {
     window.addEventListener("resize", handleResize, true);
-    return () => window.removeEventListener("resize", handleResize, true);
+    window.addEventListener('click', handleClickOutside, true)
+    return () => {
+      window.removeEventListener("resize", handleResize, true);
+      window.removeEventListener("click", handleClickOutside, true);
+    }
   }, []);
 
   return (
@@ -75,12 +95,35 @@ const Navbar = ({setCartStatus}) => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/login">
-              <LuUser />
-            </NavLink>
+            {!_id ? (
+              <NavLink to="/login">
+                <LuUser />
+              </NavLink>
+            ) : (
+              <div className="nav-profile-link" ref={ref}>
+                <div className="nav-profile-badge" onClick={()=>setOpen(!open)} title='User Options'>
+                  <img src={image} alt={name} />
+                </div>
+                <ul className={`nav-profile-options ${open?'nav-profile-options-active':''}`}>
+                  <li onClick={()=>setOpen(false)}>
+                    <Link to="/profile">profile</Link>
+                  </li >
+                  {isAdmin === true && <li onClick={()=>setOpen(false)}>
+                    <Link to="/dashboard">Dashboard</Link>
+                  </li>}
+                  <li onClick={handleLogout}>
+                    logout
+                    <LuLogOut/>
+                  </li>
+                </ul>
+              </div>
+            )}
           </li>
-          <li onClick={()=>setCartStatus(true)}>
-              <LuShoppingCart />
+          <li onClick={() => setCartStatus(true)}>
+            <LuShoppingCart />
+            {cartItems.length > 0 && (
+              <span className="badge">{cartItems.length}</span>
+            )}
           </li>
         </ul>
       </div>
