@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { signup } from "../slices/userSlice";
 import { profileImages } from "../avatarlist";
 
 const Signup = () => {
-
+  const {_id} = useSelector(state=>state.user.data)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -77,6 +78,10 @@ const Signup = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+    useEffect(()=>{
+      if(_id) navigate('/profile')
+    }, [_id])
   return (
     <section id="auth-container">
       <div className="container">

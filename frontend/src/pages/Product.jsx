@@ -68,7 +68,7 @@ const Product = () => {
               <p className="body-text-1">{description}</p>
             </div>
             <div className="quantity">
-              <div className="quantity-container">
+              {countInStock > 0 && <div className="quantity-container">
                 <button onClick={decreaseQuantity} disabled={quantity === 1}>
                   -
                 </button>
@@ -79,14 +79,14 @@ const Product = () => {
                 >
                   +
                 </button>
-              </div>
+              </div>}
               <p className="stock-message" data-stock={!countInStock}>
                 {countInStock ? "In stock." : "Out of stock!"}
               </p>
             </div>
             <h2 className="product-content-price">${price}</h2>
             <div className="product-content-btns">
-              <button className="button-1" onClick={handleAddToCart}>Add to cart</button>
+              { countInStock > 0 && <button className="button-1" onClick={handleAddToCart}>Add to cart</button>}
               <button className="button-2">Wishlist</button>
             </div>
           </div>

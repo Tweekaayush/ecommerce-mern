@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import {useDispatch} from 'react-redux'
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {useDispatch, useSelector} from 'react-redux'
 import { login } from "../slices/userSlice";
 
 const Login = () => {
 
   const dispatch = useDispatch()
+  const {_id} = useSelector(state=>state.user.data)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -14,6 +15,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const navigate = useNavigate()
 
   const validate = () => {
     const err = {
@@ -46,6 +48,10 @@ const Login = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  useEffect(()=>{
+    if(_id) navigate('/profile')
+  }, [_id])
 
   return (
     <section id="auth-container">

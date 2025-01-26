@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { LuShoppingCart, LuUser } from "react-icons/lu";
 import { LuHeart } from "react-icons/lu";
@@ -31,9 +31,9 @@ const Navbar = ({setCartStatus}) => {
   return (
     <nav>
       <div className="container">
-        <a href="/" className="nav-brand brand">
+        <Link to="/" className="nav-brand brand">
           Primart<span>.</span>
-        </a>
+        </Link>
         <div className="toggle-collapse" onClick={() => setToggle(!toggle)}>
           <RxHamburgerMenu />
         </div>

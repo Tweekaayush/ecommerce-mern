@@ -11,6 +11,9 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { loadUser } from "./slices/userSlice";
 import Cart from "./components/Cart";
+import Checkout from "./pages/Checkout";
+import PrivateRoute from "./components/PrivateRoute";
+import Profile from "./pages/Profile";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -40,6 +43,10 @@ const App = () => {
         <Route path="/product/:id" element={<Product />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route element={<PrivateRoute/>}>
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
       <Footer />
     </Router>
