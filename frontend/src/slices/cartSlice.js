@@ -6,10 +6,6 @@ const initialState = JSON.parse(localStorage.getItem('primart-cart')) || {
     shippingAddress: {}
 }
 
-const addDecimals = (num) =>{
-    return (Math.round(num * 100)*100).toFixed(2)
-}
-
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
@@ -28,11 +24,27 @@ const cartSlice = createSlice({
             return updateCart(state)
         },
         removeFromCart: (state, action)=>{
+            const id = action.payload
 
+            state.cartItems = state.cartItems.filter((item)=>item._id !== id)
+
+            return updateCart(state)
+        },
+        updateQuantity: (state, action)=>{
+            const {_id: id, quantity} = action.payload
+            let newArr = []
+
+            if(quantity){
+                state.cartItems = state.cartItems.map(x=> x._id === id? action.payload: x)
+            }else{
+                state.cartItems = state.cartItems.filter((item)=>item._id !== id)
+            }
+
+            return updateCart(state)
         }
     }
 })
 
-export const {addToCart} = cartSlice.actions
+export const {addToCart, removeFromCart, updateQuantity} = cartSlice.actions
 
 export default cartSlice.reducer

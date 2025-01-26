@@ -5,11 +5,12 @@ import products from "../products";
 import Rating from "../components/Rating";
 import {useDispatch, useSelector} from 'react-redux'
 import { clearErrors, getProductById, getProducts, getTrendingProducts } from "../slices/productSlice";
+import { addToCart } from "../slices/cartSlice";
 
 
 const Product = () => {
 
-  const {loading , data: {productDetails: {name, image, description, brand, category, price, countInStock, rating, numReviews}}, error} = useSelector((state)=>state.products)
+  const {loading , data: {productDetails: {name, image, description, brand, category, price, countInStock, rating, numReviews}, productDetails}, error} = useSelector((state)=>state.products)
   const { id } = useParams();
   const navigate = useNavigate()
   const [quantity, setQuantity] = useState(1);
@@ -24,6 +25,13 @@ const Product = () => {
   const decreaseQuantity = () => {
     setQuantity(() => (quantity === 1 ? 1 : quantity - 1));
   };
+
+  const handleAddToCart = () =>{
+    dispatch(addToCart({
+      ...productDetails,
+      quantity: quantity
+    }))
+  }
 
   useEffect(()=>{
     window.scrollTo(0, 0)
@@ -78,7 +86,7 @@ const Product = () => {
             </div>
             <h2 className="product-content-price">${price}</h2>
             <div className="product-content-btns">
-              <button className="button-1">Add to cart</button>
+              <button className="button-1" onClick={handleAddToCart}>Add to cart</button>
               <button className="button-2">Wishlist</button>
             </div>
           </div>
