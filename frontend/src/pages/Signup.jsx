@@ -1,7 +1,12 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { signup } from "../slices/userSlice";
+import { profileImages } from "../avatarlist";
 
 const Signup = () => {
+
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -54,7 +59,18 @@ const Signup = () => {
 
     const v = validate();
 
-    console.log(formData)
+    if(v){
+
+      const img = profileImages.filter(p=>p.id === formData.firstName[0].toLowerCase())
+
+      dispatch(signup({
+        name: formData.firstName + ' ' + formData.lastName,
+        email: formData.email,
+        password: formData.password,
+        image: img[0].image
+      }))
+    } 
+
   };
 
   const handleChange = (e) => {

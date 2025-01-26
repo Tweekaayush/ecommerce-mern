@@ -15,23 +15,32 @@ exports.login = asyncHandler(async(req, res)=>{
 })
 
 exports.signup = asyncHandler(async(req, res)=>{
-    res.send('signup')
+    const {name, email, password, image} = req.body
+    const userExists = await User.findOne({email})
+
+    if(userExists){
+        res.status(400)
+        throw new Error('User already exits for given credentials.')
+    }
+
+    const user = await User.create({name, email, password, image})
+
+    if(user){
+        sendToken(user, 201, res)
+    }else{
+        res.status(401)
+        throw new Error("Invalid user credentials.")
+    }
 })
 exports.logout = asyncHandler(async(req, res)=>{
-    res.send('logout')
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Logged out successfully' });
 })
 exports.getUserProfile = asyncHandler(async(req, res)=>{
-   const user = await User.findById(req.user.id)
+   const user = await User.findById(req.user.id).select('-password')
    res.status(200).json({
     success: true,
-    user: {
-        _id: user._id,
-        name: user.name,
-        image: user.image,
-        email: user.email,
-        image: user.image,
-        isAdmin: user.isAdmin
-    }
+    user
    })
 })
 exports.updateUserProfile = asyncHandler(async(req, res)=>{

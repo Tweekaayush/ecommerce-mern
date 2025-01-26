@@ -3,13 +3,7 @@ import axios from 'axios'
 
 const initialState = {
     loading: false,
-    data: {
-        _id: '',
-        name: '',
-        email: '',
-        isAdmin: false,
-        image: ''
-    },
+    data: {},
     error: ''
 }
 
@@ -24,11 +18,30 @@ export const loadUser = createAsyncThunk('loadUser', async(payload, {rejectWithV
     }
 })
 
+export const signup = createAsyncThunk('signup', async(payload, {rejectWithValue})=>{
+    try {
+        console.log(payload)
+        const res = await axios.post('http://localhost:5000/api/v1/users/signup', payload,{
+            withCredentials: 'include'
+        })
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
 export const login = createAsyncThunk('login', async(payload, {rejectWithValue})=>{
     try {
         const res = await axios.post('http://localhost:5000/api/v1/users/login', payload,{
             withCredentials: 'include'
         })
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
+export const logout = createAsyncThunk('logout', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.post('http://localhost:5000/api/v1/users/logout')
     } catch (error) {
         return rejectWithValue(error.message)
     }
@@ -49,7 +62,35 @@ const userSlice = createSlice({
             state.loading = false
             state.error = action.payload
         })
+        builder.addCase(login.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(login.fulfilled, (state)=>{
+            state.loading = false
+        })
         builder.addCase(login.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(signup.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(signup.fulfilled, (state)=>{
+            state.loading = false
+        })
+        builder.addCase(signup.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(logout.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(logout.fulfilled, (state)=>{
+            state.loading = false
+            state.data = {}
+        })
+        builder.addCase(logout.rejected, (state, action)=>{
+            state.loading = false
             state.error = action.payload
         })
     }
