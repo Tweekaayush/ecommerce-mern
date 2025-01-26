@@ -7,8 +7,15 @@ import Footer from "./components/Layout/Footer";
 import Browse from "./pages/Browse";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { loadUser } from "./slices/userSlice";
 
 const App = () => {
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(loadUser())
+  }, [])
   return (
     <Router>
       <Navbar />

@@ -5,10 +5,10 @@ const {getProducts, getProductById, getTrendingProducts, getBestSellingProducts}
 const checkObjectId = require('../middleware/checkObjectId')
 
 
-router.route('/products').get(getProducts)
-router.route('/products/trending').get(getTrendingProducts)
-router.route('/products/bestselling').get(getBestSellingProducts)
-router.route('/products/:id').get(checkObjectId, getProductById)
+router.route('/').get(getProducts)
+router.route('/trending').get(getTrendingProducts)
+router.route('/bestselling').get(getBestSellingProducts)
+router.route('/:id').get(checkObjectId, getProductById)
 
 
 module.exports = router

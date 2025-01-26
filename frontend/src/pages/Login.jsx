@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import {useDispatch} from 'react-redux'
+import { login } from "../slices/userSlice";
 
 const Login = () => {
+
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -35,6 +39,7 @@ const Login = () => {
     e.preventDefault();
 
     const v = validate();
+    if(v) dispatch(login({...formData}))
   };
 
   const handleChange = (e) => {
