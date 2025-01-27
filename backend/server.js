@@ -4,6 +4,7 @@ dotenv.config()
 const connectDb = require('./config/db')
 const product = require('./routes/productRoutes')
 const user = require('./routes/userRoutes')
+const order = require('./routes/orderRoutes')
 const {notFound, errorHandler} = require('./middleware/error')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
@@ -28,6 +29,7 @@ app.use(cookieParser())
 
 app.use('/api/v1/products', product)
 app.use('/api/v1/users', user)
+app.use('/api/v1/orders', order)
 
 // error middleware
 

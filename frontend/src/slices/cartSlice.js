@@ -3,7 +3,8 @@ import { updateCart } from '../utils/cartUtils'
 
 const initialState = JSON.parse(localStorage.getItem('primart-cart')) || {
     cartItems: [],
-    shippingAddress: {}
+    shippingAddress: {},
+    paymentMethod: 'Paypal'
 }
 
 const cartSlice = createSlice({
@@ -45,10 +46,14 @@ const cartSlice = createSlice({
         saveShippingAddress: (state, action)=>{
             state.shippingAddress = action.payload
             return updateCart(state)
+        },
+        clearCartItems: (state, action) =>{
+            state.cartItems = []
+            return updateCart(state)
         }
     }
 })
 
-export const {addToCart, removeFromCart, updateQuantity, saveShippingAddress} = cartSlice.actions
+export const {addToCart, removeFromCart, updateQuantity, saveShippingAddress, clearCartItems} = cartSlice.actions
 
 export default cartSlice.reducer

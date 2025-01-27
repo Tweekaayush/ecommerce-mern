@@ -14,6 +14,9 @@ import Cart from "./components/Cart";
 import Checkout from "./pages/Checkout";
 import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./pages/Profile";
+import Success from "./pages/Success";
+import Failed from "./pages/Failed";
+import Order from "./pages/Order";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -46,6 +49,9 @@ const App = () => {
         <Route element={<PrivateRoute/>}>
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/failed" element={<Failed />} />
+          <Route path="/order/:id" element={<Order />} />
         </Route>
       </Routes>
       <Footer />
