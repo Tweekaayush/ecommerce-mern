@@ -51,7 +51,7 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/success" element={<Success />} />
           <Route path="/failed" element={<Failed />} />
-          <Route path="/order/:id" element={<Order />} />
+          <Route path="/orders/:id" element={<Order />} />
         </Route>
       </Routes>
       <Footer />

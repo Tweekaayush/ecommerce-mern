@@ -18,7 +18,7 @@ const Checkout = () => {
     paymentMethod,
     shippingAddress,
   } = useSelector((state) => state.cart);
-  const {error, data: {orderDetails: {_id}}} = useSelector(state=>state.orders)
+  const {error, data: {createdOrder}} = useSelector(state=>state.orders)
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -76,9 +76,9 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    if(_id)navigate('/success')
+    if(createdOrder)navigate('/success')
     if(error)navigate('/failed')
-  }, [_id, error]);
+  }, [createdOrder, error]);
 
   return (
     <>

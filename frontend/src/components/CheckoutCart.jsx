@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 const CheckoutCartItem = (props) => {
-  const { _id, name, brand, image, quantity, price } = props;
+  const { _id, name, brand, image, quantity, price, update } = props;
   const [qty, setQty] = useState(quantity);
 
   return (
@@ -18,9 +18,9 @@ const CheckoutCartItem = (props) => {
       <p>${price}</p>
       <div className="checkout-item-quantity">
         <div className="">
-          <button>-</button>
+          {update && <button>-</button>}
           <span>{qty}</span>
-          <button>+</button>
+          {update && <button>+</button>}
         </div>
       </div>
       <p>${price * quantity}</p>
@@ -28,11 +28,11 @@ const CheckoutCartItem = (props) => {
   );
 };
 
-const CheckoutCart = () => {
+const CheckoutCart = ({ update = true }) => {
   const { cartItems } = useSelector((state) => state.cart);
   return (
     <div className="checkout-cart-container">
-        <h1 className="heading-3">Cart Items</h1>
+      <h1 className="heading-3">Cart Items</h1>
       <div className="checkout-cart-head">
         <span>Product</span>
         <span>price</span>
@@ -41,7 +41,7 @@ const CheckoutCart = () => {
       </div>
       <ul className="checkout-cart-items">
         {cartItems.map((item) => {
-          return <CheckoutCartItem key={item._id} {...item} />;
+          return <CheckoutCartItem key={item._id} {...item} update={update} />;
         })}
       </ul>
     </div>

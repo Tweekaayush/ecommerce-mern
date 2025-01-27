@@ -50,6 +50,7 @@ exports.getMyOrders = asyncHandler(async(req, res)=>{
 })
 
 exports.getOrderById = asyncHandler(async(req, res)=>{
+
     const order = await Order.findById(req.params.id).populate('user', 'name email')
 
     if(order){

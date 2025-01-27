@@ -16,7 +16,7 @@ const Payment = () => {
           {shippingAddress.city}, {shippingAddress.country}
         </p>
       </div>
-      <CheckoutCart />
+      <CheckoutCart update={false}/>
     </div>
   );
 };
