@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 import { login } from "../slices/userSlice";
 
 const Login = () => {
 
+  const {state} = useLocation()
   const dispatch = useDispatch()
-  const {_id} = useSelector(state=>state.user.data)
+  const {loading, _id} = useSelector(state=>state.user.data)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -50,10 +51,12 @@ const Login = () => {
   };
 
   useEffect(()=>{
-    if(_id) navigate('/profile')
+    if(_id) {
+      state?navigate(state.previousURL):navigate('/profile')
+    }
   }, [_id])
 
-  return (
+  return (!loading?
     <section id="auth-container">
       <div className="container">
         <div className="form-container">
@@ -99,7 +102,7 @@ const Login = () => {
           </form>
         </div>
       </div>
-    </section>
+    </section>:<></>
   );
 };
 

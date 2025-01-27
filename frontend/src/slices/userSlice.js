@@ -20,10 +20,10 @@ export const loadUser = createAsyncThunk('loadUser', async(payload, {rejectWithV
 
 export const signup = createAsyncThunk('signup', async(payload, {rejectWithValue})=>{
     try {
-        console.log(payload)
         const res = await axios.post('http://localhost:5000/api/v1/users/signup', payload,{
             withCredentials: 'include'
         })
+        return res.data.user
     } catch (error) {
         return rejectWithValue(error.message)
     }
@@ -34,6 +34,7 @@ export const login = createAsyncThunk('login', async(payload, {rejectWithValue})
         const res = await axios.post('http://localhost:5000/api/v1/users/login', payload,{
             withCredentials: 'include'
         })
+        return res.data.user
     } catch (error) {
         return rejectWithValue(error.message)
     }
@@ -41,7 +42,10 @@ export const login = createAsyncThunk('login', async(payload, {rejectWithValue})
 
 export const logout = createAsyncThunk('logout', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.post('http://localhost:5000/api/v1/users/logout')
+        const res = await axios.post('http://localhost:5000/api/v1/users/logout', payload, {
+          withCredentials: 'include'  
+        })
+        console.log(res.data)
     } catch (error) {
         return rejectWithValue(error.message)
     }
@@ -65,8 +69,9 @@ const userSlice = createSlice({
         builder.addCase(login.pending, (state, action)=>{
             state.loading = true
         })
-        builder.addCase(login.fulfilled, (state)=>{
+        builder.addCase(login.fulfilled, (state, action)=>{
             state.loading = false
+            state.data = action.payload
         })
         builder.addCase(login.rejected, (state, action)=>{
             state.loading = false

@@ -3,8 +3,9 @@ import { Link, NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { LuShoppingCart, LuUser } from "react-icons/lu";
 import { LuHeart } from "react-icons/lu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LuLogOut } from "react-icons/lu";
+import { logout } from "../../slices/userSlice";
 
 const Navbar = ({ setCartStatus }) => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -13,6 +14,7 @@ const Navbar = ({ setCartStatus }) => {
   const [open, setOpen] = useState(false)
   let resizeTimer;
   const ref = useRef(null)
+  const dispatch = useDispatch()
 
   const handleResize = () => {
     document.body.classList.add("resize-animation-stopper");
@@ -31,6 +33,7 @@ const Navbar = ({ setCartStatus }) => {
 
   const handleLogout = () =>{
     setOpen(false)
+    dispatch(logout())
   }
 
   const handleClickOutside = (e) =>{
