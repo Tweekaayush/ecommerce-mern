@@ -6,9 +6,10 @@ import { clearErrors } from './productSlice'
 const initialState = {
     loading: false,
     data: {
-        allOrders: {},
+        myOrders: [],
         createdOrder: '',
-        orderDetails: {}
+        orderDetails: {},
+        allOrders: []
     },
     error: ''
 }
@@ -34,6 +35,18 @@ export const getOrderById = createAsyncThunk('getOrderById', async(payload, {rej
         })
 
         return res.data.order
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
+export const getMyOrders = createAsyncThunk('getMyOrders', async(payload, {rejectWithValue, dispatch})=>{
+    try {
+        const res = await axios.get(`http://localhost:5000/api/v1/orders/user`, {
+            withCredentials: 'include'
+        })
+
+        return res.data.orders
     } catch (error) {
         return rejectWithValue(error.message)
     }
@@ -70,6 +83,17 @@ const orderSlice = createSlice({
             state.data.orderDetails = action.payload
         })
         builder.addCase(getOrderById.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(getMyOrders.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(getMyOrders.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.myOrders = action.payload
+        })
+        builder.addCase(getMyOrders.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })

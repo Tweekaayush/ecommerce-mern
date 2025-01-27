@@ -16,6 +16,7 @@
   --danger: #e53637;
   --success: rgb(51, 219, 51);
   --main: #f3f2ee;
+  --main-dark: #e4e3de;
   --overlay-1: rgba(0, 0, 0, 0.3);
   --overlay-2: rgba(0, 0, 0, 0.5);
 }
@@ -135,7 +136,6 @@ button {
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
-  line-clamp: 1;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
@@ -143,7 +143,6 @@ button {
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
-  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
@@ -783,6 +782,7 @@ background-color: var(--main);
   border: 1px solid var(--tertiary);
   outline: none;
   border-radius: 4px;
+  width: 100%;
 }
 
 .form-label > input:user-valid + span, .form-label > input:user-invalid + span, .form-label > input:focus + span, .form-label > input:user-valid + span{
@@ -1148,6 +1148,8 @@ background-color: var(--main);
 
 .address-form > form{
   display: grid;
+  grid-template-areas: auto;
+  grid-template-columns: repeat(2, 1fr);
   grid-template-areas: 
   'a a'
   'b b'
@@ -1156,6 +1158,11 @@ background-color: var(--main);
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
+  gap: 16px;
+}
+
+.address-form > .form-label{
+  margin: 0;
 }
 
 .address-form > form > label > span{
@@ -1176,7 +1183,6 @@ background-color: var(--main);
 }
 .address-form > form > label:nth-child(4){
   grid-area: d;
-  margin-left: 8px;
 }
 
 .address-form > form > input{
@@ -1348,6 +1354,195 @@ background-color: var(--main);
 .true{
   background-color:var(--success)
 }
+/* --------------------Profile-------------------- */
+
+#profile{
+  min-height: 60vh;
+}
+
+#profile > .container{
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 3fr 9fr;
+}
+
+.profile-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--main);
+  border-radius: 5px;
+  height: 100%;
+}
+
+.profile-info{
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  width: 100%;
+  border-bottom: 1px solid var(--main-dark);
+}
+
+.profile-img{
+  width: 60px;
+  height: 60px;
+}
+
+.profile-img > img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border-radius: 50%;
+}
+
+.profile-info > div:last-of-type{
+  flex: 1;
+  margin-left: 10px;
+}
+
+.profile-info h1{
+  margin-bottom: 0;
+}
+
+.profile-info p{
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--secondary);
+}
+
+.profile-links{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+}
+
+.profile-link{
+  width: 100%;
+  padding: 16px;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.profile-link:hover{
+  background-color: var(--main-dark);
+}
+
+.profile-link-active{
+  background-color: var(--main-dark);
+}
+
+
+/* --------------------Update Profile-------------------- */
+
+.update-profile-container{
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0 0 16px;
+  max-height: 500px;
+}
+
+.update-profile-form{
+  display: grid;
+  width: 100%;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-areas: 
+  'a a'
+  'b b'
+  'c c'
+  'd d'
+  'e f'
+  '. g';
+  gap: 16px;
+}
+
+.update-profile-form > .form-label{
+  margin: 0;
+}
+
+.update-profile-form > label:nth-child(1){
+  grid-area: a;
+}
+.update-profile-form > label:nth-child(2){
+  grid-area: b;
+}
+.update-profile-form > label:nth-child(3){
+  grid-area: c;
+}
+.update-profile-form > label:nth-child(4){
+  grid-area: d;
+}
+.update-profile-form > label:nth-child(5){
+  grid-area: e;
+}
+.update-profile-form > label:nth-child(5){
+  grid-area: f;
+}
+
+.update-profile-form > input{
+  grid-area: g;
+}
+
+.update-profile-form > .form-label > span{
+top: -6px;
+left: 10px;
+font-size: 12px;
+padding-inline: 4px;
+}
+/* --------------------My Orders-------------------- */
+
+.orders-history-container{
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0 0 16px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.profile-order-head{
+  display: grid;
+  grid-template-columns: 4fr 2fr 2fr 2fr 2fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.profile-order-head > span{
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+  width: 100%;
+  color: var(--tertiary);
+}
+
+.profile-order-list{
+  display: flex;
+  flex-direction: column;
+}
+
+.order-item-container{
+  display: grid;
+  grid-template-columns: 4fr 2fr 2fr 2fr 2fr;
+  gap: 8px;
+  padding-block: 32px;
+  border-bottom: 1px solid var(--tertiary);
+  cursor: pointer;
+  height: fit-content;
+}
+
+.order-item-container:hover{
+  background-color: var(--main);
+}
+
+.order-item-container > p{
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
+  word-break: break-all;
+}
+
 /* --------------------Footer-------------------- */
 
 footer {
@@ -1505,6 +1700,8 @@ footer {
   }
 
   .signup-form{
+
+    grid-template-columns: 1fr;
     grid-template-areas: 
     'a'
     'b'
@@ -1529,6 +1726,35 @@ footer {
     font-size: 12px;
   }
 
+  #profile > .container{
+    grid-template-rows: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .profile-container{
+    height: fit-content;
+  }
+
+  .update-profile-container, .orders-history-container{
+    padding-inline: 0;
+  }
+
+  .profile-links{
+    flex-direction: row;
+    height: fit-content;
+  }
+
+  .profile-link{
+    width: fit-content;
+  }
+
+  .profile-order-head > span{
+    font-size: 12px;
+  }
+
+  .order-item-container > p{
+    font-size: 12px;
+  }
 
   .footer-content > div:last-of-type {
     grid-template-columns: repeat(2, 1fr);
@@ -1567,7 +1793,38 @@ footer {
   .checkout-item-info > h4, .checkout-item-info > h6, .checkout-item-info > p{
     font-size: 12px;
   }
+
+  .profile-link{
+    font-size: 14px;
+    padding-inline: 4px;
+  }
   
+  .update-profile-form{
+    display: grid;
+    width: 100%;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+    'a'
+    'b'
+    'c'
+    'd'
+    'e'
+    'f'
+    'g'
+  }
+
+  .address-form > form{
+    grid-template-areas: auto;
+    grid-template-columns:1fr;
+    grid-template-areas: 
+    'a'
+    'b'
+    'c'
+    'd' 
+    'e';
+  }
+
 }
 @media screen and (max-width: 320px) {
 }
