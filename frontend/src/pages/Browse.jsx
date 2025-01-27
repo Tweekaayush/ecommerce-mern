@@ -7,7 +7,6 @@ import { getAllCategories, getProducts } from "../slices/productSlice";
 
 const Browse = () => {
   const location = useLocation();
-  const { pathname } = location;
   const category = new URLSearchParams(location.search).get("category");
   const {
     data: { products, categories, totalPages },
@@ -15,10 +14,6 @@ const Browse = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [currentCategory, setCurrentCategory] = useState(category || "");
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
 
   useEffect(() => {
     dispatch(getProducts({ page, category: currentCategory }));

@@ -14,7 +14,6 @@ const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate()
   const [quantity, setQuantity] = useState(1);
-  const {pathname} = useLocation()
   const dispatch = useDispatch()
 
   const increaseQuantity = () => {
@@ -32,10 +31,6 @@ const Product = () => {
       quantity: quantity
     }))
   }
-
-  useEffect(()=>{
-    window.scrollTo(0, 0)
-  }, [pathname])
 
   useEffect(()=>{
     dispatch(getProductById(id))

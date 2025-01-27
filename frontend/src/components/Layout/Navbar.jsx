@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { LuShoppingCart, LuUser } from "react-icons/lu";
 import { LuHeart } from "react-icons/lu";
@@ -15,6 +15,7 @@ const Navbar = ({ setCartStatus }) => {
   let resizeTimer;
   const ref = useRef(null)
   const dispatch = useDispatch()
+  const {pathname} = useLocation()
 
   const handleResize = () => {
     document.body.classList.add("resize-animation-stopper");
@@ -41,6 +42,11 @@ const Navbar = ({ setCartStatus }) => {
       setOpen(false)
     }
   }
+
+  useEffect(()=>{
+    setCartStatus(false)
+    window.scrollTo(0, 0)
+  }, [pathname])
 
   useEffect(() => {
     window.addEventListener("resize", handleResize, true);

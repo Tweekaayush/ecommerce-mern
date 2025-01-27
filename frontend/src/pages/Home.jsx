@@ -9,12 +9,7 @@ import { useDispatch } from "react-redux";
 import { getBestSellingProducts, getProducts, getTrendingProducts } from "../slices/productSlice";
 
 const Home = () => {
-  const {pathname} = useLocation()
   const dispatch = useDispatch()
-
-  useEffect(()=>{
-    window.scrollTo(0, 0)
-  }, [pathname])
 
   useEffect(()=>{
     dispatch(getTrendingProducts())
