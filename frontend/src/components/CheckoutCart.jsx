@@ -32,6 +32,7 @@ const CheckoutCart = () => {
   const { cartItems } = useSelector((state) => state.cart);
   return (
     <div className="checkout-cart-container">
+        <h1 className="heading-3">Cart Items</h1>
       <div className="checkout-cart-head">
         <span>Product</span>
         <span>price</span>

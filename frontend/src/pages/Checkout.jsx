@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import CheckoutSteps from '../components/CheckoutSteps'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import ShippingAddress from '../components/ShippingAddress'
 import CheckoutCart from '../components/CheckoutCart'
 import Payment from '../components/Payment'
+import { saveShippingAddress } from '../slices/cartSlice'
 
 const Checkout = () => {
 
   const {itemsPrice, shippingPrice, taxPrice, totalPrice} = useSelector(state=>state.cart)
   const [step, setStep] = useState(1)
+  const dispatch = useDispatch()
 
 
   const checkoutSteps = [
@@ -17,21 +19,30 @@ const Checkout = () => {
       component: <CheckoutCart/>,
       func: function(){
         console.log('cart')
-      }
+      },
+      button: 'Continue'
     },
     {
       name: 'Address',
       component: <ShippingAddress />,
       func: function(){
         console.log('shipping')
-      }
+        dispatch(saveShippingAddress({
+          address: 'A-101, Milan Vihar 1, Abhay Khand 3, Indirapuram',
+          city: 'Ghaziabad',
+          postalCode: '201014',
+          country: 'India'
+       }))
+      },
+            button: 'Continue'
     },
     {
       name: 'Payment',
       component: <Payment/>,
       func: function(){
         console.log('payment')
-      }
+      },
+            button: 'place order'
     },
   ]
 
@@ -71,7 +82,7 @@ const Checkout = () => {
               <h4 className='heading-4'>total price</h4>
               <p>${totalPrice}</p>
             </div>
-            <button className='button-1' onClick={handleNextStep}>Checkout</button>
+            <button className='button-1' onClick={handleNextStep}>{checkoutSteps[step-1].button}</button>
           </div>
         </div>
       </section>

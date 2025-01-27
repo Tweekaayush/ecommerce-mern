@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ShippingAddress = () => {
   const { fullAddress, name } = useSelector((state) => state.user.data);
@@ -10,12 +10,13 @@ const ShippingAddress = () => {
     country: 'India'
  })
 
+ const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
 
 
   const handleSubmit = (e) =>{
     e.preventDefault()
-    
+
   }
 
   const handleChange = (e) => {

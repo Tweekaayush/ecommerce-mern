@@ -1196,9 +1196,13 @@ background-color: var(--main);
   width: 100%;
 }
 
+.checkout-cart-container > h1{
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+}
+
 .checkout-cart-head{
   display: grid;
-  /* border-bottom: 1px solid var(--tertiary); */
   margin-bottom: 32px;
   grid-template-columns: 6fr 2fr 2fr 2fr;
 }
@@ -1261,6 +1265,12 @@ background-color: var(--main);
   font-size: 14px;
 }
 
+
+/* --------------------Payment-------------------- */
+
+.payment-container > .shipping-address{
+  border-bottom: 1px dashed var(--tertiary);
+}
 
 /* --------------------Footer-------------------- */
 
