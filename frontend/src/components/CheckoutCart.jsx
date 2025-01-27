@@ -1,9 +1,24 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateQuantity } from "../slices/cartSlice";
 
 const CheckoutCartItem = (props) => {
-  const { _id, name, brand, image, quantity, price, update } = props;
+  const {update, ...item} = props
+  const { _id, name, brand, image, quantity, price, countInStock } = item;
   const [qty, setQty] = useState(quantity);
+  const dispatch = useDispatch()
+
+  const increaseQty = () =>{
+    setQty(prev => prev+1)
+  }
+  
+  const decreateQty = () =>{
+    setQty(prev => prev-1) 
+  }
+
+  useEffect(()=>{
+    dispatch(updateQuantity({...item, quantity: qty}))
+  }, [qty])
 
   return (
     <div className="checkout-cart-item">
@@ -17,10 +32,10 @@ const CheckoutCartItem = (props) => {
 
       <p>${price}</p>
       <div className="checkout-item-quantity">
-        <div className="">
-          {update && <button>-</button>}
+        <div>
+          {update && <button onClick={decreateQty}>-</button>}
           <span>{qty}</span>
-          {update && <button>+</button>}
+          {update && <button onClick={increaseQty} disabled={qty === countInStock}>+</button>}
         </div>
       </div>
       <p>${price * quantity}</p>

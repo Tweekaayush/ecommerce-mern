@@ -50,7 +50,6 @@ const Browse = () => {
                 );
               })}
             </div>
-            <h4 className="heading-3">Price</h4>
           </div>
         </div>
       </section>

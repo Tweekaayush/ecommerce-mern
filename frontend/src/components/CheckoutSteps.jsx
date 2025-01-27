@@ -8,6 +8,7 @@ const CheckoutSteps = ({ stepNo, checkoutSteps, setStep }) => {
         {
           checkoutSteps.map((step, i)=>{
             return <button
+            key={i}
             className={`step ${
               stepNo === i+1 ? "current-step" : stepNo > i+1 ? "completed-step" : ""
             }`}

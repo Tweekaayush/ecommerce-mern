@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container">
         <div className="footer-content">
           <div>
-            <Link to="/" className="footer-brand">
+            <Link to="/" className="brand footer-brand">
               Primart<span>.</span>
             </Link>
             <p className="body-text-2">
