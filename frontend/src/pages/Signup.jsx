@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { signup } from "../slices/userSlice";
 import { profileImages } from "../avatarlist";
+import { clearUsersErrors } from "../slices/userSlice";
+import { toast,  Bounce} from "react-toastify";
 
 const Signup = () => {
-  const {_id} = useSelector(state=>state.user.data)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const { loading, data: {_id}, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -60,18 +62,20 @@ const Signup = () => {
 
     const v = validate();
 
-    if(v){
+    if (v) {
+      const img = profileImages.filter(
+        (p) => p.id === formData.firstName[0].toLowerCase()
+      );
 
-      const img = profileImages.filter(p=>p.id === formData.firstName[0].toLowerCase())
-
-      dispatch(signup({
-        name: formData.firstName + ' ' + formData.lastName,
-        email: formData.email,
-        password: formData.password,
-        image: img[0].image
-      }))
-    } 
-
+      dispatch(
+        signup({
+          name: formData.firstName + " " + formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          image: img[0].image,
+        })
+      );
+    }
   };
 
   const handleChange = (e) => {
@@ -79,9 +83,26 @@ const Signup = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-    useEffect(()=>{
-      if(_id) navigate('/profile')
-    }, [_id])
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      dispatch(clearUsersErrors());
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (_id) navigate("/profile");
+  }, [_id]);
   return (
     <section id="auth-container">
       <div className="container">

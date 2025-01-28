@@ -1,21 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { LuShoppingCart, LuUser } from "react-icons/lu";
 import { LuHeart } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
-import { LuLogOut } from "react-icons/lu";
+import { LuLogOut, LuLayoutDashboard } from "react-icons/lu";
 import { logout } from "../../slices/userSlice";
 
 const Navbar = ({ setCartStatus }) => {
   const { cartItems } = useSelector((state) => state.cart);
   const { _id, image, isAdmin, name } = useSelector((state) => state.user.data);
   const [toggle, setToggle] = useState(false);
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   let resizeTimer;
-  const ref = useRef(null)
-  const dispatch = useDispatch()
-  const {pathname} = useLocation()
+  const ref = useRef(null);
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const handleResize = () => {
     document.body.classList.add("resize-animation-stopper");
@@ -32,29 +33,29 @@ const Navbar = ({ setCartStatus }) => {
     }
   };
 
-  const handleLogout = () =>{
-    setOpen(false)
-    dispatch(logout())
-  }
+  const handleLogout = () => {
+    setOpen(false);
+    dispatch(logout());
+  };
 
-  const handleClickOutside = (e) =>{
-    if(ref.current && !ref.current.contains(e.target)){
-      setOpen(false)
+  const handleClickOutside = (e) => {
+    if (ref.current && !ref.current.contains(e.target)) {
+      setOpen(false);
     }
-  }
+  };
 
-  useEffect(()=>{
-    setCartStatus(false)
-    window.scrollTo(0, 0)
-  }, [pathname])
+  useEffect(() => {
+    setCartStatus(false);
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize, true);
-    window.addEventListener('click', handleClickOutside, true)
+    window.addEventListener("click", handleClickOutside, true);
     return () => {
       window.removeEventListener("resize", handleResize, true);
       window.removeEventListener("click", handleClickOutside, true);
-    }
+    };
   }, []);
 
   return (
@@ -109,20 +110,30 @@ const Navbar = ({ setCartStatus }) => {
                 <LuUser />
               </NavLink>
             ) : (
-              <div className="nav-profile-link" ref={ref}>
-                <div className="nav-profile-badge" onClick={()=>setOpen(!open)} title='User Options'>
+              <div className="nav-profile-link" ref={ref} onMouseOver={()=>setOpen(true)} onMouseOut={()=>setOpen(false)}>
+                <div
+                  className="nav-profile-badge"
+                  title="User Options"
+                >
                   <img src={image} alt={name} />
                 </div>
-                <ul className={`nav-profile-options ${open?'nav-profile-options-active':''}`}>
-                  <li onClick={()=>setOpen(false)}>
-                    <Link to="/profile">profile</Link>
-                  </li >
-                  {isAdmin === true && <li onClick={()=>setOpen(false)}>
-                    <Link to="/dashboard">Dashboard</Link>
-                  </li>}
+                <ul
+                  className={`nav-profile-options ${
+                    open ? "nav-profile-options-active" : ""
+                  }`}
+                >
+                  <li onClick={() => [setOpen(false), navigate("/profile")]}>
+                    <LuUser />
+                  </li>
+                  {isAdmin === true && (
+                    <li
+                      onClick={() => [setOpen(false), navigate("/dashboard")]}
+                    >
+                      <LuLayoutDashboard />
+                    </li>
+                  )}
                   <li onClick={handleLogout}>
-                    logout
-                    <LuLogOut/>
+                    <LuLogOut />
                   </li>
                 </ul>
               </div>

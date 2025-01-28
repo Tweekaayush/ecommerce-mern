@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import TrendingProducts from "../components/TrendingProducts";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import products from "../products";
+import { useNavigate, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import {useDispatch, useSelector} from 'react-redux'
-import { clearErrors, getProductById, getProducts, getTrendingProducts } from "../slices/productSlice";
+import { clearProductErrors, getProductById, getTrendingProducts } from "../slices/productSlice";
 import { addToCart } from "../slices/cartSlice";
 
 
@@ -39,7 +38,7 @@ const Product = () => {
 
   useEffect(()=>{
     if(error === 'Request failed with status code 404'){
-      dispatch(clearErrors())
+      dispatch(clearProductErrors())
       navigate('/')
     }
   }, [error])

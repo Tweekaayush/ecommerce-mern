@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getProductById, updateProduct } from "../slices/productSlice";
+import { clearProductErrors, getProductById, updateProduct } from "../slices/productSlice";
+import { toast, Bounce } from "react-toastify";
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ const EditProduct = () => {
         price,
         countInStock,
       },
-    },
+    }, error
   } = useSelector((state) => state.products);
   const [formData, setFormData] = useState({
     name: '',
@@ -38,6 +39,23 @@ const EditProduct = () => {
     e.preventDefault();
     dispatch(updateProduct({...formData, id}))
   };
+
+  useEffect(()=>{
+    if(error){
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      dispatch(clearProductErrors())
+    }
+  }, [error])
 
   useEffect(() => {
     dispatch(getProductById(id));
@@ -73,7 +91,7 @@ const EditProduct = () => {
             <span>Name</span>
           </label>
           <label htmlFor="description" className="form-label">
-            <input
+            <textarea
               type="text"
               name="description"
               id="description"

@@ -46,17 +46,22 @@ exports.getUserProfile = asyncHandler(async(req, res)=>{
 
 exports.updateUserProfile = asyncHandler(async(req, res)=>{
 
+    const {name, email, password} = req.body
     const user = await User.findById(req.user.id)
-
+   
     if(user){
-        user.name = req.body.name || user.name
-        user.email = req.body.email || user.email
-        user.fullAddress = req.body.fullAddress || user.fullAddress
+        user.name = name || user.name
+        user.email = email || user.email
+
+        if(password){
+            user.password = password
+        }
 
         const updatedUser = await user.save()
 
         res.status(200).json({
             success: true,
+            user: updatedUser,
             message: 'User Profile Updated!'
         })
     }else{

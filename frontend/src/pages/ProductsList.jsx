@@ -1,19 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getProducts } from "../slices/productSlice";
+import { clearProductErrors, getProducts } from "../slices/productSlice";
 import ProductListItem from "../components/ProductListItem";
 import Pagination from "../components/Pagination";
+import { toast, Bounce } from "react-toastify";
 
 const ProductsList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { products, totalPages, success } = useSelector((state) => state.products.data);
+  const { loading, data: {products, totalPages, success}, error } = useSelector((state) => state.products);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     dispatch(getProducts({ page, category: "" }));
   }, [page]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      dispatch(clearProductErrors());
+    }
+  }, [error]);
 
   useEffect(()=>{
     if(success) setPage(1)

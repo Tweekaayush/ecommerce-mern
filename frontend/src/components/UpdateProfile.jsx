@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {updateUserProfile} from '../slices/userSlice'
 
 const UpdateProfile = () => {
-  const { name, email, fullAddress } = useSelector((state) => state.user.data);
+  const { name, email } = useSelector((state) => state.user.data);
 
   const [formData, setFormData] = useState({
     name: name,
@@ -10,9 +11,11 @@ const UpdateProfile = () => {
     password: "",
   });
 
+  const dispatch = useDispatch()
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData)
+    dispatch(updateUserProfile(formData))
   };
 
   const handleChange = (e) => {

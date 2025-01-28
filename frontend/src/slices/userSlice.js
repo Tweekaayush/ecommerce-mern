@@ -51,6 +51,18 @@ export const logout = createAsyncThunk('logout', async(payload, {rejectWithValue
     }
 })
 
+export const updateUserProfile = createAsyncThunk('updateUserProfile', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.put(`http://localhost:5000/api/v1/users/profile`, payload, {
+            withCredentials: true
+        })
+
+        return res.data.user
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -85,8 +97,9 @@ const userSlice = createSlice({
         builder.addCase(signup.pending, (state, action)=>{
             state.loading = true
         })
-        builder.addCase(signup.fulfilled, (state)=>{
+        builder.addCase(signup.fulfilled, (state, action)=>{
             state.loading = false
+            state.data = action.payload
         })
         builder.addCase(signup.rejected, (state, action)=>{
             state.loading = false
@@ -100,6 +113,17 @@ const userSlice = createSlice({
             state.data = {}
         })
         builder.addCase(logout.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(updateUserProfile.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(updateUserProfile.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data = action.payload
+        })
+        builder.addCase(updateUserProfile.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })

@@ -382,42 +382,43 @@ nav > .container {
 
 .nav-profile-options {
   position: absolute;
-  bottom: -128px;
-  right: 0;
-  background-color: var(--white);
+  top: 20px;
+  right: -3px;
+  background-color: transparent;
   display: flex;
   flex-direction: column;
-  border-radius: 5px 0 5px 5px;
-  box-shadow: 1px 1px 10px var(--overlay-1);
+  gap: 6px;
+  align-items: center;
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
-  overflow: hidden;
+  padding-top: 28px;
 }
 
 .nav-profile-options > li {
   display: flex;
+  justify-content: center;
   align-items: center;
   text-transform: capitalize;
   gap: 4px;
   color: var(--dark);
   cursor: pointer;
+  background-color: var(--white);
+  box-shadow: 1px 1px 10px var(--overlay-1);
+  border-radius: 50%;
+  padding: 4px;
 }
 
-.nav-profile-options > li:last-of-type {
-  padding: 8px 4px;
-}
 
 .nav-profile-options > li:hover {
   background-color: var(--main);
 }
 
-.nav-profile-options > li > a {
-  padding: 8px 4px;
-  width: 100%;
-  color: inherit;
-  text-transform: capitalize;
+.nav-profile-options > li > svg{
+  height: 18px !important;
+  width: 18px !important;
 }
+
 
 .nav-profile-options-active {
   visibility: visible;
@@ -819,7 +820,7 @@ nav > .container {
   margin-bottom: 16px;
 }
 
-.form-label > input {
+.form-label > input, .form-label > textarea {
   font-size: 14px;
   padding: 10px 16px;
   border: 1px solid var(--tertiary);

@@ -3,13 +3,14 @@ import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCategories, getProducts } from "../slices/productSlice";
+import { clearProductErrors, getAllCategories, getProducts } from "../slices/productSlice";
+import { toast, Bounce } from "react-toastify";
 
 const Browse = () => {
   const location = useLocation();
   const category = new URLSearchParams(location.search).get("category");
   const {
-    data: { products, categories, totalPages },
+    data: { products, categories, totalPages }, error
   } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
@@ -18,6 +19,23 @@ const Browse = () => {
   useEffect(() => {
     dispatch(getProducts({ page, category: currentCategory }));
   }, [page, currentCategory]);
+
+  useEffect(()=>{
+    if(error){
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      dispatch(clearProductErrors())
+    }
+  }, [error])
 
   useEffect(() => {
     dispatch(getAllCategories());
