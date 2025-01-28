@@ -9,7 +9,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const {
     loading,
-    data: { _id },
+    data: { user:{_id} },
     error,
   } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({

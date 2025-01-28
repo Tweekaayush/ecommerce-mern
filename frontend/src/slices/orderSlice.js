@@ -23,7 +23,7 @@ export const createOrder = createAsyncThunk('createOrder', async(payload, {rejec
 
         return res.data.createdOrder
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -35,7 +35,7 @@ export const getOrderById = createAsyncThunk('getOrderById', async(payload, {rej
 
         return res.data.order
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -47,7 +47,7 @@ export const getMyOrders = createAsyncThunk('getMyOrders', async(payload, {rejec
 
         return res.data.orders
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -59,7 +59,7 @@ export const getAllOrders = createAsyncThunk('getAllOrders', async(payload, {rej
 
         return res.data.orders
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -69,7 +69,7 @@ export const updateOrderToDelivered = createAsyncThunk('updateOrderToDelivered',
             withCredentials: true
         })
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 

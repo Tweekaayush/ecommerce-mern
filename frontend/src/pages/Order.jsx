@@ -42,7 +42,7 @@ const Order = () => {
     },
   } = useSelector((state) => state.orders.data);
 
-  const { isAdmin } = useSelector((state) => state.user.data);
+  const { user: {isAdmin} } = useSelector((state) => state.user.data);
 
   const deliverOrder = () =>{
     dispatch(updateOrderToDelivered(id))

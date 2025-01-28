@@ -7,7 +7,7 @@ import { clearUsersErrors } from "../slices/userSlice";
 import { toast,  Bounce} from "react-toastify";
 
 const Signup = () => {
-  const { loading, data: {_id}, error } = useSelector((state) => state.user);
+  const { loading, data: {user:{_id}}, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

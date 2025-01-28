@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddressForm from "./AddressForm";
 
 const ShippingAddress = () => {
-  const { fullAddress, name } = useSelector((state) => state.user.data);
+  const { user: {fullAddress, name} } = useSelector((state) => state.user.data);
 
  const dispatch = useDispatch()
   const [open, setOpen] = useState(false)

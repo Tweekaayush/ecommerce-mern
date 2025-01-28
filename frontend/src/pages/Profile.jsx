@@ -29,7 +29,7 @@ const UpdateAddress = () => {
 };
 
 const AccountInfo = () => {
-  const { name, image, _id, email, isAdmin, createdAt, fullAddress } =
+  const { user: {name, image, _id, email, isAdmin, createdAt, fullAddress} } =
     useSelector((state) => state.user.data);
   return (
     <div className="account-info-container">
@@ -65,7 +65,7 @@ const AccountInfo = () => {
 };
 
 const Profile = () => {
-  const { name, image, _id, email, isAdmin } = useSelector(
+  const { user: {name, image, _id, email, isAdmin} } = useSelector(
     (state) => state.user.data
   );
   const dispatch = useDispatch();

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {updateUserProfile} from '../slices/userSlice'
 
 const UpdateProfile = () => {
-  const { name, email } = useSelector((state) => state.user.data);
+  const { user: {name, email} } = useSelector((state) => state.user.data);
 
   const [formData, setFormData] = useState({
     name: name,

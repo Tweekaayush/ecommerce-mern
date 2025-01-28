@@ -9,7 +9,7 @@ import { logout } from "../../slices/userSlice";
 
 const Navbar = ({ setCartStatus }) => {
   const { cartItems } = useSelector((state) => state.cart);
-  const { _id, image, isAdmin, name } = useSelector((state) => state.user.data);
+  const { user: {_id, image, isAdmin, name} } = useSelector((state) => state.user.data);
   const [toggle, setToggle] = useState(false);
   const [open, setOpen] = useState(false);
   let resizeTimer;

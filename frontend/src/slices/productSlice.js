@@ -24,7 +24,7 @@ export const getProducts = createAsyncThunk('getProducts', async(payload, {rejec
         })
         return products.data   
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -36,7 +36,7 @@ export const getAllCategories = createAsyncThunk('getAllCategories', async(paylo
         })
         return products.data.categories   
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -47,7 +47,7 @@ export const getProductById = createAsyncThunk('getProductById', async(payload, 
         })
         return product.data        
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 
 })
@@ -59,7 +59,7 @@ export const getTrendingProducts = createAsyncThunk('getTrendingProducts', async
         })
         return products.data
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -70,7 +70,7 @@ export const getBestSellingProducts = createAsyncThunk('getBestSellingProducts',
         })
         return products.data
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -83,7 +83,7 @@ export const updateProduct = createAsyncThunk('updateProduct', async(payload, {r
         return res.data.product
 
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -97,7 +97,7 @@ export const deleteProduct = createAsyncThunk('deleteProduct', async(payload, {d
 
         return res.data.success
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 

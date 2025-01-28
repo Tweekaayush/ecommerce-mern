@@ -70,14 +70,62 @@ exports.updateUserProfile = asyncHandler(async(req, res)=>{
     }
 })
 exports.getUsers = asyncHandler(async(req,res)=>{
-    res.send('get all users')
+    const users = await User.find({})
+    res.status(200).json({
+        success: true,
+        users
+    })
 })
 exports.getUserById = asyncHandler(async(req,res)=>{
-    res.send('get user by id')
+   const user = await User.findById(req.params.id).select('-password')
+
+   if(user){
+    res.status(200).json({
+        success: true,
+        userDetailsAdmin: user
+    })
+   }else{
+    res.status(404)
+    throw new Error('User not found')
+   }
 })
 exports.deleteUser = asyncHandler(async(req,res)=>{
-    res.send('delete user')
+
+
+    const user = await User.findById(req.params.id)
+    console.log(user)
+    if(user){
+        if(user.isAdmin){
+            res.status(400)
+            throw new Error('Cannot delete admin user')
+        }
+        await User.deleteOne({_id: user._id})
+        
+        res.status(200).json({
+            success: true,
+            message: 'User deleted Successfully'
+        })
+    }else{
+        res.status(404)
+        throw new Error('User not found')
+    }
 })
 exports.updateUser = asyncHandler(async(req,res)=>{
-    res.send('update user')
+    const {isAdmin} = req.body
+    const user = await User.findById(req.params.id)
+
+    if(user){
+        if( !isAdmin)
+            user.isAdmin = Boolean(isAdmin)
+
+        const updatedUser = await user.save()
+
+        res.status(200).json({
+            success: true,
+            updatedUser: {...updatedUser._doc, password: ''}
+        })
+    }else{
+        res.status(404)
+        throw new Error('User not found')
+    }
 })

@@ -1761,6 +1761,76 @@ nav > .container {
   padding-inline: 4px;
 }
 
+/* --------------------User List Page-------------------- */
+
+#user-list{
+  min-height: 100vh;
+}
+
+#user-list > .container{
+  display: flex;
+  flex-direction: column;
+}
+
+#user-list > .container h1{
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+.user-list-container{
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+  margin-bottom: 16px;
+}
+
+.user-list-head{
+  display: grid;
+  grid-template-columns: 3fr 3fr 3fr 2fr 1fr;
+  gap: 8px;
+  margin-bottom:32px;
+}
+
+
+.user-list-head > span {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+  width: 100%;
+  color: var(--tertiary);
+  text-align: center;
+}
+
+.user-item-container{
+  display: grid;
+  grid-template-columns: 3fr 3fr 3fr 2fr 1fr;
+  gap: 8px; 
+  padding-block: 18px;
+  border-bottom: 1px solid var(--tertiary);
+  cursor: pointer;
+  height: fit-content;
+}
+
+.user-item-container:nth-child(odd){
+  background-color: var(--main);
+}
+.user-item-container:hover {
+  background-color: var(--main-dark);
+}
+
+.user-item-container > p {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
+  word-break: break-all;
+  text-align: center;
+}
+
+.user-item-container > svg{
+  margin: auto;
+}
+
+
 /* --------------------Dashboard-------------------- */
 
 .dashboard-link{

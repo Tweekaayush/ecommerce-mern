@@ -3,7 +3,11 @@ import axios from 'axios'
 
 const initialState = {
     loading: false,
-    data: {},
+    data: {
+        user: {},
+        usersListAdmin: [],
+        userDetailsAdmin: {}
+    },
     error: ''
 }
 
@@ -14,7 +18,7 @@ export const loadUser = createAsyncThunk('loadUser', async(payload, {rejectWithV
         })
         return res.data.user
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -25,7 +29,7 @@ export const signup = createAsyncThunk('signup', async(payload, {rejectWithValue
         })
         return res.data.user
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -36,7 +40,7 @@ export const login = createAsyncThunk('login', async(payload, {rejectWithValue})
         })
         return res.data.user
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -47,7 +51,7 @@ export const logout = createAsyncThunk('logout', async(payload, {rejectWithValue
         })
         console.log(res.data)
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -59,9 +63,33 @@ export const updateUserProfile = createAsyncThunk('updateUserProfile', async(pay
 
         return res.data.user
     } catch (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
+
+export const getAllUsers= createAsyncThunk('getAllUser', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.get('http://localhost:5000/api/v1/users/all',{
+            withCredentials: true
+        })
+
+        return res.data.users
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
+export const deleteUser= createAsyncThunk('deleteUser', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.delete(`http://localhost:5000/api/v1/users/${payload}`,{
+            withCredentials: true
+        })
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -77,18 +105,17 @@ const userSlice = createSlice({
         })
         builder.addCase(loadUser.fulfilled, (state, action)=>{
             state.loading = false
-            state.data = action.payload
+            state.data.user = action.payload
         })
         builder.addCase(loadUser.rejected, (state, action)=>{
             state.loading = false
-            state.error = action.payload
         })
         builder.addCase(login.pending, (state, action)=>{
             state.loading = true
         })
         builder.addCase(login.fulfilled, (state, action)=>{
             state.loading = false
-            state.data = action.payload
+            state.data.user = action.payload
         })
         builder.addCase(login.rejected, (state, action)=>{
             state.loading = false
@@ -99,7 +126,7 @@ const userSlice = createSlice({
         })
         builder.addCase(signup.fulfilled, (state, action)=>{
             state.loading = false
-            state.data = action.payload
+            state.data.user = action.payload
         })
         builder.addCase(signup.rejected, (state, action)=>{
             state.loading = false
@@ -110,7 +137,11 @@ const userSlice = createSlice({
         })
         builder.addCase(logout.fulfilled, (state)=>{
             state.loading = false
-            state.data = {}
+            state.data = {
+                user: {},
+                usersListAdmin: [],
+                userDetailsAdmin: {}
+            }
         })
         builder.addCase(logout.rejected, (state, action)=>{
             state.loading = false
@@ -121,9 +152,30 @@ const userSlice = createSlice({
         })
         builder.addCase(updateUserProfile.fulfilled, (state, action)=>{
             state.loading = false
-            state.data = action.payload
+            state.data.user = action.payload
         })
         builder.addCase(updateUserProfile.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(getAllUsers.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(getAllUsers.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.usersListAdmin = action.payload
+        })
+        builder.addCase(getAllUsers.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(deleteUser.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(deleteUser.fulfilled, (state, action)=>{
+            state.loading = false
+        })
+        builder.addCase(deleteUser.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })
