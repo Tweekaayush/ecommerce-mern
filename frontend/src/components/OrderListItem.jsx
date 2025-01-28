@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { RiEditBoxLine } from "react-icons/ri";
 import { LuTrash } from "react-icons/lu";
+import { IoClose } from "react-icons/io5";
 
 const OrderListItem = ({
     _id,
@@ -11,7 +12,8 @@ const OrderListItem = ({
     isPaid,
     paidAt,
     admin,
-    user
+    user,
+    deliveredAt
   }) => {
     const navigate = useNavigate()
   return (
@@ -23,8 +25,8 @@ const OrderListItem = ({
       {admin && <p className='ellipses'>{user?.name}</p>}
       <p className="ellipses">{createdAt.substring(0, 10)}</p>
       <p className="ellipses">${totalPrice}</p>
-      <p className="ellipses">{isPaid ? paidAt.substring(0, 10) : "not paid"}</p>
-      <p className="ellipses">{isDelivered ? "delivered" : "not delivered"}</p>
+      {isPaid?<p className="ellipses">{paidAt.substring(0, 10)}</p>:<IoClose className={isPaid?'success':'failed'}/>}
+      {isDelivered?<p className="ellipses">{deliveredAt.substring(0, 10)}</p>:<IoClose className={isDelivered?'success':'failed'}/>}
     </div>
   )
 }

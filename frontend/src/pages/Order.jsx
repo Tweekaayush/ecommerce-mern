@@ -37,6 +37,8 @@ const Order = () => {
       totalPrice,
       paymentMethod,
       isPaid,
+      paidAt,
+      deliveredAt
     },
   } = useSelector((state) => state.orders.data);
 
@@ -62,7 +64,7 @@ const Order = () => {
               {shippingAddress?.city}, {shippingAddress?.country}
             </p>
             <p className={`status ${isDelivered ? "true" : false}`}>
-              {isDelivered ? "Delivered" : "Not Delivered"}
+              {isDelivered ? `Delivered on ${deliveredAt}` : "Not Delivered"}
             </p>
           </div>
           <div className="order-payment">
