@@ -23,8 +23,8 @@ const UserListItem = ({
         >
           <p className="ellipses">{_id}</p>
           <p className='ellipses'>{name}</p>
-          <p className="ellipses">{email}</p>
-          <p className="ellipses">{isAdmin?'admin':'customer'}</p>
+          <p className="ellipses" style={{textTransform: 'lowercase'}}>{email}</p>
+          <p className="ellipses" style={{textTransform: 'lowercase'}}>{isAdmin?'admin':'user'}</p>
           <LuTrash onClick={handleDelete} className='failed'/>
         </div>
   )

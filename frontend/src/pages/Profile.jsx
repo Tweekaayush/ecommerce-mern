@@ -113,7 +113,7 @@ const Profile = () => {
               <img src={image} alt={name} />
             </div>
             <div>
-              <h1 className="heading-3">{name}</h1>
+              <h1 className="heading-4">{name}</h1>
               <p>{email}</p>
             </div>
           </div>

@@ -1,6 +1,11 @@
 import React from "react";
+import img1 from '../assets/hero/hero1.png'
+import img2 from '../assets/hero/hero2.png'
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+
+  const navigate = useNavigate()
   return (
     <section id="hero">
       <div className="container">
@@ -12,10 +17,10 @@ const Hero = () => {
             dignissimos autem error ipsa dolorem. Ducimus nobis debitis cum
             provident culpa.
           </p>
-          <button className="button-1">shop now</button>
+          <button className="button-1" onClick={()=>navigate('/browse?page=1&category=electronic')}>shop now</button>
         </div>
         <div className="hero-img">
-          hi
+          <img src={img2} alt="hero-img" />
         </div>
       </div>
     </section>

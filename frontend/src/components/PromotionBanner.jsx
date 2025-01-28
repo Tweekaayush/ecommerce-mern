@@ -1,11 +1,14 @@
 import React from "react";
+import img1 from '../assets/promotion/promotion1.png'
+import { useNavigate } from "react-router-dom";
 
 const PromotionBanner = () => {
+  const navigate = useNavigate()
   return (
     <section id="promotion-banner">
       <div className="container">
         <div className="promotion-banner-image">
-          <img src="" alt="" />
+          <img src={img1} alt="promotion" />
         </div>
         <div className="promotion-banner-content">
           <h4 className="heading-3">heading</h4>
@@ -15,7 +18,7 @@ const PromotionBanner = () => {
             dignissimos autem error ipsa dolorem. Ducimus nobis debitis cum
             provident culpa.
           </p>
-          <button className="button-1">shop now</button>
+          <button className="button-1" onClick={()=>navigate('/browse?page=1&category=furniture')}>shop now</button>
         </div>
       </div>
     </section>
