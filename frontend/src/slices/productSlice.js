@@ -9,7 +9,8 @@ const initialState = {
         bestSellingProducts: [],
         productDetails: {},
         categories: [],
-        totalPages: 0
+        totalPages: 0,
+        success: ''
     },
     error: ''
 }
@@ -18,7 +19,9 @@ export const getProducts = createAsyncThunk('getProducts', async(payload, {rejec
 
     try {
         const {page, category} = payload
-        const products = await axios.get(`http://localhost:5000/api/v1/products?page=${page}&category=${category}`)
+        const products = await axios.get(`http://localhost:5000/api/v1/products?page=${page}&category=${category}`,{
+            withCredentials: 'include'
+        })
         return products.data   
     } catch (error) {
         return rejectWithValue(error.message)
@@ -28,7 +31,9 @@ export const getProducts = createAsyncThunk('getProducts', async(payload, {rejec
 export const getAllCategories = createAsyncThunk('getAllCategories', async(payload, {rejectWithValue})=>{
 
     try {
-        const products = await axios.get('http://localhost:5000/api/v1/products/categories')
+        const products = await axios.get('http://localhost:5000/api/v1/products/categories',{
+            withCredentials: 'include'
+        })
         return products.data.categories   
     } catch (error) {
         return rejectWithValue(error.message)
@@ -37,7 +42,9 @@ export const getAllCategories = createAsyncThunk('getAllCategories', async(paylo
 
 export const getProductById = createAsyncThunk('getProductById', async(payload, {rejectWithValue})=>{
     try {
-        const product = await axios.get(`http://localhost:5000/api/v1/products/${payload}`)
+        const product = await axios.get(`http://localhost:5000/api/v1/products/${payload}`,{
+            withCredentials: 'include'
+        })
         return product.data        
     } catch (error) {
         return rejectWithValue(error.message)
@@ -47,7 +54,9 @@ export const getProductById = createAsyncThunk('getProductById', async(payload, 
 
 export const getTrendingProducts = createAsyncThunk('getTrendingProducts', async(payload, {rejectWithValue})=>{
     try {
-        const products = await axios.get(`http://localhost:5000/api/v1/products/trending`)
+        const products = await axios.get(`http://localhost:5000/api/v1/products/trending`, {
+            withCredentials: 'include'
+        })
         return products.data
     } catch (error) {
         return rejectWithValue(error.message)
@@ -56,8 +65,35 @@ export const getTrendingProducts = createAsyncThunk('getTrendingProducts', async
 
 export const getBestSellingProducts = createAsyncThunk('getBestSellingProducts', async(payload, {rejectWithValue})=>{
     try {
-        const products = await axios.get(`http://localhost:5000/api/v1/products/bestselling`)
+        const products = await axios.get(`http://localhost:5000/api/v1/products/bestselling`, {
+            withCredentials: 'include'
+        })
         return products.data
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
+export const updateProduct = createAsyncThunk('updateProduct', async(payload, {rejectWithValue}) =>{
+    try {
+        const res = await axios.put(`http://localhost:5000/api/v1/products/${payload.id}`, payload, {
+            withCredentials: true
+        })
+
+        return res.data.product
+
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
+export const deleteProduct = createAsyncThunk('deleteProduct', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.delete(`http://localhost:5000/api/v1/products/${payload}`, {
+            withCredentials: true
+        })
+
+        return res.data.message
     } catch (error) {
         return rejectWithValue(error.message)
     }
@@ -125,6 +161,28 @@ const productSlice = createSlice({
             state.data.productDetails = action.payload
         })
         builder.addCase(getProductById.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(updateProduct.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(updateProduct.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.productDetails = action.payload
+        })
+        builder.addCase(updateProduct.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(deleteProduct.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(deleteProduct.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.success = action.payload
+        })
+        builder.addCase(deleteProduct.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })

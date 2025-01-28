@@ -21,6 +21,7 @@ import AdminRoute from "./components/AdminRoute";
 import Dashboard from "./pages/Dashboard";
 import ProductsList from "./pages/ProductsList";
 import OrdersList from "./pages/OrdersList";
+import EditProduct from "./pages/EditProduct";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -60,6 +61,7 @@ const App = () => {
         <Route element={<AdminRoute/>}>
           <Route path='/dashboard' element={<Dashboard/>}/>
           <Route path='/products/list' element={<ProductsList/>}/>
+          <Route path='/product/:id/edit' element={<EditProduct/>}/>
           <Route path='/orders/list' element={<OrdersList/>}/>
         </Route>
       </Routes>
