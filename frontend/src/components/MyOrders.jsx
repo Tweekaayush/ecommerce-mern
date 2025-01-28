@@ -14,7 +14,7 @@ const OrderItem = ({
   return (
     <div
       className="order-item-container"
-      onClick={() => navigate(`/orders/${_id}`)}
+      onClick={() => navigate(`/order/${_id}`)}
     >
       <p className="ellipses">{_id}</p>
       <p className="ellipses">{createdAt.substring(0, 10)}</p>
@@ -27,7 +27,6 @@ const OrderItem = ({
 
 const MyOrders = () => {
   const { myOrders } = useSelector((state) => state.orders.data);
-  console.log(myOrders);
   return (
     <div className="orders-history-container">
       <h1 className="heading-3">my orders</h1>

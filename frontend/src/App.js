@@ -17,6 +17,10 @@ import Profile from "./pages/Profile";
 import Success from "./pages/Success";
 import Failed from "./pages/Failed";
 import Order from "./pages/Order";
+import AdminRoute from "./components/AdminRoute";
+import Dashboard from "./pages/Dashboard";
+import ProductsList from "./pages/ProductsList";
+import OrdersList from "./pages/OrdersList";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -51,7 +55,12 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/success" element={<Success />} />
           <Route path="/failed" element={<Failed />} />
-          <Route path="/orders/:id" element={<Order />} />
+          <Route path="/order/:id" element={<Order />} />
+        </Route>
+        <Route element={<AdminRoute/>}>
+          <Route path='/dashboard' element={<Dashboard/>}/>
+          <Route path='/products/list' element={<ProductsList/>}/>
+          <Route path='/orders/list' element={<OrdersList/>}/>
         </Route>
       </Routes>
       <Footer />
