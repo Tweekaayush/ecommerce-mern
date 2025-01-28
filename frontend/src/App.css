@@ -1367,7 +1367,6 @@ nav > .container {
 
 .order-summary > div:last-of-type {
   padding-top: 16px;
-  margin-bottom: 8px;
   border-top: 1px dashed var(--dark);
 }
 
@@ -1583,13 +1582,25 @@ nav > .container {
 }
 
 .profile-order-head {
+
+}
+
+
+.profile-order-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------Order List-------------------- */
+
+.order-list-head{
   display: grid;
-  grid-template-columns: 4fr 2fr 2fr 2fr 2fr;
+  grid-template-columns: 4fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr;
   gap: 8px;
   margin-bottom: 16px;
 }
 
-.profile-order-head > span {
+.order-list-head > span {
   text-transform: uppercase;
   font-size: 14px;
   font-weight: 600;
@@ -1597,16 +1608,11 @@ nav > .container {
   color: var(--tertiary);
 }
 
-.profile-order-list {
-  display: flex;
-  flex-direction: column;
-}
-
 .order-item-container {
   display: grid;
-  grid-template-columns: 4fr 2fr 2fr 2fr 2fr;
+  grid-template-columns: 4fr 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr;
   gap: 8px;
-  padding-block: 32px;
+  padding-block: 24px;
   border-bottom: 1px solid var(--tertiary);
   cursor: pointer;
   height: fit-content;
@@ -1621,6 +1627,38 @@ nav > .container {
   font-weight: 600;
   text-transform: capitalize;
   word-break: break-all;
+}
+
+/* --------------------Orders List Page-------------------- */
+
+#order-list{
+  min-height: 80vh;
+}
+
+#order-list > .container{
+  display: flex;
+  flex-direction: column;
+}
+
+#order-list > .container h1{
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+
+/* --------------------Dashboard-------------------- */
+
+.dashboard-link{
+  color: var(--primary);
+  font-size: 12px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-bottom: 16px;
+  width: fit-content;
+}
+
+.dashboard-link:hover{
+  text-decoration: underline;
 }
 
 /* --------------------Footer-------------------- */
@@ -1909,7 +1947,7 @@ footer {
     display: none;
   }
 
-  .profile-order-head > span {
+  .order-list-head > span {
     font-size: 12px;
   }
 

@@ -69,11 +69,30 @@ exports.updateOrderToPaid = asyncHandler(async(req, res)=>{
 })
 
 exports.updateOrderToDelivered = asyncHandler(async(req, res)=>{
-    res.send('update order to delivered')
+    
+    const id = req.params.id
+
+    const order = await Order.findById(id)
+
+    if(order){
+        order.isDelivered = true
+
+        const updatedOrder = await order.save()
+        res.status(200).json({
+            success: true,
+            order: updatedOrder
+        })
+    }else{
+        res.status(404)
+        throw new Error('Order not found')
+    }
+
+
+    // res.send('update order to delivered')
 })
 
 exports.getOrders = asyncHandler(async(req, res)=>{
-    const orders = await Order.find({})
+    const orders = await Order.find({}).populate('user', 'name')
     res.status(200).json({
         success: true,
         orders

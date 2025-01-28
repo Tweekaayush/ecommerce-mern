@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getOrderById } from "../slices/orderSlice";
+import { getOrderById, updateOrderToDelivered } from "../slices/orderSlice";
 
 const OrderItem = (props) => {
   const { _id, name, brand, image, quantity, price } = props;
@@ -39,6 +39,12 @@ const Order = () => {
       isPaid,
     },
   } = useSelector((state) => state.orders.data);
+
+  const { isAdmin } = useSelector((state) => state.user.data);
+
+  const deliverOrder = () =>{
+    dispatch(updateOrderToDelivered(id))
+  }
 
   useEffect(() => {
     dispatch(getOrderById(id));
@@ -98,6 +104,9 @@ const Order = () => {
             <h4>total</h4>
             <p>${totalPrice}</p>
           </div>
+          {isAdmin && !isDelivered && (
+            <button className="button-1" onClick={deliverOrder}>mark as delivered</button>
+          )}
         </div>
       </div>
     </section>

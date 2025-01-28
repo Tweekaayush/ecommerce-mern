@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 import { clearCartItems } from './cartSlice'
-import { clearErrors } from './productSlice'
 
 const initialState = {
     loading: false,
@@ -52,6 +51,28 @@ export const getMyOrders = createAsyncThunk('getMyOrders', async(payload, {rejec
     }
 })
 
+export const getAllOrders = createAsyncThunk('getAllOrders', async(payload, {rejectWithValue, dispatch})=>{
+    try {
+        const res = await axios.get(`http://localhost:5000/api/v1/orders`, {
+            withCredentials: 'include'
+        })
+
+        return res.data.orders
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
+export const updateOrderToDelivered = createAsyncThunk('updateOrderToDelivered', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.put(`http://localhost:5000/api/v1/orders/${payload}/deliver`, payload, {
+            withCredentials: true
+        })
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
 const orderSlice = createSlice({
     name: 'orders',
     initialState,
@@ -86,6 +107,17 @@ const orderSlice = createSlice({
             state.loading = false
             state.error = action.payload
         })
+        builder.addCase(updateOrderToDelivered.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(updateOrderToDelivered.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.orderDetails = action.payload
+        })
+        builder.addCase(updateOrderToDelivered.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
         builder.addCase(getMyOrders.pending, (state, action)=>{
             state.loading = true
         })
@@ -94,6 +126,17 @@ const orderSlice = createSlice({
             state.data.myOrders = action.payload
         })
         builder.addCase(getMyOrders.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(getAllOrders.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(getAllOrders.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.allOrders = action.payload
+        })
+        builder.addCase(getAllOrders.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })
