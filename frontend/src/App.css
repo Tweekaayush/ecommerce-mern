@@ -41,6 +41,10 @@ section {
   padding-block: 70px;
 }
 
+section:last-of-type{
+  padding: 0;
+}
+
 section:first-of-type {
   padding-top: 100px;
 }

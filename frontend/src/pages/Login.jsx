@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {useDispatch, useSelector} from 'react-redux'
-import { login } from "../slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUsersErrors, login } from "../slices/userSlice";
+import { toast, Bounce } from "react-toastify";
 
 const Login = () => {
-
-  const {state} = useLocation()
-  const dispatch = useDispatch()
-  const {loading, _id} = useSelector(state=>state.user.data)
+  const { state } = useLocation();
+  const dispatch = useDispatch();
+  const {
+    loading,
+    data: { _id },
+    error,
+  } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -16,7 +20,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const validate = () => {
     const err = {
@@ -42,7 +46,7 @@ const Login = () => {
     e.preventDefault();
 
     const v = validate();
-    if(v) dispatch(login({...formData}))
+    if (v) dispatch(login({ ...formData }));
   };
 
   const handleChange = (e) => {
@@ -50,13 +54,30 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  useEffect(()=>{
-    if(_id) {
-      state?navigate(state.previousURL):navigate('/profile')
+  useEffect(() => {
+    if (_id) {
+      state ? navigate(state.previousURL) : navigate("/profile");
     }
-  }, [_id])
+  }, [_id]);
 
-  return (!loading?
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      dispatch(clearUsersErrors());
+    }
+  }, [error]);
+
+  return (
     <section id="auth-container">
       <div className="container">
         <div className="form-container">
@@ -102,7 +123,7 @@ const Login = () => {
           </form>
         </div>
       </div>
-    </section>:<></>
+    </section>
   );
 };
 

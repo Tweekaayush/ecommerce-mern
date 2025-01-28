@@ -87,13 +87,15 @@ export const updateProduct = createAsyncThunk('updateProduct', async(payload, {r
     }
 })
 
-export const deleteProduct = createAsyncThunk('deleteProduct', async(payload, {rejectWithValue})=>{
+export const deleteProduct = createAsyncThunk('deleteProduct', async(payload, {dispatch, rejectWithValue})=>{
     try {
         const res = await axios.delete(`http://localhost:5000/api/v1/products/${payload}`, {
             withCredentials: true
         })
 
-        return res.data.message
+        dispatch(getProducts({page: 1, category: ''}))
+
+        return res.data.success
     } catch (error) {
         return rejectWithValue(error.message)
     }

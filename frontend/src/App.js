@@ -22,6 +22,7 @@ import Dashboard from "./pages/Dashboard";
 import ProductsList from "./pages/ProductsList";
 import OrdersList from "./pages/OrdersList";
 import EditProduct from "./pages/EditProduct";
+import { ToastContainer, Bounce } from "react-toastify";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -51,21 +52,34 @@ const App = () => {
         <Route path="/product/:id" element={<Product />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route element={<PrivateRoute/>}>
+        <Route element={<PrivateRoute />}>
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/success" element={<Success />} />
           <Route path="/failed" element={<Failed />} />
           <Route path="/order/:id" element={<Order />} />
         </Route>
-        <Route element={<AdminRoute/>}>
-          <Route path='/dashboard' element={<Dashboard/>}/>
-          <Route path='/products/list' element={<ProductsList/>}/>
-          <Route path='/product/:id/edit' element={<EditProduct/>}/>
-          <Route path='/orders/list' element={<OrdersList/>}/>
+        <Route element={<AdminRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/products/list" element={<ProductsList />} />
+          <Route path="/product/:id/edit" element={<EditProduct />} />
+          <Route path="/orders/list" element={<OrdersList />} />
         </Route>
       </Routes>
       <Footer />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="colored"
+        transition={Bounce}
+      />
     </Router>
   );
 };

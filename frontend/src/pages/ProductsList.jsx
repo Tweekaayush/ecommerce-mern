@@ -8,12 +8,16 @@ import Pagination from "../components/Pagination";
 const ProductsList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { products, totalPages } = useSelector((state) => state.products.data);
+  const { products, totalPages, success } = useSelector((state) => state.products.data);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     dispatch(getProducts({ page, category: "" }));
   }, [page]);
+
+  useEffect(()=>{
+    if(success) setPage(1)
+  }, [success])
 
   return (
     <section id="product-list">
