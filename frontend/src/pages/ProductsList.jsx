@@ -43,7 +43,10 @@ const ProductsList = () => {
         <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
           dashboard /
         </h5>
-        <h1 className="heading-3">Products List</h1>
+        <div className="product-list-page-head">
+          <h1 className="heading-3">Products List</h1>
+          <button>create</button>
+        </div>
         <div className="product-list-container">
           <div className="product-list-head">
             <span>id</span>

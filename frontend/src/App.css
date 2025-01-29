@@ -1791,6 +1791,20 @@ nav > .container {
   margin-bottom: 24px;
 }
 
+.product-list-page-head{
+  display: flex;
+  justify-content:  space-between;
+}
+
+.product-list-page-head > button{
+  padding: 8px 18px;
+  background-color: var(--dark);
+  color: var(--white);
+  height: fit-content;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
 .product-list-container{
   display: flex;
   flex-direction: column;
@@ -2071,6 +2085,53 @@ nav > .container {
   grid-area: e;
   height: 300px;
 }
+
+/* --------------------Success / Failed -------------------- */
+
+#success, #failed{
+  display: flex;
+  align-items: center;
+  min-height: 95vh;
+}
+
+#success > .container, #failed > .container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#success > .container > svg{
+  width: 100px;
+  height: 100px;
+  color: var(--success);
+  margin-bottom: 12px;
+}
+
+#failed > .container > svg{
+  width: 100px;
+  height: 100px;
+  color: var(--danger);
+  margin-bottom: 12px;
+}
+
+
+#success > .container > h1{
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: var(--success);
+  text-transform: capitalize;
+}
+
+#failed > .container > h1{
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: var(--danger);
+  text-transform: capitalize;
+}
+
+#success > .container > p, #failed > .container > p{
+  font-size: 18px;
+}
+
 
 /* --------------------Footer-------------------- */
 
