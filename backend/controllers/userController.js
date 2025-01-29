@@ -46,15 +46,22 @@ exports.getUserProfile = asyncHandler(async(req, res)=>{
 
 exports.updateUserProfile = asyncHandler(async(req, res)=>{
 
-    const {name, email, password} = req.body
+    const {name, email, password, fullAddress} = req.body
     const user = await User.findById(req.user.id)
-   
+    
     if(user){
         user.name = name || user.name
         user.email = email || user.email
 
         if(password){
             user.password = password
+        }
+
+        if(fullAddress?.address){
+            user.fullAddress.address = fullAddress.address
+            user.fullAddress.city = fullAddress.city
+            user.fullAddress.postalCode = fullAddress.postalCode
+            user.fullAddress.country = fullAddress.country
         }
 
         const updatedUser = await user.save()

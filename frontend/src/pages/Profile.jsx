@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MyOrders from "../components/MyOrders";
-import { logout } from "../slices/userSlice";
+import { logout, updateUserProfile } from "../slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { getMyOrders } from "../slices/orderSlice";
 import UpdateProfile from "../components/UpdateProfile";
@@ -15,8 +15,10 @@ import {
 import AddressForm from "../components/AddressForm";
 
 const UpdateAddress = () => {
+  const dispatch = useDispatch()
   const updateForm = (data) =>{
     console.log(data)
+    dispatch(updateUserProfile({fullAddress: {...data}}))
   }
   return (
     <div className="update-form-container">

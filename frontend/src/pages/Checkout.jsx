@@ -19,6 +19,7 @@ const Checkout = () => {
     shippingAddress,
   } = useSelector((state) => state.cart);
   const {error, data: {createdOrder}} = useSelector(state=>state.orders)
+  const {data: {user: {fullAddress}}} = useSelector(state=>state.user)
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -28,6 +29,7 @@ const Checkout = () => {
       name: "Cart",
       component: <CheckoutCart />,
       func: function () {
+        return true
       },
       button: "Continue",
     },
@@ -35,20 +37,19 @@ const Checkout = () => {
       name: "Address",
       component: <ShippingAddress />,
       func: function () {
-        dispatch(
-          saveShippingAddress({
-            address: "A-101, Milan Vihar 1, Abhay Khand 3, Indirapuram",
-            city: "Ghaziabad",
-            postalCode: "201014",
-            country: "India",
-          })
-        );
+        if(fullAddress){
+          dispatch(
+            saveShippingAddress({...fullAddress})
+          );
+          return true
+        }
+        return false
       },
       button: "Continue",
     },
     {
       name: "Payment",
-      component: <Payment />,
+      component: <Payment setStep={setStep}/>,
       func: function () {
         const order = {
           orderItems: cartItems,
@@ -71,8 +72,9 @@ const Checkout = () => {
 
   const handleNextStep = () => {
     if (step > checkoutSteps.length) return;
-    checkoutSteps[step - 1].func();
-    setStep((p) => p + 1);
+    const res = checkoutSteps[step - 1].func();
+    if(res)
+      setStep((p) => p + 1);
   };
 
   useEffect(() => {

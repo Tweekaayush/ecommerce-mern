@@ -103,7 +103,6 @@ export const deleteProduct = createAsyncThunk('deleteProduct', async(payload, {d
 
 export const addReview = createAsyncThunk('addReview', async(payload, {dispatch, rejectWithValue})=>{
     try {
-        console.log(payload)
         const res = await axios.post(`http://localhost:5000/api/v1/products/${payload._id}/reviews`, payload, {
             withCredentials: true
         })

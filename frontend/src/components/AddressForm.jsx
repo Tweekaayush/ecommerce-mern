@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 const AddressForm = ({submitFunction}) => {
 
+  const {user: {fullAddress}} = useSelector(state=>state.user.data)
+
     const [formData, setFormData] = useState({
-        address: 'A-101, Milan Vihar 1, Abhay Khand 3, Indirapuram',
-        city: 'Ghaziabad',
-        postalCode: '201014',
-        country: 'India'
+        address: '',
+        city: '',
+        postalCode: '',
+        country: ''
      })
 
     const handleChange = (e) =>{
@@ -19,6 +22,11 @@ const AddressForm = ({submitFunction}) => {
         submitFunction(formData)
     }
 
+    useEffect(()=>{
+      if(fullAddress){
+        setFormData({...fullAddress})
+      }
+    }, [fullAddress])
 
   return (
     <form action="" className='address-form' onSubmit={handleSubmit}>
