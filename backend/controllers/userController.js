@@ -93,7 +93,7 @@ exports.deleteUser = asyncHandler(async(req,res)=>{
 
 
     const user = await User.findById(req.params.id)
-    console.log(user)
+    
     if(user){
         if(user.isAdmin){
             res.status(400)
@@ -111,12 +111,12 @@ exports.deleteUser = asyncHandler(async(req,res)=>{
     }
 })
 exports.updateUser = asyncHandler(async(req,res)=>{
-    const {isAdmin} = req.body
+
     const user = await User.findById(req.params.id)
 
     if(user){
-        if( !isAdmin)
-            user.isAdmin = Boolean(isAdmin)
+
+        user.isAdmin = true
 
         const updatedUser = await user.save()
 

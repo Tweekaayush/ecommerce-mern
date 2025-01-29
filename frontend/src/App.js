@@ -24,6 +24,7 @@ import OrdersList from "./pages/OrdersList";
 import EditProduct from "./pages/EditProduct";
 import { ToastContainer, Bounce } from "react-toastify";
 import UsersList from "./pages/UsersList";
+import EditUser from "./pages/EditUser";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/products/list" element={<ProductsList />} />
           <Route path="/product/:id/edit" element={<EditProduct />} />
+          <Route path="/user/:id/edit" element={<EditUser />} />
           <Route path="/orders/list" element={<OrdersList />} />
           <Route path="/users/list" element={<UsersList />} />
         </Route>

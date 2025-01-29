@@ -90,6 +90,18 @@ export const deleteUser= createAsyncThunk('deleteUser', async(payload, {rejectWi
     }
 })
 
+export const updateUser = createAsyncThunk('updateUser', async(payload, {dispatch, rejectWithValue})=>{
+    try {
+        const res = await axios.put(`http://localhost:5000/api/v1/users/${payload._id}`, payload, {
+            withCredentials: true
+        })
+
+        dispatch(getAllUsers())
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -176,6 +188,16 @@ const userSlice = createSlice({
             state.loading = false
         })
         builder.addCase(deleteUser.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(updateUser.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(updateUser.fulfilled, (state, action)=>{
+            state.loading = false
+        })
+        builder.addCase(updateUser.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })
