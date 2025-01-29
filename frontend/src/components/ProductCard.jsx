@@ -24,16 +24,16 @@ const ProductCard = ({ _id, name, image, price, rating, slider }) => {
     const container = document.getElementById("slider").offsetWidth;
     const slide = document.getElementById("slider");
     if (container > 992) {
-      setWidth((container - 51) / 4);
+      setWidth((container - 48) / 4);
       slide.scrollLeft = 0;
     } else if (container > 768) {
-      setWidth((container - 34) / 3);
+      setWidth((container - 32) / 3);
       slide.scrollLeft = 0;
     } else if (container > 480) {
-      setWidth((container - 17) / 2);
+      setWidth((container - 16) / 2);
       slide.scrollLeft = 0;
     } else {
-      setWidth(container - 3);
+      setWidth(container);
       slide.scrollLeft = 0;
     }
   };

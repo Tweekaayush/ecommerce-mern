@@ -77,10 +77,16 @@ exports.updateUserProfile = asyncHandler(async(req, res)=>{
     }
 })
 exports.getUsers = asyncHandler(async(req,res)=>{
-    const users = await User.find({})
+    const paginate = 6
+    const page = Number(req.query.page) || 1
+    const users = await User.find({}).limit(paginate)
+    .skip(paginate * (page - 1))
+    const count = await User.countDocuments();
     res.status(200).json({
         success: true,
-        users
+        users,
+        page,
+        totalPages: Math.ceil(count / paginate)
     })
 })
 exports.getUserById = asyncHandler(async(req,res)=>{

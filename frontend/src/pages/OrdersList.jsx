@@ -1,17 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import OrderListItem from "../components/OrderListItem";
 import { getAllOrders } from "../slices/orderSlice";
 import { useNavigate } from "react-router-dom";
+import Pagination from '../components/Pagination'
 
 const OrdersList = () => {
-  const { allOrders } = useSelector((state) => state.orders.data);
+  const { allOrders, totalPages } = useSelector((state) => state.orders.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
-    dispatch(getAllOrders());
-  }, []);
+    dispatch(getAllOrders(page));
+  }, [page]);
   return (
     <section id="order-list">
       <div className="container">
@@ -19,7 +21,7 @@ const OrdersList = () => {
           dashboard/
         </h5>
         <h1 className="heading-3">Orders List</h1>
-        <div>
+        <div className="order-list-container">
           <div className="order-list-head">
             <span>ID</span>
             <span>User</span>
@@ -32,6 +34,7 @@ const OrdersList = () => {
             return <OrderListItem key={order._id} {...order} admin={true} />;
           })}
         </div>
+        <Pagination page={page} setPage={setPage} totalPages={totalPages}/>
       </div>
     </section>
   );

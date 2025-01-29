@@ -69,11 +69,11 @@ export const updateUserProfile = createAsyncThunk('updateUserProfile', async(pay
 
 export const getAllUsers= createAsyncThunk('getAllUser', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.get('http://localhost:5000/api/v1/users/all',{
+        const res = await axios.get(`http://localhost:5000/api/v1/users/all?page=${payload}`,{
             withCredentials: true
         })
 
-        return res.data.users
+        return res.data
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
@@ -175,7 +175,8 @@ const userSlice = createSlice({
         })
         builder.addCase(getAllUsers.fulfilled, (state, action)=>{
             state.loading = false
-            state.data.usersListAdmin = action.payload
+            state.data.usersListAdmin = action.payload.users
+            state.data.totalPages = action.payload.totalPages
         })
         builder.addCase(getAllUsers.rejected, (state, action)=>{
             state.loading = false

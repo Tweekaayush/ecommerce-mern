@@ -42,10 +42,16 @@ exports.addOrderItems = asyncHandler(async(req, res)=>{
 
 
 exports.getMyOrders = asyncHandler(async(req, res)=>{
-    const orders = await Order.find({user: req.user.id})
+    const paginate = 6
+    const page = Number(req.query.page) || 1
+    const orders = await Order.find({user: req.user.id}).limit(paginate)
+    .skip(paginate * (page - 1))
+    const count = await Order.countDocuments();
     res.status(200).json({
         success: true,
-        orders
+        orders,
+        page,
+        totalPages: Math.ceil(count / paginate)
     })
 })
 
@@ -92,10 +98,17 @@ exports.updateOrderToDelivered = asyncHandler(async(req, res)=>{
 })
 
 exports.getOrders = asyncHandler(async(req, res)=>{
-    const orders = await Order.find({}).populate('user', 'name')
+    const paginate = 6
+    const page = Number(req.query.page) || 1
+    const orders = await Order.find({}).populate('user', 'name').limit(paginate)
+    .skip(paginate * (page - 1))
+
+    const count = await Order.countDocuments();
     res.status(200).json({
         success: true,
-        orders
+        orders,
+        page,
+        totalPages: Math.ceil(count / paginate),
     })
 })
 

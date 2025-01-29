@@ -41,11 +41,11 @@ export const getOrderById = createAsyncThunk('getOrderById', async(payload, {rej
 
 export const getMyOrders = createAsyncThunk('getMyOrders', async(payload, {rejectWithValue, dispatch})=>{
     try {
-        const res = await axios.get(`http://localhost:5000/api/v1/orders/user`, {
+        const res = await axios.get(`http://localhost:5000/api/v1/orders/user?page=${payload}`, {
             withCredentials: 'include'
         })
 
-        return res.data.orders
+        return res.data
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
@@ -53,11 +53,11 @@ export const getMyOrders = createAsyncThunk('getMyOrders', async(payload, {rejec
 
 export const getAllOrders = createAsyncThunk('getAllOrders', async(payload, {rejectWithValue, dispatch})=>{
     try {
-        const res = await axios.get(`http://localhost:5000/api/v1/orders`, {
+        const res = await axios.get(`http://localhost:5000/api/v1/orders?page=${payload}`, {
             withCredentials: 'include'
         })
 
-        return res.data.orders
+        return res.data
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
@@ -123,7 +123,8 @@ const orderSlice = createSlice({
         })
         builder.addCase(getMyOrders.fulfilled, (state, action)=>{
             state.loading = false
-            state.data.myOrders = action.payload
+            state.data.myOrders = action.payload.orders
+            state.data.totalPages = action.payload.totalPages
         })
         builder.addCase(getMyOrders.rejected, (state, action)=>{
             state.loading = false
@@ -134,7 +135,8 @@ const orderSlice = createSlice({
         })
         builder.addCase(getAllOrders.fulfilled, (state, action)=>{
             state.loading = false
-            state.data.allOrders = action.payload
+            state.data.allOrders = action.payload.orders
+            state.data.totalPages = action.payload.totalPages
         })
         builder.addCase(getAllOrders.rejected, (state, action)=>{
             state.loading = false

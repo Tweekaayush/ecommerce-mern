@@ -102,10 +102,6 @@ const Profile = () => {
     [profileLink]
   );
 
-  useEffect(() => {
-    dispatch(getMyOrders());
-  }, []);
-
   return (
     <section id="profile">
       <div className="container">

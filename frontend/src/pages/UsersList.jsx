@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import UserListItem from '../components/UserListItem';
 import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
@@ -9,8 +9,9 @@ import { toast, Bounce } from 'react-toastify';
 const UsersList = () => {
 
     const navigate = useNavigate()
-    const { data: {usersListAdmin}, error} = useSelector(state=>state.user)
+    const { data: {usersListAdmin, totalPages}, error} = useSelector(state=>state.user)
     const dispatch = useDispatch()
+    const [page, setPage] = useState(1)
 
     useEffect(()=>{
         if(error){
@@ -30,8 +31,8 @@ const UsersList = () => {
     }, [error])
 
     useEffect(()=>{
-        dispatch(getAllUsers())
-    }, [])
+        dispatch(getAllUsers(page))
+    }, [page])
   return (
 <section id="user-list">
       <div className="container">
@@ -50,7 +51,7 @@ const UsersList = () => {
             return <UserListItem key={user._id} {...user} />;
           })}
         </div>
-        {/* <Pagination page={page} setPage={setPage} totalPages={totalPages} /> */}
+        <Pagination page={page} setPage={setPage} totalPages={totalPages} />
       </div>
     </section>
   )
