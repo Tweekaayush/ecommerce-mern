@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { clearCreatedOrder } from '../slices/orderSlice'
+import { clearCreatedOrder, updateOrderToPaid } from '../slices/orderSlice'
 import { RiCheckboxCircleFill } from "react-icons/ri";
 import {useNavigate} from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 const Success = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  useEffect(()=>{
-    dispatch(clearCreatedOrder())
-  }, [])
 
   return (
     <section id="success">

@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 import { clearCartItems } from './cartSlice'
+import { makePayment } from './paymentSlice'
 
 const initialState = {
     loading: false,
@@ -13,12 +14,16 @@ const initialState = {
     error: ''
 }
 
-export const createOrder = createAsyncThunk('createOrder', async(payload, {rejectWithValue, dispatch})=>{
+export const createOrder = createAsyncThunk('createOrder', async(payload, {rejectWithValue, dispatch, getState})=>{
     try {
+
+        const {email} = getState().user.data.user
+        
         const res = await axios.post('http://localhost:5000/api/v1/orders', payload, {
             withCredentials: 'include'
         })
 
+        dispatch(makePayment({email: email, order: {...res.data.createdOrder}}))
         dispatch(clearCartItems())
 
         return res.data.createdOrder
@@ -63,11 +68,25 @@ export const getAllOrders = createAsyncThunk('getAllOrders', async(payload, {rej
     }
 })
 
-export const updateOrderToDelivered = createAsyncThunk('updateOrderToDelivered', async(payload, {rejectWithValue})=>{
+export const updateOrderToDelivered = createAsyncThunk('updateOrderToDelivered', async(payload, {dispatch, rejectWithValue})=>{
     try {
         const res = await axios.put(`http://localhost:5000/api/v1/orders/${payload}/deliver`, payload, {
             withCredentials: true
         })
+
+        dispatch(getOrderById(payload))
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
+export const updateOrderToPaid = createAsyncThunk('updateOrderToPaid', async(payload, {dispatch, rejectWithValue})=>{
+    try {
+        const res = await axios.put(`http://localhost:5000/api/v1/orders/${payload}/pay`, payload, {
+            withCredentials: true
+        })
+
+        dispatch(clearCreatedOrder())
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
@@ -90,7 +109,7 @@ const orderSlice = createSlice({
         })
         builder.addCase(createOrder.fulfilled, (state, action)=>{
             state.loading = false
-            state.data.createdOrder = action.payload._id
+            state.data.createdOrder = action.payload
         })
         builder.addCase(createOrder.rejected, (state, action)=>{
             state.loading = false
@@ -112,9 +131,18 @@ const orderSlice = createSlice({
         })
         builder.addCase(updateOrderToDelivered.fulfilled, (state, action)=>{
             state.loading = false
-            state.data.orderDetails = action.payload
         })
         builder.addCase(updateOrderToDelivered.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(updateOrderToPaid.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(updateOrderToPaid.fulfilled, (state, action)=>{
+            state.loading = false
+        })
+        builder.addCase(updateOrderToPaid.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })

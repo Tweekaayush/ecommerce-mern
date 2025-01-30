@@ -71,7 +71,7 @@ const Order = () => {
             <h1 className="heading-3">Payment Method</h1>
             <h4>Method: {paymentMethod}</h4>
             <p className={`status ${isPaid ? "true" : false}`}>
-              {isPaid ? "Paid" : "Not Paid"}
+              {isPaid ? `Paid on ${paidAt}` : "Not Paid"}
             </p>
           </div>
 

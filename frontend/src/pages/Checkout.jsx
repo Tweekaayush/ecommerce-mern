@@ -5,8 +5,9 @@ import ShippingAddress from "../components/ShippingAddress";
 import CheckoutCart from "../components/CheckoutCart";
 import Payment from "../components/Payment";
 import { saveShippingAddress } from "../slices/cartSlice";
-import { createOrder } from "../slices/orderSlice";
+import { clearOrderErrors, createOrder } from "../slices/orderSlice";
 import {useNavigate} from 'react-router-dom'
+import { makePayment } from "../slices/paymentSlice";
 
 const Checkout = () => {
   const {
@@ -19,7 +20,7 @@ const Checkout = () => {
     shippingAddress,
   } = useSelector((state) => state.cart);
   const {error, data: {createdOrder}} = useSelector(state=>state.orders)
-  const {data: {user: {fullAddress}}} = useSelector(state=>state.user)
+  const {data: {user: {fullAddress, email}}} = useSelector(state=>state.user)
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -61,6 +62,7 @@ const Checkout = () => {
           totalPrice,
         };
         dispatch(createOrder(order));
+        return false
       },
       button: "place order",
     },
@@ -78,9 +80,10 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    if(createdOrder)navigate('/success')
-    if(error)navigate('/failed')
-  }, [createdOrder, error]);
+    if(error){
+      dispatch(clearOrderErrors())
+    }
+  }, [error]);
 
   return (
     <>

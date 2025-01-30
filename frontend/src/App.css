@@ -1509,7 +1509,7 @@ nav > .container {
   font-weight: 500;
   margin-bottom: 16px;
   letter-spacing: 1px;
-  text-transform: uppercase;
+  text-transform: capitalize;
   color: var(--white);
   padding: 8px;
   border-radius: 5px;

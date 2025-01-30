@@ -9,6 +9,7 @@ const {notFound, errorHandler} = require('./middleware/error')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const PORT = process.env.PORT || 5000
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 const app = express()
 
@@ -25,11 +26,72 @@ app.use(cors({
     credentials:true
 }))
 app.use(cookieParser())
+
+
 // Routes 
 
 app.use('/api/v1/products', product)
 app.use('/api/v1/users', user)
 app.use('/api/v1/orders', order)
+app.post('/api/v1/payment', async(req, res)=>{
+
+    const {order, email} = req.body
+    try{
+
+        const line_items = order.orderItems.map((item)=>{
+            return{
+                price_data: {
+                    currency: 'usd',
+                    product_data: {
+                        name: item.name,
+                        // images: [item.image]
+                    },
+                    unit_amount: item.price * 100
+                },
+                quantity: item.quantity,
+            }
+        })
+
+
+        const session = await stripe.checkout.sessions.create({
+            mode: 'payment',
+            ui_mode: 'hosted',
+            success_url: `http://localhost:3000/success`,
+            cancel_url: `http://localhost:3000/failed`,
+            line_items: line_items,
+            payment_method_types: ['card'],
+            customer_email: email,
+            shipping_options: [
+                {
+                  shipping_rate_data: {
+                    type: 'fixed_amount',
+                    fixed_amount: {
+                      amount: order.shippingPrice * 100,
+                      currency: 'usd',
+                    },
+                    display_name: 'Shipping Price',
+                    tax_behavior: 'exclusive',
+                    tax_code: 'txcd_92010001',
+                    delivery_estimate: {
+                      minimum: {
+                        unit: 'business_day',
+                        value: 5,
+                      },
+                      maximum: {
+                        unit: 'business_day',
+                        value: 7,
+                      },
+                    },
+                  },
+                },
+              ],
+        })
+        res.json({session_id:session.id, url: session.url})
+    }catch(e){
+        console.log(e)
+        res.status(500)
+    }
+})
 
 // error middleware
 
