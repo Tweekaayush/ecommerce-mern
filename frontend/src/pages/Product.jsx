@@ -10,7 +10,7 @@ import {
 } from "../slices/productSlice";
 import { addToCart } from "../slices/cartSlice";
 import Reviews from "../components/Reviews";
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 
 const Product = () => {
   const {
@@ -50,29 +50,13 @@ const Product = () => {
         quantity: quantity,
       })
     );
+    toast.success('Added to cart')
   };
 
   useEffect(() => {
     dispatch(getProductById(id));
     dispatch(getTrendingProducts());
   }, [id]);
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error, {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-      dispatch(clearProductErrors());
-    }
-  }, [error]);
 
   return !loading ? (
     <>

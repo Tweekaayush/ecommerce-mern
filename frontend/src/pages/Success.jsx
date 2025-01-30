@@ -2,13 +2,24 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { clearCreatedOrder, updateOrderToPaid } from '../slices/orderSlice'
 import { RiCheckboxCircleFill } from "react-icons/ri";
-import {useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import { useSelector } from 'react-redux';
 
 const Success = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
+  const id = new URLSearchParams(location.search).get('order_id')
+
+  console.log(new URLSearchParams(location.search))
+
+  useEffect(()=>{
+    if(id){
+      dispatch(updateOrderToPaid(id))
+    }
+  }, [id])
+
 
   return (
     <section id="success">

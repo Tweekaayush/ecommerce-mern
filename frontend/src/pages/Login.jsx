@@ -60,23 +60,6 @@ const Login = () => {
     }
   }, [_id]);
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error, {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-      dispatch(clearUsersErrors());
-    }
-  }, [error]);
-
   return (
     <section id="auth-container">
       <div className="container">

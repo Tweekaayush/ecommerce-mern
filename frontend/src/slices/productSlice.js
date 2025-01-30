@@ -10,8 +10,8 @@ const initialState = {
         productDetails: {},
         categories: [],
         totalPages: 0,
-        success: ''
     },
+    successMessage: '',
     error: ''
 }
 
@@ -80,7 +80,7 @@ export const updateProduct = createAsyncThunk('updateProduct', async(payload, {r
             withCredentials: true
         })
 
-        return res.data.product
+        return res.data
 
     } catch (error) {
         return rejectWithValue(error.response.data.message)
@@ -95,7 +95,7 @@ export const deleteProduct = createAsyncThunk('deleteProduct', async(payload, {d
 
         dispatch(getProducts({page: 1, category: ''}))
 
-        return res.data.success
+        return res.data.message
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
@@ -109,6 +109,8 @@ export const addReview = createAsyncThunk('addReview', async(payload, {dispatch,
 
         dispatch(getProductById(payload._id))
 
+        return res.data.message
+
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
@@ -120,6 +122,9 @@ const productSlice = createSlice({
     reducers: {
         clearProductErrors: (state, action)=>{
             state.error = ''
+        },
+        clearProductSuccessMessage: (state, action)=>{
+            state.successMessage = ''
         }
     },
     extraReducers: (builder)=>{
@@ -184,7 +189,8 @@ const productSlice = createSlice({
         })
         builder.addCase(updateProduct.fulfilled, (state, action)=>{
             state.loading = false
-            state.data.productDetails = action.payload
+            state.data.productDetails = action.payload.product
+            state.successMessage = action.payload.message
         })
         builder.addCase(updateProduct.rejected, (state, action)=>{
             state.loading = false
@@ -195,7 +201,7 @@ const productSlice = createSlice({
         })
         builder.addCase(deleteProduct.fulfilled, (state, action)=>{
             state.loading = false
-            state.data.success = action.payload
+            state.successMessage = action.payload
         })
         builder.addCase(deleteProduct.rejected, (state, action)=>{
             state.loading = false
@@ -206,6 +212,7 @@ const productSlice = createSlice({
         })
         builder.addCase(addReview.fulfilled, (state, action)=>{
             state.loading = false
+            state.successMessage = action.payload
         })
         builder.addCase(addReview.rejected, (state, action)=>{
             state.loading = false
@@ -215,6 +222,6 @@ const productSlice = createSlice({
 })
 
 
-export const { clearProductErrors } = productSlice.actions
+export const { clearProductErrors, clearProductSuccessMessage } = productSlice.actions
 
 export default productSlice.reducer

@@ -8,6 +8,7 @@ const initialState = {
         usersListAdmin: [],
         userDetailsAdmin: {}
     },
+    successMessage: '',
     error: ''
 }
 
@@ -49,7 +50,9 @@ export const logout = createAsyncThunk('logout', async(payload, {rejectWithValue
         const res = await axios.post('http://localhost:5000/api/v1/users/logout', payload, {
           withCredentials: 'include'  
         })
-        console.log(res.data)
+
+        return res.data.message
+
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
@@ -61,7 +64,7 @@ export const updateUserProfile = createAsyncThunk('updateUserProfile', async(pay
             withCredentials: true
         })
 
-        return res.data.user
+        return res.data
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
@@ -79,11 +82,15 @@ export const getAllUsers= createAsyncThunk('getAllUser', async(payload, {rejectW
     }
 })
 
-export const deleteUser= createAsyncThunk('deleteUser', async(payload, {rejectWithValue})=>{
+export const deleteUser= createAsyncThunk('deleteUser', async(payload, {rejectWithValue, dispatch})=>{
     try {
         const res = await axios.delete(`http://localhost:5000/api/v1/users/${payload}`,{
             withCredentials: true
         })
+
+        dispatch(getAllUsers())
+
+        return res.data.message
 
     } catch (error) {
         return rejectWithValue(error.response.data.message)
@@ -96,11 +103,25 @@ export const updateUser = createAsyncThunk('updateUser', async(payload, {dispatc
             withCredentials: true
         })
 
-        dispatch(getAllUsers())
+        dispatch(getUserById(payload._id))
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
 })
+
+export const getUserById = createAsyncThunk('getUserById', async(payload, {dispatch, rejectWithValue})=>{
+    try {
+        const res = await axios.get(`http://localhost:5000/api/v1/users/${payload}`, {
+            withCredentials: true
+        })
+
+        return res.data.userDetailsAdmin
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
 
 
 const userSlice = createSlice({
@@ -109,6 +130,9 @@ const userSlice = createSlice({
     reducers: {
         clearUsersErrors: (state)=>{
             state.error = ''
+        },
+        clearUserSuccessMessage: (state)=>{
+            state.successMessage = ''
         }
     },
     extraReducers: (builder)=>{
@@ -128,6 +152,7 @@ const userSlice = createSlice({
         builder.addCase(login.fulfilled, (state, action)=>{
             state.loading = false
             state.data.user = action.payload
+            state.successMessage = 'Logged In Successfully'
         })
         builder.addCase(login.rejected, (state, action)=>{
             state.loading = false
@@ -139,6 +164,7 @@ const userSlice = createSlice({
         builder.addCase(signup.fulfilled, (state, action)=>{
             state.loading = false
             state.data.user = action.payload
+            state.successMessage = 'Signed Up Successfully'
         })
         builder.addCase(signup.rejected, (state, action)=>{
             state.loading = false
@@ -147,24 +173,25 @@ const userSlice = createSlice({
         builder.addCase(logout.pending, (state)=>{
             state.loading = true
         })
-        builder.addCase(logout.fulfilled, (state)=>{
+        builder.addCase(logout.fulfilled, (state, action)=>{
             state.loading = false
             state.data = {
                 user: {},
                 usersListAdmin: [],
                 userDetailsAdmin: {}
             }
+            state.successMessage = action.payload
         })
         builder.addCase(logout.rejected, (state, action)=>{
             state.loading = false
-            state.error = action.payload
         })
         builder.addCase(updateUserProfile.pending, (state)=>{
             state.loading = true
         })
         builder.addCase(updateUserProfile.fulfilled, (state, action)=>{
             state.loading = false
-            state.data.user = action.payload
+            state.data.user = action.payload.user
+            state.successMessage = action.payload.message
         })
         builder.addCase(updateUserProfile.rejected, (state, action)=>{
             state.loading = false
@@ -180,13 +207,13 @@ const userSlice = createSlice({
         })
         builder.addCase(getAllUsers.rejected, (state, action)=>{
             state.loading = false
-            state.error = action.payload
         })
         builder.addCase(deleteUser.pending, (state)=>{
             state.loading = true
         })
         builder.addCase(deleteUser.fulfilled, (state, action)=>{
             state.loading = false
+            state.successMessage = action.payload
         })
         builder.addCase(deleteUser.rejected, (state, action)=>{
             state.loading = false
@@ -202,9 +229,20 @@ const userSlice = createSlice({
             state.loading = false
             state.error = action.payload
         })
+        builder.addCase(getUserById.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(getUserById.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.userDetailsAdmin = action.payload
+        })
+        builder.addCase(getUserById.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
     }
 })
 
-export const {clearUsersErrors} = userSlice.actions
+export const {clearUsersErrors, clearUserSuccessMessage} = userSlice.actions
 
 export default userSlice.reducer

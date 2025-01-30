@@ -13,12 +13,6 @@ const Home = () => {
   const {error} = useSelector(state=>state.products)
 
   useEffect(()=>{
-    if(error){
-      dispatch(clearProductErrors())
-    }
-  }, [error])
-
-  useEffect(()=>{
     dispatch(getTrendingProducts())
     dispatch(getBestSellingProducts())
   },[])

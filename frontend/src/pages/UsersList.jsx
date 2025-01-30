@@ -14,23 +14,6 @@ const UsersList = () => {
     const [page, setPage] = useState(1)
 
     useEffect(()=>{
-        if(error){
-            toast.error(error, {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-              })
-            dispatch(clearUsersErrors())
-        }
-    }, [error])
-
-    useEffect(()=>{
         dispatch(getAllUsers(page))
     }, [page])
   return (

@@ -84,23 +84,6 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    if (error) {
-      toast.error(error, {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-      dispatch(clearUsersErrors());
-    }
-  }, [error]);
-
-  useEffect(() => {
     if (_id) navigate("/profile");
   }, [_id]);
   return (

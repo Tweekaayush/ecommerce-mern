@@ -19,8 +19,14 @@ const CartItem = (props) => {
   };
 
   useEffect(() => {
-    dispatch(updateQuantity({ ...props, quantity: qty }));
+    if(qty !== quantity){
+      dispatch(updateQuantity({ ...props, quantity: qty }));
+    }
   }, [qty]);
+
+  useEffect(()=>{
+    setQty(quantity)
+  }, [quantity])
 
   return (
     <div className="cart-item">

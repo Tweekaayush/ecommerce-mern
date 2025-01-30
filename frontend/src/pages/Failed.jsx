@@ -9,10 +9,6 @@ const Failed = () => {
   const dispatch = useDispatch()
     const navigate = useNavigate()
 
-  useEffect(()=>{
-    dispatch(clearOrderErrors())
-  }, [])
-
   return (
     <section id="failed">
       <div className="container">

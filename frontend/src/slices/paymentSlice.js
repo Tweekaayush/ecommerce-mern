@@ -5,7 +5,6 @@ import {loadStripe} from '@stripe/stripe-js';
 
 const initialState = {
     loading: false,
-    paymentStatus: false,
     error: ''
 }
 
@@ -17,8 +16,6 @@ export const makePayment = createAsyncThunk('makePayment', async(payload, {rejec
             withCredentials: true
         })
 
-        alert(res.data)
-
         const result = stripe.redirectToCheckout({
             sessionId: res.data.session_id
         });
@@ -29,6 +26,7 @@ export const makePayment = createAsyncThunk('makePayment', async(payload, {rejec
         }
 
         return true
+
     } catch (error) {
         return rejectWithValue(false)
     }
@@ -43,12 +41,11 @@ const paymentSlice = createSlice({
             state.loading = true
         })   
         builder.addCase(makePayment.fulfilled, (state, action)=>{
-            state.loading = true
-            state.paymentStatus = true
+            state.loading = false
+            state.data = action.payload
         })   
         builder.addCase(makePayment.rejected, (state, action)=>{
-            state.loading = true
-            state.paymentStatus = false
+            state.loading = false
         })   
     }
 })

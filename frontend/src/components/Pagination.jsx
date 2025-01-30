@@ -22,7 +22,7 @@ const Pagination = ({ totalPages, page, setPage }) => {
 
   return (
     <div className="pagination-container">
-      <button onClick={handlePrev} disabled={page === 1}>
+      <button onClick={handlePrev} disabled={page <= 1}>
         {"<"}
       </button>
       {paginationArray?.map((p) => {
@@ -36,7 +36,7 @@ const Pagination = ({ totalPages, page, setPage }) => {
           </button>
         );
       })}
-      <button onClick={handleNext} disabled={page === totalPages}>
+      <button onClick={handleNext} disabled={page >= totalPages}>
         {">"}
       </button>
     </div>

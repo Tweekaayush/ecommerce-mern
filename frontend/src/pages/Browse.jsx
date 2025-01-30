@@ -20,23 +20,6 @@ const Browse = () => {
     dispatch(getProducts({ page, category: currentCategory }));
   }, [page, currentCategory]);
 
-  useEffect(()=>{
-    if(error){
-      toast.error(error, {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-      dispatch(clearProductErrors())
-    }
-  }, [error])
-
   useEffect(() => {
     dispatch(getAllCategories());
   }, []);

@@ -76,6 +76,7 @@ exports.updateProduct = asyncHandler(async (req, res) => {
     res.status(201).json({
       success: true,
       product: updatedProduct,
+      message: 'Product Updated!'
     });
   } else {
     res.status(404);
@@ -92,7 +93,7 @@ exports.deleteProduct = asyncHandler(async(req, res)=>{
 
     res.status(200).json({
       success:true,
-      message: 'Product deleted'
+      message: 'Product deleted!'
     })
   }else{
     res.status(404)
@@ -112,7 +113,7 @@ exports.createProductReview = asyncHandler(async(req, res)=>{
 
     if(alreadyReviewed){
       res.status(400)
-      throw new Error('Product already reviewed')
+      throw new Error('Product already reviewed!')
     }
 
     const review = {

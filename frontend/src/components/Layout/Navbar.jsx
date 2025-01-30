@@ -14,6 +14,7 @@ const Navbar = ({ setCartStatus }) => {
   const [open, setOpen] = useState(false);
   let resizeTimer;
   const ref = useRef(null);
+  const navRef = useRef(null);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -42,6 +43,9 @@ const Navbar = ({ setCartStatus }) => {
     if (ref.current && !ref.current.contains(e.target)) {
       setOpen(false);
     }
+    if(navRef.current && !navRef.current.contains(e.target)){
+      setToggle(false)
+    }
   };
 
   useEffect(() => {
@@ -59,7 +63,7 @@ const Navbar = ({ setCartStatus }) => {
   }, []);
 
   return (
-    <nav>
+    <nav ref={navRef}>
       <div className="container">
         <Link to="/" className="nav-brand brand">
           Primart<span>.</span>

@@ -8,8 +8,8 @@ import Browse from "./pages/Browse";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { loadUser } from "./slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUsersErrors, clearUserSuccessMessage, loadUser } from "./slices/userSlice";
 import Cart from "./components/Cart";
 import Checkout from "./pages/Checkout";
 import PrivateRoute from "./components/PrivateRoute";
@@ -22,13 +22,18 @@ import Dashboard from "./pages/Dashboard";
 import ProductsList from "./pages/ProductsList";
 import OrdersList from "./pages/OrdersList";
 import EditProduct from "./pages/EditProduct";
-import { ToastContainer, Bounce } from "react-toastify";
+import { ToastContainer, Bounce, toast } from "react-toastify";
 import UsersList from "./pages/UsersList";
-import EditUser from "./pages/EditUser";
+import { clearProductErrors, clearProductSuccessMessage } from "./slices/productSlice";
+import { clearOrderErrors } from "./slices/orderSlice";
+import UserInfo from "./pages/UserInfo";
 
 const App = () => {
   const dispatch = useDispatch();
   const [cartStatus, setCartStatus] = useState(false);
+  const {error: userError, successMessage: userSuccessMessage} = useSelector(state=>state.user)
+  const {error: productError, successMessage: productSuccessMessage} = useSelector(state=>state.products)
+  const {error: orderError, successMessage: orderSuccessMessage} = useSelector(state=>state.orders)
 
   useEffect(() => {
     cartStatus
@@ -39,6 +44,34 @@ const App = () => {
   useEffect(() => {
     dispatch(loadUser());
   }, []);
+  
+  useEffect(()=>{
+    if(userError){
+      toast.error(userError)
+      dispatch(clearUsersErrors())
+    }
+    if(productError){
+      toast.error(productError)
+      dispatch(clearProductErrors())
+    }
+    if(orderError){
+      toast.error(orderError)
+      dispatch(clearOrderErrors())
+    }
+  }, [userError, productError, orderError])
+
+
+  useEffect(()=>{
+    if(userSuccessMessage){
+      toast.success(userSuccessMessage)
+      dispatch(clearUserSuccessMessage())
+    }
+    if(productSuccessMessage){
+      toast.success(productSuccessMessage)
+      dispatch(clearProductSuccessMessage())
+    }
+
+  }, [userSuccessMessage, productSuccessMessage])
 
   return (
     <Router>
@@ -65,7 +98,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/products/list" element={<ProductsList />} />
           <Route path="/product/:id/edit" element={<EditProduct />} />
-          <Route path="/user/:id/edit" element={<EditUser />} />
+          <Route path="/user/:id" element={<UserInfo />} />
           <Route path="/orders/list" element={<OrdersList />} />
           <Route path="/users/list" element={<UsersList />} />
         </Route>

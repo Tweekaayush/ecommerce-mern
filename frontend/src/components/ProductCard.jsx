@@ -2,18 +2,30 @@ import { useEffect, useState } from "react";
 import { LuHeart, LuShoppingCart } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import Rating from "./Rating";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../slices/cartSlice";
+import {toast} from 'react-toastify'
 
-const ProductCard = ({ _id, name, image, price, rating, slider }) => {
+const ProductCard = (props) => {
 
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const [width, setWidth] = useState(0);
-
+  const {slider, ...productDetails} = props
+  const { _id, name, image, price, rating, } = productDetails
   const handleProductClick = (e) => {
     e.stopPropagation();
     navigate(`/product/${_id}`);
   };
   const handleAddToCart = (e) => {
     e.stopPropagation();
+    dispatch(
+          addToCart({
+            ...productDetails,
+            quantity: 1,
+          })
+        )
+    toast.success('Added to cart')
   };
   const handleAddToWishlist = (e) => {
     e.stopPropagation();
@@ -24,16 +36,16 @@ const ProductCard = ({ _id, name, image, price, rating, slider }) => {
     const container = document.getElementById("slider").offsetWidth;
     const slide = document.getElementById("slider");
     if (container > 992) {
-      setWidth((container - 48) / 4);
+      setWidth((container - 56) / 4);
       slide.scrollLeft = 0;
     } else if (container > 768) {
-      setWidth((container - 32) / 3);
+      setWidth((container - 40) / 3);
       slide.scrollLeft = 0;
     } else if (container > 480) {
-      setWidth((container - 16) / 2);
+      setWidth((container - 24) / 2);
       slide.scrollLeft = 0;
     } else {
-      setWidth(container);
+      setWidth(container - 8);
       slide.scrollLeft = 0;
     }
   };

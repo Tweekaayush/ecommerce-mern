@@ -56,7 +56,7 @@ app.post('/api/v1/payment', async(req, res)=>{
         const session = await stripe.checkout.sessions.create({
             mode: 'payment',
             ui_mode: 'hosted',
-            success_url: `http://localhost:3000/success`,
+            success_url: `http://localhost:3000/success?order_id=${order._id}`,
             cancel_url: `http://localhost:3000/failed`,
             line_items: line_items,
             payment_method_types: ['card'],

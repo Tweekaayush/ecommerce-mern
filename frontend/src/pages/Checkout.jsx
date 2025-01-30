@@ -79,12 +79,6 @@ const Checkout = () => {
       setStep((p) => p + 1);
   };
 
-  useEffect(() => {
-    if(error){
-      dispatch(clearOrderErrors())
-    }
-  }, [error]);
-
   return (
     <>
       <CheckoutSteps

@@ -112,7 +112,7 @@ const Profile = () => {
             </div>
             <div>
               <h1 className="heading-4">{name}</h1>
-              <p>{email}</p>
+              <p className="body-text-3">{email}</p>
             </div>
           </div>
           <ul className="profile-links">

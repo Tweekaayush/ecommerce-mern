@@ -135,7 +135,8 @@ exports.updateUser = asyncHandler(async(req,res)=>{
 
         res.status(200).json({
             success: true,
-            updatedUser: {...updatedUser._doc, password: ''}
+            updatedUser: {...updatedUser._doc, password: ''},
+            message: 'User Role Updated!'
         })
     }else{
         res.status(404)
