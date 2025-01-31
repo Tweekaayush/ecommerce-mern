@@ -315,6 +315,7 @@ nav > .container {
   align-items: center;
   overflow: hidden;
   font-size: 14px;
+  text-transform: uppercase;
 }
 
 .nav-page-links > li > a::after {
@@ -894,11 +895,14 @@ nav > .container {
 
 #auth-container {
   background-color: var(--main);
+  height: 100vh;
 }
 
 #auth-container > .container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .form-container {
@@ -908,8 +912,9 @@ nav > .container {
   background-color: var(--white);
   width: fit-content;
   min-width: 400px;
-  height: 600px;
   padding: 32px 16px;
+  box-shadow: 1px 1px 10px -3px var(--tertiary);
+  border-radius: 4px;
 }
 
 .form-container > h1 {

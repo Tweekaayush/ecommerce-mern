@@ -4,7 +4,7 @@ import { updateCart } from '../utils/cartUtils'
 const initialState = JSON.parse(localStorage.getItem('primart-cart')) || {
     cartItems: [],
     shippingAddress: {},
-    paymentMethod: 'Paypal'
+    paymentMethod: 'Card'
 }
 
 const cartSlice = createSlice({

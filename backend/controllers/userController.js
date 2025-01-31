@@ -1,145 +1,146 @@
-const asyncHandler = require('../middleware/asyncHandler')
-const User = require('../models/userModel')
-const sendToken = require('../utils/generateToken')
+const asyncHandler = require("../middleware/asyncHandler");
+const User = require("../models/userModel");
+const sendToken = require("../utils/generateToken");
 
-exports.login = asyncHandler(async(req, res)=>{
-    const {email, password} = req.body
-    const user = await User.findOne({email})
+exports.login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
 
-    if(user && await user.matchPassword(password)){
-        sendToken(user, 200, res)
-    }else{
-        res.status(401);
-        throw new Error('Invalid email or password')
-    }
-})
+  if (user && (await user.matchPassword(password))) {
+    sendToken(user, 200, res);
+  } else {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+});
 
-exports.signup = asyncHandler(async(req, res)=>{
-    const {name, email, password, image} = req.body
-    const userExists = await User.findOne({email})
+exports.signup = asyncHandler(async (req, res) => {
+  const { name, email, password, image } = req.body;
+  const userExists = await User.findOne({ email });
 
-    if(userExists){
-        res.status(400)
-        throw new Error('User already exits for given credentials.')
-    }
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exits for given credentials.");
+  }
 
-    const user = await User.create({name, email, password, image})
+  const user = await User.create({ name, email, password, image });
 
-    if(user){
-        sendToken(user, 201, res)
-    }else{
-        res.status(401)
-        throw new Error("Invalid user credentials.")
-    }
-})
-exports.logout = asyncHandler(async(req, res)=>{
-    res.clearCookie('token');
-    res.status(200).json({ message: 'Logged out successfully' });
-})
-exports.getUserProfile = asyncHandler(async(req, res)=>{
-   const user = await User.findById(req.user.id).select('-password')
-   res.status(200).json({
+  if (user) {
+    sendToken(user, 201, res);
+  } else {
+    res.status(401);
+    throw new Error("Invalid user credentials.");
+  }
+});
+
+exports.logout = asyncHandler(async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully" });
+});
+exports.getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id).select("-password");
+  res.status(200).json({
     success: true,
-    user
-   })
-})
+    user,
+  });
+});
 
-exports.updateUserProfile = asyncHandler(async(req, res)=>{
+exports.updateUserProfile = asyncHandler(async (req, res) => {
+  const { name, email, password, fullAddress } = req.body;
+  const user = await User.findById(req.user.id);
 
-    const {name, email, password, fullAddress} = req.body
-    const user = await User.findById(req.user.id)
-    
-    if(user){
-        user.name = name || user.name
-        user.email = email || user.email
+  if (user) {
+    user.name = name || user.name;
+    user.email = email || user.email;
 
-        if(password){
-            user.password = password
-        }
-
-        if(fullAddress?.address){
-            user.fullAddress.address = fullAddress.address
-            user.fullAddress.city = fullAddress.city
-            user.fullAddress.postalCode = fullAddress.postalCode
-            user.fullAddress.country = fullAddress.country
-        }
-
-        const updatedUser = await user.save()
-
-        res.status(200).json({
-            success: true,
-            user: updatedUser,
-            message: 'User Profile Updated!'
-        })
-    }else{
-        res.status(404)
-        throw new Error('User not found!')
+    if (password) {
+      user.password = password;
     }
-})
-exports.getUsers = asyncHandler(async(req,res)=>{
-    const paginate = 6
-    const page = Number(req.query.page) || 1
-    const users = await User.find({}).limit(paginate)
-    .skip(paginate * (page - 1))
-    const count = await User.countDocuments();
+
+    if (fullAddress?.address) {
+      user.fullAddress.address = fullAddress.address;
+      user.fullAddress.city = fullAddress.city;
+      user.fullAddress.postalCode = fullAddress.postalCode;
+      user.fullAddress.country = fullAddress.country;
+    }
+
+    const updatedUser = await user.save();
+
     res.status(200).json({
-        success: true,
-        users,
-        page,
-        totalPages: Math.ceil(count / paginate)
-    })
-})
-exports.getUserById = asyncHandler(async(req,res)=>{
-   const user = await User.findById(req.params.id).select('-password')
+      success: true,
+      user: updatedUser,
+      message: "User Profile Updated!",
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found!");
+  }
+});
 
-   if(user){
+exports.getUsers = asyncHandler(async (req, res) => {
+  const paginate = 6;
+  const page = Number(req.query.page) || 1;
+  const users = await User.find({})
+    .limit(paginate)
+    .skip(paginate * (page - 1));
+  const count = await User.countDocuments();
+  res.status(200).json({
+    success: true,
+    users,
+    page,
+    totalPages: Math.ceil(count / paginate),
+  });
+});
+
+exports.getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select("-password");
+
+  if (user) {
     res.status(200).json({
-        success: true,
-        userDetailsAdmin: user
-    })
-   }else{
-    res.status(404)
-    throw new Error('User not found')
-   }
-})
-exports.deleteUser = asyncHandler(async(req,res)=>{
+      success: true,
+      userDetailsAdmin: user,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
 
+exports.deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
 
-    const user = await User.findById(req.params.id)
-    
-    if(user){
-        if(user.isAdmin){
-            res.status(400)
-            throw new Error('Cannot delete admin user')
-        }
-        await User.deleteOne({_id: user._id})
-        
-        res.status(200).json({
-            success: true,
-            message: 'User deleted Successfully'
-        })
-    }else{
-        res.status(404)
-        throw new Error('User not found')
+  if (user) {
+    if (user.isAdmin) {
+      res.status(400);
+      throw new Error("Cannot delete admin user");
     }
-})
-exports.updateUser = asyncHandler(async(req,res)=>{
+    await User.deleteOne({ _id: user._id });
 
-    const user = await User.findById(req.params.id)
+    res.status(200).json({
+      success: true,
+      message: "User deleted Successfully",
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
 
-    if(user){
+exports.updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
 
-        user.isAdmin = true
+  if (user) {
+    user.isAdmin = true;
 
-        const updatedUser = await user.save()
+    const updatedUser = await user.save();
 
-        res.status(200).json({
-            success: true,
-            updatedUser: {...updatedUser._doc, password: ''},
-            message: 'User Role Updated!'
-        })
-    }else{
-        res.status(404)
-        throw new Error('User not found')
-    }
-})
+    res.status(200).json({
+      success: true,
+      updatedUser: { ...updatedUser._doc, password: "" },
+      message: "User Role Updated!",
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});

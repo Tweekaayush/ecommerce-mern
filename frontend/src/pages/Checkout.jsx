@@ -5,9 +5,8 @@ import ShippingAddress from "../components/ShippingAddress";
 import CheckoutCart from "../components/CheckoutCart";
 import Payment from "../components/Payment";
 import { saveShippingAddress } from "../slices/cartSlice";
-import { clearOrderErrors, createOrder } from "../slices/orderSlice";
+import { createOrder } from "../slices/orderSlice";
 import {useNavigate} from 'react-router-dom'
-import { makePayment } from "../slices/paymentSlice";
 
 const Checkout = () => {
   const {
@@ -19,7 +18,6 @@ const Checkout = () => {
     paymentMethod,
     shippingAddress,
   } = useSelector((state) => state.cart);
-  const {error, data: {createdOrder}} = useSelector(state=>state.orders)
   const {data: {user: {fullAddress, email}}} = useSelector(state=>state.user)
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();

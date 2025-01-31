@@ -7,7 +7,6 @@ const initialState = {
     loading: false,
     data: {
         myOrders: [],
-        createdOrder: '',
         orderDetails: {},
         allOrders: []
     },
@@ -26,7 +25,6 @@ export const createOrder = createAsyncThunk('createOrder', async(payload, {rejec
         dispatch(makePayment({email: email, order: {...res.data.createdOrder}}))
         dispatch(clearCartItems())
 
-        return res.data.createdOrder
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
@@ -98,9 +96,6 @@ const orderSlice = createSlice({
     reducers: {
         clearOrderErrors: (state)=>{
             state.error = ''
-        },
-        clearCreatedOrder: (state)=>{
-            state.createdOrder = ''
         }
     },
     extraReducers: (builder)=>{
@@ -109,7 +104,6 @@ const orderSlice = createSlice({
         })
         builder.addCase(createOrder.fulfilled, (state, action)=>{
             state.loading = false
-            state.data.createdOrder = action.payload
         })
         builder.addCase(createOrder.rejected, (state, action)=>{
             state.loading = false
@@ -173,6 +167,6 @@ const orderSlice = createSlice({
     }
 })
 
-export const { clearOrderErrors, clearCreatedOrder } = orderSlice.actions
+export const { clearOrderErrors } = orderSlice.actions
 
 export default orderSlice.reducer

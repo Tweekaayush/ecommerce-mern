@@ -1,9 +1,6 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const Product = require("../models/productModel");
 
-// @desc    Fetch all products
-// @route   GET /api/v1/products
-// @access  Public
 exports.getProducts = asyncHandler(async (req, res) => {
   const paginate = 6;
   const page = Number(req.query.page) || 1;
@@ -35,9 +32,6 @@ exports.getAllCategories = asyncHandler(async (req, res) => {
   });
 });
 
-// @desc    Fetch a product by id
-// @route   GET /api/v1/products/:id
-// @access  Public
 exports.getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
@@ -76,7 +70,7 @@ exports.updateProduct = asyncHandler(async (req, res) => {
     res.status(201).json({
       success: true,
       product: updatedProduct,
-      message: 'Product Updated!'
+      message: "Product Updated!",
     });
   } else {
     res.status(404);
@@ -84,59 +78,60 @@ exports.updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
-exports.deleteProduct = asyncHandler(async(req, res)=>{
-  const product = await Product.findById(req.params.id)
-  
-  if(product){
+exports.deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
 
-    await Product.deleteOne({_id: product._id})
+  if (product) {
+    await Product.deleteOne({ _id: product._id });
 
     res.status(200).json({
-      success:true,
-      message: 'Product deleted!'
-    })
-  }else{
-    res.status(404)
-    throw new Error('Resource not found')
+      success: true,
+      message: "Product deleted!",
+    });
+  } else {
+    res.status(404);
+    throw new Error("Resource not found");
   }
-})
+});
 
-exports.createProductReview = asyncHandler(async(req, res)=>{
+exports.createProductReview = asyncHandler(async (req, res) => {
+  const { rating, comment } = req.body;
 
-  const {rating, comment} = req.body
+  const product = await Product.findById(req.params.id);
 
-  const product = await Product.findById(req.params.id)
-  
-  if(product){
+  if (product) {
+    const alreadyReviewed = product.reviews.find(
+      (review) => review.user.toString() === req.user.id.toString()
+    );
 
-    const alreadyReviewed = product.reviews.find((review)=> review.user.toString() === req.user.id.toString())
-
-    if(alreadyReviewed){
-      res.status(400)
-      throw new Error('Product already reviewed!')
+    if (alreadyReviewed) {
+      res.status(400);
+      throw new Error("Product already reviewed!");
     }
 
     const review = {
       name: req.user.name,
       rating: Number(rating),
-      comment, 
-      user: req.user.id
-    }
+      comment,
+      user: req.user.id,
+    };
 
-    product.reviews.push(review)
+    product.reviews.push(review);
 
-    product.numReviews = product.reviews.length
+    product.numReviews = product.reviews.length;
 
-    product.rating = product.reviews.reduce((a, c) => a + c.rating, 0)/product.reviews.length
+    product.rating =
+      product.reviews.reduce((a, c) => a + c.rating, 0) /
+      product.reviews.length;
 
-    await product.save()
+    await product.save();
 
     res.status(200).json({
-      success:true,
-      message: 'Review added'
-    })
-  }else{
-    res.status(404)
-    throw new Error('Resource not found')
+      success: true,
+      message: "Review added",
+    });
+  } else {
+    res.status(404);
+    throw new Error("Resource not found");
   }
-})
+});

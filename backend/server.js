@@ -36,6 +36,7 @@ app.use('/api/v1/orders', order)
 app.post('/api/v1/payment', async(req, res)=>{
 
     const {order, email} = req.body
+    console.log(order._id)
     try{
 
         const line_items = order.orderItems.map((item)=>{
@@ -56,7 +57,7 @@ app.post('/api/v1/payment', async(req, res)=>{
         const session = await stripe.checkout.sessions.create({
             mode: 'payment',
             ui_mode: 'hosted',
-            success_url: `http://localhost:3000/success?order_id=${order._id}`,
+            success_url: `http://localhost:3000/success/${order._id}`,
             cancel_url: `http://localhost:3000/failed`,
             line_items: line_items,
             payment_method_types: ['card'],
