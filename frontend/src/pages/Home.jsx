@@ -5,19 +5,24 @@ import BestSeller from "../components/BestSeller";
 import PromotionBanner from "../components/PromotionBanner";
 import TrendingProducts from "../components/TrendingProducts";
 import { useDispatch, useSelector } from "react-redux";
-import { clearProductErrors, getBestSellingProducts, getTrendingProducts } from "../slices/productSlice";
+import {
+  clearProductErrors,
+  getBestSellingProducts,
+  getTrendingProducts,
+} from "../slices/productSlice";
+import Loader from "../components/Loader";
 
 const Home = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const {error} = useSelector(state=>state.products)
+  const { loading, error } = useSelector((state) => state.products);
 
-  useEffect(()=>{
-    dispatch(getTrendingProducts())
-    dispatch(getBestSellingProducts())
-  },[])
+  useEffect(() => {
+    dispatch(getTrendingProducts());
+    dispatch(getBestSellingProducts());
+  }, []);
 
-  return (
+  return !loading ? (
     <>
       <Hero />
       <TrendingProducts />
@@ -25,6 +30,8 @@ const Home = () => {
       <PromotionBanner />
       <BestSeller />
     </>
+  ) : (
+    <Loader />
   );
 };
 

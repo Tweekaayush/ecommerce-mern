@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getOrderById, updateOrderToDelivered } from "../slices/orderSlice";
+import Loader from "../components/Loader";
 
 const OrderItem = (props) => {
   const { _id, name, brand, image, quantity, price } = props;
@@ -27,32 +28,40 @@ const Order = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const {
-    orderDetails: {
-      shippingAddress,
-      isDelivered,
-      orderItems,
-      itemsPrice,
-      shippingPrice,
-      taxPrice,
-      totalPrice,
-      paymentMethod,
-      isPaid,
-      paidAt,
-      deliveredAt
+    loading: orderLoading,
+    data: {
+      orderDetails: {
+        shippingAddress,
+        isDelivered,
+        orderItems,
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+        paymentMethod,
+        isPaid,
+        paidAt,
+        deliveredAt,
+      },
     },
-  } = useSelector((state) => state.orders.data);
+  } = useSelector((state) => state.orders);
 
-  const { user: {isAdmin} } = useSelector((state) => state.user.data);
+  const {
+    loading: userLoading,
+    data: {
+      user: { isAdmin },
+    },
+  } = useSelector((state) => state.user);
 
-  const deliverOrder = () =>{
-    dispatch(updateOrderToDelivered(id))
-  }
+  const deliverOrder = () => {
+    dispatch(updateOrderToDelivered(id));
+  };
 
   useEffect(() => {
     dispatch(getOrderById(id));
   }, []);
 
-  return (
+  return !userLoading && !orderLoading ? (
     <section id="order">
       <div className="container">
         <div className="order-container">
@@ -107,11 +116,15 @@ const Order = () => {
             <p>${totalPrice}</p>
           </div>
           {isAdmin && !isDelivered && (
-            <button className="button-1" onClick={deliverOrder}>mark as delivered</button>
+            <button className="button-1" onClick={deliverOrder}>
+              mark as delivered
+            </button>
           )}
         </div>
       </div>
     </section>
+  ) : (
+    <Loader />
   );
 };
 

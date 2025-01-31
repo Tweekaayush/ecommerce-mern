@@ -10,7 +10,8 @@ import {
 } from "../slices/productSlice";
 import { addToCart } from "../slices/cartSlice";
 import Reviews from "../components/Reviews";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 const Product = () => {
   const {
@@ -50,7 +51,7 @@ const Product = () => {
         quantity: quantity,
       })
     );
-    toast.success('Added to cart')
+    toast.success("Added to cart");
   };
 
   useEffect(() => {
@@ -122,7 +123,7 @@ const Product = () => {
       </section>
     </>
   ) : (
-    <></>
+    <Loader />
   );
 };
 

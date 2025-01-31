@@ -5,11 +5,16 @@ import { clearProductErrors, getProducts } from "../slices/productSlice";
 import ProductListItem from "../components/ProductListItem";
 import Pagination from "../components/Pagination";
 import { toast, Bounce } from "react-toastify";
+import Loader from "../components/Loader";
 
 const ProductsList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading, data: {products, totalPages, success}, error } = useSelector((state) => state.products);
+  const {
+    loading,
+    data: { products, totalPages, success },
+    error,
+  } = useSelector((state) => state.products);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -33,11 +38,11 @@ const ProductsList = () => {
     }
   }, [error]);
 
-  useEffect(()=>{
-    if(success) setPage(1)
-  }, [success])
+  useEffect(() => {
+    if (success) setPage(1);
+  }, [success]);
 
-  return (
+  return !loading ? (
     <section id="product-list">
       <div className="container">
         <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
@@ -62,6 +67,8 @@ const ProductsList = () => {
         <Pagination page={page} setPage={setPage} totalPages={totalPages} />
       </div>
     </section>
+  ) : (
+    <Loader />
   );
 };
 

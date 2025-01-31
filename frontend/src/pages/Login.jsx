@@ -3,13 +3,16 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUsersErrors, login } from "../slices/userSlice";
 import { toast, Bounce } from "react-toastify";
+import Loader from "../components/Loader";
 
 const Login = () => {
   const { state } = useLocation();
   const dispatch = useDispatch();
   const {
     loading,
-    data: { user:{_id} },
+    data: {
+      user: { _id },
+    },
     error,
   } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
@@ -60,7 +63,7 @@ const Login = () => {
     }
   }, [_id]);
 
-  return (
+  return !loading ? (
     <section id="auth-container">
       <div className="container">
         <div className="form-container">
@@ -107,6 +110,8 @@ const Login = () => {
         </div>
       </div>
     </section>
+  ) : (
+    <Loader />
   );
 };
 

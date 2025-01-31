@@ -47,6 +47,7 @@ export const getProductById = createAsyncThunk('getProductById', async(payload, 
         })
         return product.data        
     } catch (error) {
+        console.log(error.response.data)
         return rejectWithValue(error.response.data.message)
     }
 

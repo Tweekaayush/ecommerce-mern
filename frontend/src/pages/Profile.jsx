@@ -13,13 +13,14 @@ import {
   LuLayoutDashboard,
 } from "react-icons/lu";
 import AddressForm from "../components/AddressForm";
+import Loader from "../components/Loader";
 
 const UpdateAddress = () => {
-  const dispatch = useDispatch()
-  const updateForm = (data) =>{
-    console.log(data)
-    dispatch(updateUserProfile({fullAddress: {...data}}))
-  }
+  const dispatch = useDispatch();
+  const updateForm = (data) => {
+    console.log(data);
+    dispatch(updateUserProfile({ fullAddress: { ...data } }));
+  };
   return (
     <div className="update-form-container">
       <h1 className="heading-3">Address</h1>
@@ -31,8 +32,9 @@ const UpdateAddress = () => {
 };
 
 const AccountInfo = () => {
-  const { user: {name, image, _id, email, isAdmin, createdAt, fullAddress} } =
-    useSelector((state) => state.user.data);
+  const {
+    user: { name, image, _id, email, isAdmin, createdAt, fullAddress },
+  } = useSelector((state) => state.user.data);
   return (
     <div className="account-info-container">
       <h1 className="heading-3">Account</h1>
@@ -67,9 +69,12 @@ const AccountInfo = () => {
 };
 
 const Profile = () => {
-  const { user: {name, image, _id, email, isAdmin} } = useSelector(
-    (state) => state.user.data
-  );
+  const {
+    loading,
+    data: {
+      user: { name, image, _id, email, isAdmin },
+    },
+  } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [profileLink, setProfileLink] = useState(0);
@@ -102,7 +107,7 @@ const Profile = () => {
     [profileLink]
   );
 
-  return (
+  return !loading ? (
     <section id="profile">
       <div className="container">
         <div className="profile-container">
@@ -150,6 +155,8 @@ const Profile = () => {
         </div>
       </div>
     </section>
+  ) : (
+    <Loader />
   );
 };
 

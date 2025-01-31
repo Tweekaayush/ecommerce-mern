@@ -1,23 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import UserListItem from '../components/UserListItem';
-import Pagination from '../components/Pagination';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearUsersErrors, getAllUsers } from '../slices/userSlice';
-import { toast, Bounce } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import UserListItem from "../components/UserListItem";
+import Pagination from "../components/Pagination";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUsersErrors, getAllUsers } from "../slices/userSlice";
+import { toast, Bounce } from "react-toastify";
+import Loader from "../components/Loader";
 
 const UsersList = () => {
+  const navigate = useNavigate();
+  const {
+    loading,
+    data: { usersListAdmin, totalPages },
+    error,
+  } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const [page, setPage] = useState(1);
 
-    const navigate = useNavigate()
-    const { data: {usersListAdmin, totalPages}, error} = useSelector(state=>state.user)
-    const dispatch = useDispatch()
-    const [page, setPage] = useState(1)
+  useEffect(() => {
+    dispatch(getAllUsers(page));
+  }, [page]);
 
-    useEffect(()=>{
-        dispatch(getAllUsers(page))
-    }, [page])
-  return (
-<section id="user-list">
+  return !loading ? (
+    <section id="user-list">
       <div className="container">
         <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
           dashboard /
@@ -37,7 +42,9 @@ const UsersList = () => {
         <Pagination page={page} setPage={setPage} totalPages={totalPages} />
       </div>
     </section>
-  )
-}
+  ) : (
+    <Loader />
+  );
+};
 
-export default UsersList
+export default UsersList;

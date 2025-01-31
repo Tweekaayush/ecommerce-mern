@@ -3,14 +3,20 @@ import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { clearProductErrors, getAllCategories, getProducts } from "../slices/productSlice";
+import {
+  clearProductErrors,
+  getAllCategories,
+  getProducts,
+} from "../slices/productSlice";
 import { toast, Bounce } from "react-toastify";
+import Loader from "../components/Loader";
 
 const Browse = () => {
   const location = useLocation();
   const category = new URLSearchParams(location.search).get("category");
   const {
-    data: { products, categories, totalPages }, error
+    loading,
+    data: { products, categories, totalPages },
   } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
@@ -24,7 +30,7 @@ const Browse = () => {
     dispatch(getAllCategories());
   }, []);
 
-  return (
+  return !loading ? (
     <>
       <section id="browse-filters">
         <div className="container">
@@ -69,6 +75,8 @@ const Browse = () => {
         </div>
       </section>
     </>
+  ) : (
+    <Loader />
   );
 };
 

@@ -4,10 +4,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { signup } from "../slices/userSlice";
 import { profileImages } from "../avatarlist";
 import { clearUsersErrors } from "../slices/userSlice";
-import { toast,  Bounce} from "react-toastify";
+import { toast, Bounce } from "react-toastify";
+import Loader from "../components/Loader";
 
 const Signup = () => {
-  const { loading, data: {user:{_id}}, error } = useSelector((state) => state.user);
+  const {
+    loading,
+    data: {
+      user: { _id },
+    },
+    error,
+  } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -86,7 +93,8 @@ const Signup = () => {
   useEffect(() => {
     if (_id) navigate("/profile");
   }, [_id]);
-  return (
+
+  return !loading ? (
     <section id="auth-container">
       <div className="container">
         <div className="form-container">
@@ -172,6 +180,8 @@ const Signup = () => {
         </div>
       </div>
     </section>
+  ) : (
+    <Loader />
   );
 };
 

@@ -6,7 +6,8 @@ import CheckoutCart from "../components/CheckoutCart";
 import Payment from "../components/Payment";
 import { saveShippingAddress } from "../slices/cartSlice";
 import { createOrder } from "../slices/orderSlice";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
 const Checkout = () => {
   const {
@@ -18,17 +19,21 @@ const Checkout = () => {
     paymentMethod,
     shippingAddress,
   } = useSelector((state) => state.cart);
-  const {data: {user: {fullAddress, email}}} = useSelector(state=>state.user)
+  const {
+    loading,
+    data: {
+      user: { fullAddress },
+    },
+  } = useSelector((state) => state.user);
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
 
   const checkoutSteps = [
     {
       name: "Cart",
       component: <CheckoutCart />,
       func: function () {
-        return true
+        return true;
       },
       button: "Continue",
     },
@@ -36,19 +41,17 @@ const Checkout = () => {
       name: "Address",
       component: <ShippingAddress />,
       func: function () {
-        if(fullAddress){
-          dispatch(
-            saveShippingAddress({...fullAddress})
-          );
-          return true
+        if (fullAddress) {
+          dispatch(saveShippingAddress({ ...fullAddress }));
+          return true;
         }
-        return false
+        return false;
       },
       button: "Continue",
     },
     {
       name: "Payment",
-      component: <Payment setStep={setStep}/>,
+      component: <Payment setStep={setStep} />,
       func: function () {
         const order = {
           orderItems: cartItems,
@@ -60,7 +63,7 @@ const Checkout = () => {
           totalPrice,
         };
         dispatch(createOrder(order));
-        return false
+        return false;
       },
       button: "place order",
     },
@@ -73,11 +76,10 @@ const Checkout = () => {
   const handleNextStep = () => {
     if (step > checkoutSteps.length) return;
     const res = checkoutSteps[step - 1].func();
-    if(res)
-      setStep((p) => p + 1);
+    if (res) setStep((p) => p + 1);
   };
 
-  return (
+  return !loading ? (
     <>
       <CheckoutSteps
         stepNo={step}
@@ -112,6 +114,8 @@ const Checkout = () => {
         </div>
       </section>
     </>
+  ) : (
+    <Loader />
   );
 };
 

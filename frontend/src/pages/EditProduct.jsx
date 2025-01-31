@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { clearProductErrors, getProductById, updateProduct } from "../slices/productSlice";
+import {
+  clearProductErrors,
+  getProductById,
+  updateProduct,
+} from "../slices/productSlice";
 import { toast, Bounce } from "react-toastify";
+import Loader from "../components/Loader";
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -10,6 +15,7 @@ const EditProduct = () => {
   const {
     loading,
     data: {
+      productDetails,
       productDetails: {
         name,
         description,
@@ -18,17 +24,17 @@ const EditProduct = () => {
         price,
         countInStock,
       },
-    }, error
+    },
   } = useSelector((state) => state.products);
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    brand: '',
-    category: '',
-    price: '',
-    countInStock: '',
+    name: "",
+    description: "",
+    brand: "",
+    category: "",
+    price: "",
+    countInStock: "",
   });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,30 +43,32 @@ const EditProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateProduct({...formData, id}))
+    dispatch(updateProduct({ ...formData, id }));
   };
 
   useEffect(() => {
     dispatch(getProductById(id));
   }, [id]);
 
-  useEffect(()=>{
-    if(loading === false && name !== undefined){
-        setFormData({
-            name,
-            description,
-            brand,
-            category,
-            price,
-            countInStock,
-          })
+  useEffect(() => {
+    if (name !== undefined) {
+      setFormData({
+        name,
+        description,
+        brand,
+        category,
+        price,
+        countInStock,
+      });
     }
-  }, [loading])
+  }, [productDetails]);
 
-  return (
+  return !loading ? (
     <section id="edit-product">
       <div className="container">
-        <h5 className="dashboard-link" onClick={()=>navigate('/dashboard')}>dashboard/</h5>
+        <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
+          dashboard/
+        </h5>
         <h1 className="heading-3">Edit Product</h1>
         <form onSubmit={handleSubmit} className="edit-product-form">
           <label htmlFor="name" className="form-label">
@@ -127,6 +135,8 @@ const EditProduct = () => {
         </form>
       </div>
     </section>
+  ) : (
+    <Loader />
   );
 };
 

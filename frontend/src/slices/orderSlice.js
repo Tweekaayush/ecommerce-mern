@@ -84,7 +84,6 @@ export const updateOrderToPaid = createAsyncThunk('updateOrderToPaid', async(pay
             withCredentials: true
         })
 
-        dispatch(clearCreatedOrder())
     } catch (error) {
         return rejectWithValue(error.response.data.message)
     }
