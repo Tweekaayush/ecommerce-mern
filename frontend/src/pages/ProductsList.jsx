@@ -49,8 +49,8 @@ const ProductsList = () => {
           dashboard /
         </h5>
         <div className="product-list-page-head">
-          <h1 className="heading-3">Products List</h1>
-          <button>create</button>
+          <h1 className="heading-5">Products List</h1>
+          <button onClick={()=>navigate('/product/create')}>create</button>
         </div>
         <div className="product-list-container">
           <div className="product-list-head">

@@ -27,7 +27,7 @@ const UsersList = () => {
         <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
           dashboard /
         </h5>
-        <h1 className="heading-3">Users List</h1>
+        <h1 className="heading-5">Users List</h1>
         <div className="user-list-container">
           <div className="user-list-head">
             <span>id</span>

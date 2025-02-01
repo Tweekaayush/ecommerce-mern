@@ -20,6 +20,7 @@ import Cart from "./components/Cart";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
 import Loader from "./components/Loader";
+import CreateProduct from "./pages/CreateProduct";
 const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
 const Browse = lazy(() => import("./pages/Browse"));
@@ -113,6 +114,7 @@ const App = () => {
             <Route path="/user/:id" element={<UserInfo />} />
             <Route path="/orders/list" element={<OrdersList />} />
             <Route path="/users/list" element={<UsersList />} />
+            <Route path="/product/create" element={<CreateProduct />} />
           </Route>
           <Route path="/*" element={<NotFound />} />
         </Routes>

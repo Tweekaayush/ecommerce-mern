@@ -1,5 +1,6 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const Product = require("../models/productModel");
+const cloudinary = require("cloudinary");
 
 exports.getProducts = asyncHandler(async (req, res) => {
   const paginate = 6;
@@ -78,6 +79,37 @@ exports.updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
+exports.createProduct = asyncHandler(async (req, res) => {
+  const { name, price, description, brand, category, countInStock, image } =
+    req.body; 
+
+  const uploadResult = await cloudinary.uploader.upload(image, {
+    folder: "products",
+  });
+
+  if (uploadResult) {
+    const product = new Product({
+      name,
+      price,
+      description,
+      brand,
+      category,
+      countInStock,
+      image: uploadResult.url,
+      user: req.user.id,
+      numReviews: 0,
+    });
+
+    const createdProduct = await product.save();
+
+    res.status(201).json({
+      success: true,
+      product: createdProduct,
+      message: "Product Created!",
+    });
+  }
+});
+
 exports.deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
@@ -136,18 +168,16 @@ exports.createProductReview = asyncHandler(async (req, res) => {
   }
 });
 
-exports.productsCount = asyncHandler(async(req, res)=>{
+exports.productsCount = asyncHandler(async (req, res) => {
+  const productCount = await Product.countDocuments({});
 
-  const productCount = await Product.countDocuments({})
-
-  if(productCount){
+  if (productCount) {
     res.status(200).json({
       success: true,
-      productCount
-    })
-  }else{
-    res.status(404)
-    throw new Error('Resource not found')
+      productCount,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Resource not found");
   }
-
-})
+});

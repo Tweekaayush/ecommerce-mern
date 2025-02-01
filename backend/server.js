@@ -10,12 +10,22 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const PORT = process.env.PORT || 5000
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+const cloudinary = require('cloudinary')
+const fileUpload = require("express-fileupload")
 
 const app = express()
 
 // connecting database
 
 connectDb()
+
+//cloudinary config
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 // middleware
 
@@ -26,7 +36,7 @@ app.use(cors({
     credentials:true
 }))
 app.use(cookieParser())
-
+app.use(fileUpload())
 
 // Routes 
 

@@ -75,6 +75,20 @@ export const getBestSellingProducts = createAsyncThunk('getBestSellingProducts',
     }
 })
 
+export const createProduct = createAsyncThunk('createProduct', async(payload, {rejectWithValue}) =>{
+    try {
+        const res = await axios.post(`http://localhost:5000/api/v1/products`, payload, {
+            headers: { "Content-Type": "multipart/form-data" },
+            withCredentials: true
+        })
+
+        return res.data
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
 export const updateProduct = createAsyncThunk('updateProduct', async(payload, {rejectWithValue}) =>{
     try {
         const res = await axios.put(`http://localhost:5000/api/v1/products/${payload.id}`, payload, {
@@ -239,6 +253,17 @@ const productSlice = createSlice({
             state.data.productCount = action.payload
         })
         builder.addCase(getProductsCount.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(createProduct.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(createProduct.fulfilled, (state, action)=>{
+            state.loading = false
+            state.successMessage = action.payload.message
+        })
+        builder.addCase(createProduct.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })

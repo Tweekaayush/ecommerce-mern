@@ -10,11 +10,12 @@ const {
   deleteProduct,
   createProductReview,
   productsCount,
+  createProduct,
 } = require("../controllers/productController");
 const checkObjectId = require("../middleware/checkObjectId");
 const { protected, admin } = require("../middleware/authMiddleware");
 
-router.route("/").get(getProducts);
+router.route("/").get(getProducts).post(protected, admin, createProduct);
 router.route("/categories").get(getAllCategories);
 router.route("/trending").get(getTrendingProducts);
 router.route("/bestselling").get(getBestSellingProducts);

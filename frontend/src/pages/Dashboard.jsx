@@ -22,6 +22,7 @@ import {
   Pie,
   ResponsiveContainer,
 } from "recharts";
+import Loader from '../components/Loader'
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -45,10 +46,11 @@ const Dashboard = () => {
     dispatch(getUserCount());
     dispatch(getProductsCount());
   }, []);
-  return (
+
+  return !productLoading && !userLoading && !orderLoading? (
     <section id="dashboard">
       <div className="container">
-        <h1 className="heading-3">Dashboard</h1>
+        <h1 className="heading-5">Dashboard</h1>
         <div className="dashboard-content">
           <div className="dashboard-card">
             <div className="dashboard-card-head">
@@ -108,7 +110,7 @@ const Dashboard = () => {
               Revenue
             </h1>
             <p className="body-text-1">(last {ordersInfo?.monthlyRevenue.length} days)</p>
-            <ResponsiveContainer width="100%" height={200}>
+            <ResponsiveContainer width="100%" height={300}>
               <BarChart data={ordersInfo?.monthlyRevenue} style={{fontSize: '14px'}}>
                 <XAxis dataKey="_id"/>
                 <YAxis />
@@ -122,7 +124,7 @@ const Dashboard = () => {
           <h1 className="heading-3" style={{marginBottom: '16px'}}>
               Orders Status
             </h1>
-            <ResponsiveContainer width='100%' height={200}>
+            <ResponsiveContainer width='100%' height={300}>
               <PieChart>
                 <Pie
                   data={ordersInfo?.deliveryStatus}
@@ -141,7 +143,7 @@ const Dashboard = () => {
         </div>
       </div>
     </section>
-  );
+  ): <Loader/>
 };
 
 export default Dashboard;

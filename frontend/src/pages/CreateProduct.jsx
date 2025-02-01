@@ -1,31 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  clearProductErrors,
-  getProductById,
-  updateProduct,
-} from "../slices/productSlice";
-import { toast, Bounce } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { createProduct } from "../slices/productSlice";
 import Loader from "../components/Loader";
 
-const EditProduct = () => {
-  const { id } = useParams();
-  const dispatch = useDispatch();
-  const {
-    loading,
-    data: {
-      productDetails,
-      productDetails: {
-        name,
-        description,
-        brand,
-        category,
-        price,
-        countInStock,
-      },
-    },
-  } = useSelector((state) => state.products);
+const CreateProduct = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -33,44 +12,51 @@ const EditProduct = () => {
     category: "",
     price: "",
     countInStock: "",
+    image: "",
   });
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(updateProduct({ ...formData, id }));
+  const { loading } = useSelector((state) => state.products);
+
+  const handleImages = (e) => {
+    const file = Array.from(e.target.files)[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setFormData({ ...formData, image: reader.result });
+      }
+    };
+
+    reader.readAsDataURL(file);
   };
 
-  useEffect(() => {
-    dispatch(getProductById(id));
-  }, [id]);
-
-  useEffect(() => {
-    if (name !== undefined) {
-      setFormData({
-        name,
-        description,
-        brand,
-        category,
-        price,
-        countInStock,
-      });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      formData.name !== "" &&
+      formData.description !== "" &&
+      formData.brand !== "" &&
+      formData.category !== "" &&
+      formData.price !== "" &&
+      formData.countInStock !== "" &&
+      formData.image !== ""
+    ) {
+      dispatch(createProduct({ ...formData }));
     }
-  }, [productDetails]);
-
+  };
   return !loading ? (
-    <section id="edit-product">
+    <section id="create-product">
       <div className="container">
-        <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
+        <h1 className="dashboard-link" onClick={() => navigate("/dashboard")}>
           dashboard /
-        </h5>
-        <h1 className="heading-5">Edit Product</h1>
-        <form onSubmit={handleSubmit} className="edit-product-form">
+        </h1>
+        <h1 className="heading-5">Create Product</h1>
+        <form onSubmit={handleSubmit} className="create-product-form">
           <label htmlFor="name" className="form-label">
             <input
               type="text"
@@ -78,6 +64,7 @@ const EditProduct = () => {
               id="name"
               value={formData.name}
               onChange={handleChange}
+              required
             />
             <span>Name</span>
           </label>
@@ -89,6 +76,7 @@ const EditProduct = () => {
               rows={5}
               value={formData.description}
               onChange={handleChange}
+              required
             />
             <span>Description</span>
           </label>
@@ -99,6 +87,7 @@ const EditProduct = () => {
               id="price"
               value={formData.price}
               onChange={handleChange}
+              required
             />
             <span>Price</span>
           </label>
@@ -109,6 +98,7 @@ const EditProduct = () => {
               id="brand"
               value={formData.brand}
               onChange={handleChange}
+              required
             />
             <span>brand</span>
           </label>
@@ -119,6 +109,7 @@ const EditProduct = () => {
               id="category"
               value={formData.category}
               onChange={handleChange}
+              required
             />
             <span>category</span>
           </label>
@@ -129,10 +120,26 @@ const EditProduct = () => {
               id="countInStock"
               value={formData.countInStock}
               onChange={handleChange}
+              required
             />
             <span>stock</span>
           </label>
-          <input type="submit" value="update" className="button-1" />
+          <label htmlFor="image" className="form-label">
+            <input
+              type="file"
+              name="image"
+              id="image"
+              onChange={handleImages}
+              required
+            />
+            <span>image</span>
+          </label>
+          {formData.image && (
+            <div className="product-img-preview">
+              <img src={formData.image} alt={formData.name} />
+            </div>
+          )}
+          <input type="submit" value="create" className="button-1" />
         </form>
       </div>
     </section>
@@ -141,4 +148,4 @@ const EditProduct = () => {
   );
 };
 
-export default EditProduct;
+export default CreateProduct;

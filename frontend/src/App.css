@@ -123,6 +123,15 @@ button {
   font-weight: 800;
 }
 
+.heading-5 {
+  color: var(--danger);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+
 .body-text-1 {
   font-size: 14px;
   color: var(--secondary);
@@ -981,10 +990,25 @@ nav > .container {
   width: 100%;
 }
 
+.form-label > input[type='file'] + span{
+  top: -6px;
+  left: 10px;
+  font-size: 12px;
+  padding-inline: 4px;
+}
+
+.form-label > input[type='file']{
+  padding-block: 16px;
+}
+
 .form-label > input:user-valid + span,
 .form-label > input:user-invalid + span,
 .form-label > input:focus + span,
-.form-label > input:user-valid + span {
+.form-label > input:user-valid + span,
+.form-label > textarea:user-valid + span,
+.form-label > textarea:user-invalid + span,
+.form-label > textarea:focus + span,
+.form-label > textarea:user-valid + span {
   top: -6px;
   left: 10px;
   font-size: 12px;
@@ -1816,12 +1840,6 @@ nav > .container {
   flex-direction: column;
 }
 
-#order-list > .container h1{
-  font-size: 20px;
-  margin-bottom: 40px;
-}
-
-
 /* --------------------Dashboard-------------------- */
 
 #product-list{
@@ -1831,11 +1849,6 @@ nav > .container {
 #product-list > .container{
   display: flex;
   flex-direction: column;
-}
-
-#product-list > .container h1{
-  font-size: 20px;
-  margin-bottom: 40px;
 }
 
 .product-list-page-head{
@@ -1919,6 +1932,21 @@ nav > .container {
   padding-inline: 4px;
 }
 
+/* --------------------Create Product-------------------- */
+
+.product-img-preview{
+  width: 120px;
+  border: 1px solid var(--tertiary);
+  margin-bottom: 16px;
+  padding: 5px;
+}
+
+.product-img-preview img{
+  width: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
 /* --------------------User List Page-------------------- */
 
 #user-list{
@@ -1930,10 +1958,6 @@ nav > .container {
   flex-direction: column;
 }
 
-#user-list > .container h1{
-  font-size: 20px;
-  margin-bottom: 40px;
-}
 
 .user-list-container{
   display: flex;
@@ -2018,11 +2042,6 @@ nav > .container {
 
 .dashboard-link:hover{
   text-decoration: underline;
-}
-
-#dashboard > .container > .heading-3{
-  font-size: 20px;
-  margin-bottom: 24px;
 }
 
 .dashboard-content{
@@ -2340,6 +2359,11 @@ footer {
     font-size: 13px;
   }
 
+  .heading-5{
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+
   .body-text-1,
   .body-text-2,
   .body-text-3 {
@@ -2527,11 +2551,6 @@ footer {
     'g g';
   }
 
-  #order-list > .container h1, #product-list > .container h1, #user-list > .container h1{
-    font-size: 16px;
-    margin-bottom: 40px;
-  }
-
   .order-list-head > span, .product-list-head > span , .user-list-head > span  {
     font-size: 12px;
   }
@@ -2655,7 +2674,7 @@ footer {
       "e";
   }
 
-  #order-list > .container h1, #product-list > .container h1, #user-list > .container h1{
+  .heading-5{
     font-size: 14px;
     margin-bottom: 40px;
   }
@@ -2676,6 +2695,4 @@ footer {
   #success > .container > p, #failed > .container > p{
     font-size: 14px;
   }
-}
-@media screen and (max-width: 320px) {
 }

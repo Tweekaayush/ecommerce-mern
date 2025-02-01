@@ -25,7 +25,7 @@ const OrdersList = () => {
         <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
           dashboard /
         </h5>
-        <h1 className="heading-3">Orders List</h1>
+        <h1 className="heading-5">Orders List</h1>
         <div className="order-list-container">
           <div className="order-list-head">
             <span>ID</span>
