@@ -144,3 +144,20 @@ exports.updateUser = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
+
+
+exports.userCount = asyncHandler(async(req, res)=>{
+
+  const userCount = await User.countDocuments({})
+
+  if(userCount){
+    res.status(200).json({
+      success: true,
+      userCount
+    })
+  }else{
+    res.status(404)
+    throw new Error('Resource not found')
+  }
+
+})

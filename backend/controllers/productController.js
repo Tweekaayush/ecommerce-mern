@@ -135,3 +135,19 @@ exports.createProductReview = asyncHandler(async (req, res) => {
     throw new Error("Resource not found");
   }
 });
+
+exports.productsCount = asyncHandler(async(req, res)=>{
+
+  const productCount = await Product.countDocuments({})
+
+  if(productCount){
+    res.status(200).json({
+      success: true,
+      productCount
+    })
+  }else{
+    res.status(404)
+    throw new Error('Resource not found')
+  }
+
+})

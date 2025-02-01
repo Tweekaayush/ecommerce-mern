@@ -9,6 +9,7 @@ const {
   getUserById,
   updateUser,
   getUsers,
+  userCount,
 } = require("../controllers/userController");
 const { protected, admin } = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -21,6 +22,7 @@ router
   .route("/profile")
   .get(protected, getUserProfile)
   .put(protected, updateUserProfile);
+router.route("/count").get(protected, admin, userCount);
 router
   .route("/:id")
   .delete(protected, admin, deleteUser)

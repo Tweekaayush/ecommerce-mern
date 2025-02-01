@@ -122,7 +122,17 @@ export const getUserById = createAsyncThunk('getUserById', async(payload, {dispa
     }
 })
 
+export const getUserCount = createAsyncThunk('getUserCount', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.get('http://localhost:5000/api/v1/users/count', {
+            withCredentials: true
+        })
 
+        return res.data.userCount
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
 
 const userSlice = createSlice({
     name: 'user',
@@ -237,6 +247,17 @@ const userSlice = createSlice({
             state.data.userDetailsAdmin = action.payload
         })
         builder.addCase(getUserById.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(getUserCount.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(getUserCount.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.userCount = action.payload
+        })
+        builder.addCase(getUserCount.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })

@@ -117,6 +117,18 @@ export const addReview = createAsyncThunk('addReview', async(payload, {dispatch,
     }
 })
 
+export const getProductsCount = createAsyncThunk('getProductsCount', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.get('http://localhost:5000/api/v1/products/count', {
+            withCredentials: true
+        })
+
+        return res.data.productCount
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
 const productSlice = createSlice({
     name: 'products',
     initialState,
@@ -216,6 +228,17 @@ const productSlice = createSlice({
             state.successMessage = action.payload
         })
         builder.addCase(addReview.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(getProductsCount.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(getProductsCount.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.productCount = action.payload
+        })
+        builder.addCase(getProductsCount.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })

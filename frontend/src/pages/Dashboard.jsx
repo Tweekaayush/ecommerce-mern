@@ -1,14 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   LuShoppingCart,
   LuUserRound,
   LuDollarSign,
   LuPackageOpen,
 } from "react-icons/lu";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductsCount } from "../slices/productSlice";
+import { getUserCount } from "../slices/userSlice";
+import { getOrdersInfo } from "../slices/orderSlice";
+import {
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar,
+  PieChart,
+  Pie,
+  ResponsiveContainer,
+} from "recharts";
 
 const Dashboard = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const {
+    loading: productLoading,
+    data: { productCount },
+  } = useSelector((state) => state.products);
+  const {
+    loading: userLoading,
+    data: { userCount },
+  } = useSelector((state) => state.user);
+  const {
+    loading: orderLoading,
+    data: { ordersInfo },
+  } = useSelector((state) => state.orders);
+
+  useEffect(() => {
+    dispatch(getOrdersInfo());
+    dispatch(getUserCount());
+    dispatch(getProductsCount());
+  }, []);
   return (
     <section id="dashboard">
       <div className="container">
@@ -17,7 +53,7 @@ const Dashboard = () => {
           <div className="dashboard-card">
             <div className="dashboard-card-head">
               <h1 className="heading-4">Total Revenue</h1>
-              <p>$1000000</p>
+              <p>${ordersInfo?.totalRevenue}</p>
             </div>
             <div>
               <span>
@@ -25,10 +61,13 @@ const Dashboard = () => {
               </span>
             </div>
           </div>
-          <div className="dashboard-card" onClick={()=>navigate('/orders/list')}>
+          <div
+            className="dashboard-card"
+            onClick={() => navigate("/orders/list")}
+          >
             <div className="dashboard-card-head">
               <h1 className="heading-4">Orders</h1>
-              <p>30</p>
+              <p>{ordersInfo?.orderCount}</p>
             </div>
             <div>
               <span>
@@ -36,10 +75,13 @@ const Dashboard = () => {
               </span>
             </div>
           </div>
-          <div className="dashboard-card" onClick={()=>navigate('/users/list')}>
+          <div
+            className="dashboard-card"
+            onClick={() => navigate("/users/list")}
+          >
             <div className="dashboard-card-head">
               <h1 className="heading-4">Users</h1>
-              <p>2</p>
+              <p>{userCount}</p>
             </div>
             <div>
               <span>
@@ -47,10 +89,13 @@ const Dashboard = () => {
               </span>
             </div>
           </div>
-          <div className="dashboard-card" onClick={()=>navigate('/products/list')}>
+          <div
+            className="dashboard-card"
+            onClick={() => navigate("/products/list")}
+          >
             <div className="dashboard-card-head">
               <h1 className="heading-4">Products</h1>
-              <p>2</p>
+              <p>{productCount}</p>
             </div>
             <div>
               <span>
@@ -59,7 +104,39 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="revenue-chart">
-
+            <h1 className="heading-3" style={{marginBottom: 0}}>
+              Revenue
+            </h1>
+            <p className="body-text-1">(last {ordersInfo?.monthlyRevenue.length} days)</p>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={ordersInfo?.monthlyRevenue} style={{fontSize: '14px'}}>
+                <XAxis dataKey="_id"/>
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="revenue" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="revenue-paid">
+          <h1 className="heading-3" style={{marginBottom: '16px'}}>
+              Orders Status
+            </h1>
+            <ResponsiveContainer width='100%' height={200}>
+              <PieChart>
+                <Pie
+                  data={ordersInfo?.deliveryStatus}
+                  dataKey="count"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={70}
+                />
+                <Tooltip/>
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </div>

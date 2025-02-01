@@ -150,3 +150,65 @@ exports.getOrders = asyncHandler(async (req, res) => {
     totalPages: Math.ceil(count / paginate),
   });
 });
+
+exports.ordersInfo = asyncHandler(async (req, res) => {
+  const orderCount = await Order.countDocuments({});
+
+  const deliveryStatus = await Order.aggregate([
+    {
+      $group: {
+        _id: "$isDelivered",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  const revenueByStatus = await Order.aggregate([
+    {
+      $group: {
+        _id: "$isPaid",
+        count: { $sum: "$totalPrice" },
+      },
+    },
+  ]);
+
+  const monthlyRevenue = await Order.aggregate([
+    {
+      $group: {
+        _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+        revenue: { $sum: "$totalPrice" },
+      },
+    },
+    { $limit: 6 },
+    { $sort: { _id: -1 } },
+  //   {$addFields: {
+  //     dates: {$map: {
+  //         input: {$range: [0, 8]},
+  //         in: {
+  //           date: {$dateAdd: {
+  //               startDate: "2022-10-19T00:00:00.000Z",
+  //               unit: "day",
+  //               amount: "$$this"
+  //           }},
+  //           tasks: []
+  //         }
+  //     }}
+  // }},
+  // {$project: {data: {$concatArrays: ["$data", "$dates"]}}},
+  // {$unwind: "$data"}
+  ]);
+
+  deliveryStatus[0].fill = '#cf4b4b'
+  deliveryStatus[0].name = 'Not Delivered'
+  deliveryStatus[1].fill = '#4bb64b'
+  deliveryStatus[1].name = 'Delivered'
+
+  res.status(200).json({
+    success: true,
+    orderCount,
+    deliveryStatus,
+    totalRevenue: revenueByStatus[0].count + revenueByStatus[1].count,
+    revenueByStatus,
+    monthlyRevenue,
+  });
+});

@@ -89,6 +89,19 @@ export const updateOrderToPaid = createAsyncThunk('updateOrderToPaid', async(pay
     }
 })
 
+export const getOrdersInfo = createAsyncThunk('ordersInfo', async(payload, {dispatch, rejectWithValue})=>{
+    try {
+        const res = await axios.get(`http://localhost:5000/api/v1/orders/info`, {
+            withCredentials: true
+        })
+
+        return res.data
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
 const orderSlice = createSlice({
     name: 'orders',
     initialState,
@@ -160,6 +173,17 @@ const orderSlice = createSlice({
             state.data.totalPages = action.payload.totalPages
         })
         builder.addCase(getAllOrders.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(getOrdersInfo.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(getOrdersInfo.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.ordersInfo = action.payload
+        })
+        builder.addCase(getOrdersInfo.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })
