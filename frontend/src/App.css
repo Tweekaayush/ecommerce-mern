@@ -862,6 +862,10 @@ nav > .container {
   border-radius: 5px;
 }
 
+.review-form > input[type='submit']{
+  margin-top: 16px;
+}
+
 .user-reviews{
   display: flex;
   flex-direction: column;
@@ -940,7 +944,7 @@ nav > .container {
 
 #auth-container {
   background-color: var(--main);
-  height: 100vh;
+  height: 95vh;
 }
 
 #auth-container > .container {
@@ -966,6 +970,11 @@ nav > .container {
   padding-bottom: 0;
   margin-bottom: 0;
   text-transform: uppercase;
+  font-weight: 800;
+}
+
+.form-container > p {
+  text-align: center;
 }
 
 .form-container > form {
@@ -2208,6 +2217,19 @@ nav > .container {
   text-align: center;
 }
 
+
+/* --------------------Wishlist-------------------- */
+
+#wishlist{
+  min-height: 95vh;
+}
+
+.wishlist-items{
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
 
 /* --------------------Footer-------------------- */
 

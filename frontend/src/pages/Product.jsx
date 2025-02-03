@@ -12,6 +12,7 @@ import { addToCart } from "../slices/cartSlice";
 import Reviews from "../components/Reviews";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
+import { addToWishlist } from "../slices/userSlice";
 
 const Product = () => {
   const {
@@ -59,6 +60,12 @@ const Product = () => {
     dispatch(getTrendingProducts());
   }, [id]);
 
+  useEffect(()=>{
+    if(error === 'Product not found'){
+      navigate('/product-not-found')
+    }
+  }, [error])
+
   return !loading ? (
     <>
       <section id="product-content">
@@ -102,7 +109,7 @@ const Product = () => {
                   Add to cart
                 </button>
               )}
-              <button className="button-2">Wishlist</button>
+              <button className="button-2" onClick={()=>dispatch(addToWishlist(productDetails))}>Wishlist</button>
             </div>
           </div>
         </div>

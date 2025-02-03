@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaLinkedin, FaFacebook, FaInstagram, FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -17,16 +18,24 @@ const Footer = () => {
             </p>
             <ul>
               <li>
-                <a href="">icon</a>
+                <a href="https://www.facebook.com">
+                  <FaFacebook/>
+                </a>
               </li>
               <li>
-                <a href="">icon</a>
+                <a href="https://www.linkedin.com">
+                  <FaLinkedin/>
+                </a>
               </li>
               <li>
-                <a href="">icon</a>
+                <a href="https://www.instagram.com">
+                  <FaInstagram/>
+                </a>
               </li>
               <li>
-                <a href="">icon</a>
+                <a href="https://www.github.com">
+                  <FaGithub/>
+                </a>
               </li>
             </ul>
           </div>

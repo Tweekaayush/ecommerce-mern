@@ -21,6 +21,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
 import Loader from "./components/Loader";
 import CreateProduct from "./pages/CreateProduct";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Wishlist from "./pages/Wishlist";
 const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
 const Browse = lazy(() => import("./pages/Browse"));
@@ -100,12 +103,15 @@ const App = () => {
           <Route path="/product/:id" element={<Product />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/password/forget" element={<ForgotPassword />} />
+          <Route path="/password/reset" element={<ResetPassword />} />
           <Route element={<PrivateRoute />}>
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/success/:id" element={<Success />} />
             <Route path="/failed" element={<Failed />} />
             <Route path="/order/:id" element={<Order />} />
+            <Route path="/wishlist" element={<Wishlist />} />
           </Route>
           <Route element={<AdminRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />

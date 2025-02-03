@@ -1,12 +1,14 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
+import { clearOrders } from './orderSlice'
 
 const initialState = {
     loading: false,
     data: {
         user: {},
         usersListAdmin: [],
-        userDetailsAdmin: {}
+        userDetailsAdmin: {},
+        wishlist: {}
     },
     successMessage: '',
     error: ''
@@ -45,9 +47,37 @@ export const login = createAsyncThunk('login', async(payload, {rejectWithValue})
     }
 })
 
-export const logout = createAsyncThunk('logout', async(payload, {rejectWithValue})=>{
+export const logout = createAsyncThunk('logout', async(payload, {dispatch, rejectWithValue})=>{
     try {
         const res = await axios.post('http://localhost:5000/api/v1/users/logout', payload, {
+          withCredentials: 'include'  
+        })
+
+        dispatch(clearOrders())
+
+        return res.data.message
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
+export const forgetPassword = createAsyncThunk('forgetPassword', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.post('http://localhost:5000/api/v1/users/forget', payload, {
+          withCredentials: 'include'  
+        })
+
+        return res.data.message
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
+export const resetPassword = createAsyncThunk('resetPassword', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.post('http://localhost:5000/api/v1/users/reset', payload, {
           withCredentials: 'include'  
         })
 
@@ -133,6 +163,40 @@ export const getUserCount = createAsyncThunk('getUserCount', async(payload, {rej
         return rejectWithValue(error.response.data.message)
     }
 })
+
+export const addToWishlist = createAsyncThunk('addToWishlist', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.post('http://localhost:5000/api/v1/users/wishlist', payload, {
+            withCredentials: true
+        })
+        return res.data
+    } catch (error) {
+        return rejectWithValue(error.reponse.data.message)
+    }
+})
+
+export const removeFromWishlist = createAsyncThunk('removeFromWishlist', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.put('http://localhost:5000/api/v1/users/wishlist', payload, {
+            withCredentials: true
+        })
+        return res.data
+    } catch (error) {
+        return rejectWithValue(error.reponse.data.message)
+    }
+})
+
+export const getWishlist = createAsyncThunk('getWishlist', async(payload, {rejectWithValue})=>{
+    try {
+        const res = await axios.get('http://localhost:5000/api/v1/users/wishlist', {
+            withCredentials: true
+        })
+        return res.data
+    } catch (error) {
+        return rejectWithValue(error.reponse.data.message)
+    }
+})
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -259,6 +323,64 @@ const userSlice = createSlice({
         })
         builder.addCase(getUserCount.rejected, (state, action)=>{
             state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(forgetPassword.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(forgetPassword.fulfilled, (state, action)=>{
+            state.loading = false
+            state.successMessage = action.payload
+        })
+        builder.addCase(forgetPassword.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(resetPassword.pending, (state)=>{
+            state.loading = true
+        })
+        builder.addCase(resetPassword.fulfilled, (state, action)=>{
+            state.loading = false
+            state.successMessage = action.payload
+        })
+        builder.addCase(resetPassword.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(getWishlist.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(getWishlist.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.wishlist = action.payload.wishlist
+            state.successMessage = action.payload.message
+        })
+        builder.addCase(getWishlist.rejected, (state, action)=>{
+            state.loading = true
+            state.error = action.payload
+        })
+        builder.addCase(addToWishlist.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(addToWishlist.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.wishlist = action.payload.wishlist
+            state.successMessage = action.payload.message
+        })
+        builder.addCase(addToWishlist.rejected, (state, action)=>{
+            state.loading = true
+            state.error = action.payload
+        })
+        builder.addCase(removeFromWishlist.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(removeFromWishlist.fulfilled, (state, action)=>{
+            state.loading = false
+            state.data.wishlist = action.payload.wishlist
+            state.successMessage = action.payload.message
+        })
+        builder.addCase(removeFromWishlist.rejected, (state, action)=>{
+            state.loading = true
             state.error = action.payload
         })
     }

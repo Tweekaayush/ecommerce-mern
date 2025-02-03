@@ -96,7 +96,7 @@ const Login = () => {
                 <p className="form-error-msg">{formErrors.password}</p>
               )}
             </label>
-            <Link to="/forgot-password" className="form-link">
+            <Link to="/password/forget" className="form-link">
               Forget password?
             </Link>
             <input type="submit" value="Login" className="button-1" />

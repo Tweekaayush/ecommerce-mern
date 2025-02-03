@@ -72,6 +72,7 @@ const Reviews = () => {
           onChange={(e) => setReview(e.target.value)}
         />
         <p className="form-error-msg">{formErrors}</p>
+        <input type="submit" value="Submit" className="button-2"/>
       </form>
       {reviews?.length !== 0 ? (
         <ul className="user-reviews">

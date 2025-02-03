@@ -108,6 +108,13 @@ const orderSlice = createSlice({
     reducers: {
         clearOrderErrors: (state)=>{
             state.error = ''
+        },
+        clearOrders: (state)=>{
+            state.data = {
+                myOrders: [],
+                orderDetails: {},
+                allOrders: []
+            }
         }
     },
     extraReducers: (builder)=>{
@@ -190,6 +197,6 @@ const orderSlice = createSlice({
     }
 })
 
-export const { clearOrderErrors } = orderSlice.actions
+export const { clearOrderErrors, clearOrders } = orderSlice.actions
 
 export default orderSlice.reducer

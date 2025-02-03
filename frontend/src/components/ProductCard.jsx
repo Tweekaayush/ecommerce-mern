@@ -5,6 +5,7 @@ import Rating from "./Rating";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../slices/cartSlice";
 import {toast} from 'react-toastify'
+import { addToWishlist } from "../slices/userSlice";
 
 const ProductCard = (props) => {
 
@@ -12,7 +13,7 @@ const ProductCard = (props) => {
   const navigate = useNavigate();
   const [width, setWidth] = useState(0);
   const {slider, ...productDetails} = props
-  const { _id, name, image, price, rating, } = productDetails
+  const { _id, name, image, price, rating,} = productDetails
   const handleProductClick = (e) => {
     e.stopPropagation();
     navigate(`/product/${_id}`);
@@ -29,6 +30,8 @@ const ProductCard = (props) => {
   };
   const handleAddToWishlist = (e) => {
     e.stopPropagation();
+
+    dispatch(addToWishlist(productDetails))
   };
 
   const handleResize = () => {

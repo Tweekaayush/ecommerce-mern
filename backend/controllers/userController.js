@@ -37,6 +37,7 @@ exports.logout = asyncHandler(async (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully" });
 });
+
 exports.getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id).select("-password");
   res.status(200).json({
@@ -145,7 +146,6 @@ exports.updateUser = asyncHandler(async (req, res) => {
   }
 });
 
-
 exports.userCount = asyncHandler(async(req, res)=>{
 
   const userCount = await User.countDocuments({})
@@ -160,4 +160,50 @@ exports.userCount = asyncHandler(async(req, res)=>{
     throw new Error('Resource not found')
   }
 
+})
+
+exports.forgetPassword = asyncHandler(async(req, res)=>{
+  const {email} = req.body
+
+  console.log(email)
+
+  res.status(200).json({
+    success: true,
+    message: 'Password reset link has been sent to your email.'
+  })
+})
+
+exports.resetPassword = asyncHandler(async(req, res)=>{
+  const {password} = req.body
+
+  console.log(password)
+
+  res.status(200).json({
+    success: true,
+    message: 'Password reset successfully.'
+  })
+})
+
+exports.getWishlist = asyncHandler(async(req, res)=>{
+  res.status(200).json({
+    success:true,
+    message: 'Wishlist Fetched',
+    wishlist: {}
+  })
+})
+
+exports.addToWishlist = asyncHandler(async(req, res)=>{
+  res.status(200).json({
+    success:true,
+    message: 'Added to wishlist',
+    wishlist: {}
+  })
+})
+
+exports.removeFromWishlist = asyncHandler(async(req, res)=>{
+  res.status(200).json({
+    success:true,
+    message: 'removed from wishlist',
+    wishlist: {}
+  })
 })

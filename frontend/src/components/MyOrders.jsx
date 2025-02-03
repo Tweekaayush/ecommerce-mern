@@ -36,8 +36,9 @@ const MyOrders = () => {
           <Pagination page={page} setPage={setPage} totalPages={totalPages} />
         </>
       ) : (
-        
-        <div className="loader"></div>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          <div className="loader"></div>
+        </div>
       )}
     </div>
   );

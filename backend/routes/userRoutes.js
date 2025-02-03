@@ -10,6 +10,11 @@ const {
   updateUser,
   getUsers,
   userCount,
+  resetPassword,
+  forgetPassword,
+  getWishlist,
+  addToWishlist,
+  removeFromWishlist,
 } = require("../controllers/userController");
 const { protected, admin } = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -17,12 +22,19 @@ const router = express.Router();
 router.post("/login", login);
 router.post("/signup", signup);
 router.post("/logout", logout);
+router.post("/reset", resetPassword);
+router.post("/forget", forgetPassword);
 router.get("/all", protected, admin, getUsers);
 router
   .route("/profile")
   .get(protected, getUserProfile)
   .put(protected, updateUserProfile);
 router.route("/count").get(protected, admin, userCount);
+router
+  .route("/wishlist")
+  .get(protected, getWishlist)
+  .post(protected, addToWishlist)
+  .put(protected, removeFromWishlist);
 router
   .route("/:id")
   .delete(protected, admin, deleteUser)
