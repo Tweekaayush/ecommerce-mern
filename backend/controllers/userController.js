@@ -1,6 +1,7 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const User = require("../models/userModel");
 const sendToken = require("../utils/generateToken");
+const Wishlist = require('../models/wishlistModel')
 
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -185,25 +186,90 @@ exports.resetPassword = asyncHandler(async(req, res)=>{
 })
 
 exports.getWishlist = asyncHandler(async(req, res)=>{
+
+  const wishlist = await Wishlist.find({user: req.user.id})
+
   res.status(200).json({
     success:true,
-    message: 'Wishlist Fetched',
-    wishlist: {}
+    wishlist: wishlist[0].wishlist_items
   })
 })
 
 exports.addToWishlist = asyncHandler(async(req, res)=>{
-  res.status(200).json({
-    success:true,
-    message: 'Added to wishlist',
-    wishlist: {}
-  })
+
+  const {_id, name, price, image, rating} = req.body
+
+  const wishlist = await Wishlist.find({user: req.user.id})
+
+  if(wishlist.length !== 0){
+
+    wishlist[0].wishlist_items.forEach((item)=>{
+      if(item.product.toString() === _id){
+        res.status(400)
+        throw new Error('Product already in wishlist')
+      }
+    })
+    
+    wishlist[0].wishlist_items.push({
+      name,
+      image,
+      price,
+      rating,
+      product: _id
+    })
+
+    const updatedWishlist = await wishlist[0].save()
+
+    res.status(200).json({
+      success:true,
+      message: 'Added to wishlist'
+    })
+  }else{
+    console.log('hi')
+    const newWishlist = new Wishlist({
+      user: req.user.id,
+      wishlist_items: []
+    })
+
+    newWishlist.wishlist_items.push({
+      name,
+      image,
+      price,
+      rating,
+      product: _id
+    })
+    const updatedWishlist = await newWishlist.save()
+    res.status(200).json({
+      success:true,
+      message: 'Added to wishlist'
+    })
+  }
 })
 
 exports.removeFromWishlist = asyncHandler(async(req, res)=>{
-  res.status(200).json({
-    success:true,
-    message: 'removed from wishlist',
-    wishlist: {}
-  })
+
+  const wishlist = await Wishlist.find({user: req.user.id})
+
+  if(wishlist.length){
+
+    const newWishlist = wishlist[0].wishlist_items.filter((item)=> {
+      console.log(item.product.toString(), req.body._id)
+      return item.product.toString() !== req.body._id
+    })
+
+    console.log(newWishlist)
+
+    wishlist[0].wishlist_items = newWishlist
+
+    const updatedWishlist = await wishlist[0].save()
+
+    res.status(200).json({
+      success:true,
+      message: 'removed from wishlist'
+    })
+  }else{
+    res.status(400)
+    throw new Error('Some error occured')
+  }
+
 })

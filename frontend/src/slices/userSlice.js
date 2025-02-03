@@ -8,7 +8,7 @@ const initialState = {
         user: {},
         usersListAdmin: [],
         userDetailsAdmin: {},
-        wishlist: {}
+        wishlist: []
     },
     successMessage: '',
     error: ''
@@ -164,25 +164,27 @@ export const getUserCount = createAsyncThunk('getUserCount', async(payload, {rej
     }
 })
 
-export const addToWishlist = createAsyncThunk('addToWishlist', async(payload, {rejectWithValue})=>{
+export const addToWishlist = createAsyncThunk('addToWishlist', async(payload, {dispatch, rejectWithValue})=>{
     try {
         const res = await axios.post('http://localhost:5000/api/v1/users/wishlist', payload, {
             withCredentials: true
         })
         return res.data
     } catch (error) {
-        return rejectWithValue(error.reponse.data.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
-export const removeFromWishlist = createAsyncThunk('removeFromWishlist', async(payload, {rejectWithValue})=>{
+export const removeFromWishlist = createAsyncThunk('removeFromWishlist', async(payload, {dispatch, rejectWithValue})=>{
     try {
         const res = await axios.put('http://localhost:5000/api/v1/users/wishlist', payload, {
             withCredentials: true
         })
+
+        dispatch(getWishlist())
         return res.data
     } catch (error) {
-        return rejectWithValue(error.reponse.data.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -193,7 +195,7 @@ export const getWishlist = createAsyncThunk('getWishlist', async(payload, {rejec
         })
         return res.data
     } catch (error) {
-        return rejectWithValue(error.reponse.data.message)
+        return rejectWithValue(error.response.data.message)
     }
 })
 
@@ -353,10 +355,9 @@ const userSlice = createSlice({
         builder.addCase(getWishlist.fulfilled, (state, action)=>{
             state.loading = false
             state.data.wishlist = action.payload.wishlist
-            state.successMessage = action.payload.message
         })
         builder.addCase(getWishlist.rejected, (state, action)=>{
-            state.loading = true
+            state.loading = false
             state.error = action.payload
         })
         builder.addCase(addToWishlist.pending, (state, action)=>{
@@ -368,7 +369,7 @@ const userSlice = createSlice({
             state.successMessage = action.payload.message
         })
         builder.addCase(addToWishlist.rejected, (state, action)=>{
-            state.loading = true
+            state.loading = false
             state.error = action.payload
         })
         builder.addCase(removeFromWishlist.pending, (state, action)=>{
@@ -380,7 +381,7 @@ const userSlice = createSlice({
             state.successMessage = action.payload.message
         })
         builder.addCase(removeFromWishlist.rejected, (state, action)=>{
-            state.loading = true
+            state.loading = false
             state.error = action.payload
         })
     }

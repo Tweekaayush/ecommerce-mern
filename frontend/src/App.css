@@ -2227,8 +2227,25 @@ nav > .container {
 .wishlist-items{
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+}
+
+.wishlist-card-options{
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.wishlist-card-options > button{
+  color: var(--tertiary);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.wishlist-card-options > button:hover{
+  text-decoration: underline;
 }
 
 /* --------------------Footer-------------------- */
@@ -2336,7 +2353,7 @@ footer {
   }
 
   .bestseller-container,
-  #browse-results > .container {
+  #browse-results > .container, .wishlist-items {
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -2476,7 +2493,7 @@ footer {
   }
 
   .bestseller-container,
-  #browse-results > .container {
+  #browse-results > .container, .wishlist-items {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -2638,7 +2655,7 @@ footer {
   }
 
   .bestseller-container,
-  #browse-results > .container {
+  #browse-results > .container, .wishlist-items {
     grid-template-columns: 1fr;
   }
 
