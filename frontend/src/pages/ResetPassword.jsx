@@ -4,7 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { resetPassword } from "../slices/userSlice";
 
 const ResetPassword = () => {
-  const { state } = useLocation();
+  const { state, search } = useLocation();
+  const token = new URLSearchParams(search).get('token')
+  const user = new URLSearchParams(search).get('user')
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: ''
@@ -45,7 +47,7 @@ const ResetPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(validate())
-        dispatch(resetPassword({password: formData.password}))
+        dispatch(resetPassword({password: formData.password, user, token}))
   };
 
   useEffect(() => {
