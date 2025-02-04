@@ -1,6 +1,6 @@
 const express = require('express')
-dotenv.config()
 const dotenv = require('dotenv')
+dotenv.config()
 const connectDb = require('./config/db')
 const product = require('./routes/productRoutes')
 const user = require('./routes/userRoutes')
@@ -9,9 +9,9 @@ const payment = require('./routes/paymentRoutes')
 const {notFound, errorHandler} = require('./middleware/error')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+const PORT = process.env.PORT || 5000
 const cloudinary = require('cloudinary')
 const fileUpload = require("express-fileupload")
-const PORT = process.env.PORT || 5000
 const app = express()
 
 
@@ -23,7 +23,7 @@ app.get('/', (req, res)=>{
 
 connectDb()
 
-// cloudinary config
+//cloudinary config
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -31,7 +31,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
-middleware
+// middleware
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
