@@ -40,6 +40,10 @@ const ForgotPassword = () => {
     }
   }, [_id]);
 
+  useEffect(()=>{
+    document.title = 'Forget Password'
+  },[])
+
   return (
     <section id="auth-container">
       <div className="container">

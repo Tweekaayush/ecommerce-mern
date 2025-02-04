@@ -16,7 +16,7 @@ const Footer = () => {
               Aspernatur perspiciatis dolores tempore minus nemo sapiente soluta
               dolor commodi. Praesentium, esse!
             </p>
-            <ul>
+            <ul className="footer-list-icons">
               <li>
                 <a href="https://www.facebook.com">
                   <FaFacebook/>
@@ -42,58 +42,55 @@ const Footer = () => {
           <div>
             <ul>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/about">About</Link>
               </li>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/faq">FAQ</Link>
               </li>
               <li>
-                <Link to="/">Link</Link>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <Link to="/">Link</Link>
-              </li>
-              <li>
-                <Link to="/">Link</Link>
-              </li>
-              <li>
-                <Link to="/">Link</Link>
-              </li>
-              <li>
-                <Link to="/">Link</Link>
+                <Link to="/contact">Contact</Link>
               </li>
             </ul>
             <ul>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/promotions">Promotions</Link>
               </li>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/partners">Partners</Link>
               </li>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/careers">Careers</Link>
               </li>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/blog">Blog</Link>
               </li>
             </ul>
             <ul>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/browse?category=electronic">Electronic</Link>
               </li>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/browse?category=furniture">Furniture</Link>
               </li>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/browse?category=lamp">Lamp</Link>
               </li>
               <li>
-                <Link to="/">Link</Link>
+                <Link to="/browse?category=skin-care">Skin Care</Link>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Link to="/terms">Terms</Link>
+              </li>
+              <li>
+                <Link to="/privacy">Privacy</Link>
+              </li>
+              <li>
+                <Link to="/accesibility">Accesibility</Link>
               </li>
             </ul>
           </div>
@@ -101,7 +98,7 @@ const Footer = () => {
         <div className="footer-copyright">
           <p>
             Copyright &copy; 2025. All Rights Reserved. -{" "}
-            <a href="/">Aayush Dobriyal</a>
+            <a href="https://aayushdobriyal.vercel.app">Aayush Dobriyal</a>
           </p>
         </div>
       </div>

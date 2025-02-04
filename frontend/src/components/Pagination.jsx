@@ -20,8 +20,12 @@ const Pagination = ({ totalPages, page, setPage }) => {
     setPaginationArray([...prevArray, ...nextArray]);
   }, [page, totalPages]);
 
+
   return (
     <div className="pagination-container">
+      {paginationArray[0] !== 1 && <button onClick={()=>setPage(1)}>
+        {"<<"}
+      </button>}
       <button onClick={handlePrev} disabled={page <= 1}>
         {"<"}
       </button>
@@ -39,6 +43,9 @@ const Pagination = ({ totalPages, page, setPage }) => {
       <button onClick={handleNext} disabled={page >= totalPages}>
         {">"}
       </button>
+      {paginationArray[paginationArray.length-1] !== totalPages && <button onClick={()=>setPage(totalPages)}>
+        {">>"}
+      </button>}
     </div>
   );
 };

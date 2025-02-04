@@ -21,6 +21,10 @@ const UsersList = () => {
     dispatch(getAllUsers(page));
   }, [page]);
 
+  useEffect(()=>{
+    document.title='Users List'
+  }, [])
+
   return !loading ? (
     <section id="user-list">
       <div className="container">

@@ -59,7 +59,11 @@ const Order = () => {
 
   useEffect(() => {
     dispatch(getOrderById(id));
-  }, []);
+  }, [id]);
+
+  useEffect(()=>{
+    document.title = 'Order Details'
+  },[])
 
   return !userLoading && !orderLoading ? (
     <section id="order">

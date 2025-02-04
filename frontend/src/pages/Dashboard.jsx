@@ -45,6 +45,7 @@ const Dashboard = () => {
     dispatch(getOrdersInfo());
     dispatch(getUserCount());
     dispatch(getProductsCount());
+    document.title='Dashboard'
   }, []);
 
   return !productLoading && !userLoading && !orderLoading? (

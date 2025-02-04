@@ -19,6 +19,10 @@ const OrdersList = () => {
     dispatch(getAllOrders(page));
   }, [page]);
 
+  useEffect(()=>{
+    document.title='Orders List'
+  },[])
+
   return !loading ? (
     <section id="order-list">
       <div className="container">

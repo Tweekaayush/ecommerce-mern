@@ -20,6 +20,10 @@ const UserInfo = () => {
     dispatch(getUserById(id));
   }, [id]);
 
+  useEffect(()=>{
+    document.title = 'User Info'
+  }, [])
+
   return !loading?(
     <section id="user-info">
       <div className="container">

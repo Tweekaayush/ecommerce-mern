@@ -20,11 +20,17 @@ const Browse = () => {
   } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const [currentCategory, setCurrentCategory] = useState(category || "");
+  const [currentCategory, setCurrentCategory] = useState("");
 
   useEffect(() => {
     dispatch(getProducts({ page, category: currentCategory }));
+    document.title = `Browse ${currentCategory}`
   }, [page, currentCategory]);
+
+  useEffect(()=>{
+    setCurrentCategory(category||'')
+    setPage(1)
+  }, [category])
 
   useEffect(() => {
     dispatch(getAllCategories());

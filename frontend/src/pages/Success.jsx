@@ -17,6 +17,10 @@ const Success = () => {
   }, [id])
 
 
+  useEffect(()=>{
+    document.title = 'Thank you for your purchase!'
+  }, [])
+
   return (
     <section id="success">
       <div className="container">

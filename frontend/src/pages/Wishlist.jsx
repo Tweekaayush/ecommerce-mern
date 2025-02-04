@@ -15,6 +15,7 @@ const Wishlist = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getWishlist());
+    document.title = 'Your Wishlist'
   }, []);
 
   return !loading ? (

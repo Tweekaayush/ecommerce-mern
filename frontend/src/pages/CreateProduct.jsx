@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../slices/productSlice";
@@ -49,6 +49,10 @@ const CreateProduct = () => {
       dispatch(createProduct({ ...formData }));
     }
   };
+
+  useEffect(()=>{
+    document.title = 'Create a new Product'
+  },[])
   return !loading ? (
     <section id="create-product">
       <div className="container">

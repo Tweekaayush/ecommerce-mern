@@ -62,6 +62,10 @@ const ResetPassword = () => {
     }
   }, [successMessage])
 
+  useEffect(()=>{
+    document.title = 'Reset Password'
+  }, [])
+
   return (
     <section id="auth-container">
       <div className="container">

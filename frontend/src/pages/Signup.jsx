@@ -82,6 +82,13 @@ const Signup = () => {
           image: img[0].image,
         })
       );
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      })
     }
   };
 
@@ -93,6 +100,10 @@ const Signup = () => {
   useEffect(() => {
     if (_id) navigate("/profile");
   }, [_id]);
+
+  useEffect(()=>{
+    document.title = 'Sign Up'
+  },[])
 
   return !loading ? (
     <section id="auth-container">

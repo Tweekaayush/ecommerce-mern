@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CiFaceFrown } from "react-icons/ci";
 import { useNavigate } from 'react-router-dom';
 
 const NotFound = () => {
     const navigate = useNavigate()
+    useEffect(()=>{
+      document.title='Page Not Found'
+    },[])
   return (
     <section id="not-found">
         <div className="container">

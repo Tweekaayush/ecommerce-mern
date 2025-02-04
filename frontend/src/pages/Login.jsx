@@ -49,7 +49,13 @@ const Login = () => {
     e.preventDefault();
 
     const v = validate();
-    if (v) dispatch(login({ ...formData }));
+    if (v) {
+      dispatch(login({ ...formData }))
+      setFormData({
+        email: "",
+        password: "",
+      })
+    };
   };
 
   const handleChange = (e) => {

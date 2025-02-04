@@ -904,6 +904,7 @@ nav > .container {
 
 /* --------------------Browse-------------------- */
 
+
 #browse-filters {
   padding-bottom: 0;
 }
@@ -938,6 +939,10 @@ nav > .container {
   grid-template-rows: auto;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+}
+
+#pagination > .container{
+  height: 20vh;
 }
 
 /* --------------------Login-------------------- */
@@ -2284,6 +2289,14 @@ footer {
   margin-bottom: 16px;
 }
 
+.footer-list-icons > li{
+  padding-right: 8px;
+}
+.footer-list-icons > li > a > svg{
+  width: 16px;
+  height: 16px;
+}
+
 .footer-content > div:last-of-type {
   display: grid;
   grid-template-rows: auto;
@@ -2423,6 +2436,11 @@ footer {
 
   .brand {
     font-size: 24px;
+  }
+
+  .pagination-container > button {
+    width: 30px;
+    height: 30px;
   }
 
   .nav-brand {
@@ -2639,6 +2657,12 @@ footer {
 
   .heading-4{
     font-size: 12px;
+  }
+
+  .pagination-container > button {
+    width: 25px;
+    height: 25px;
+    font-size: 11px;
   }
 
   .nav-user-links > li{

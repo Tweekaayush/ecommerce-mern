@@ -20,6 +20,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(getTrendingProducts());
     dispatch(getBestSellingProducts());
+    document.title = 'Primart - Buy Electronics, Furniture, Skin Care etc.'
   }, []);
 
   return !loading ? (

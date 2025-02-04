@@ -42,6 +42,10 @@ const ProductsList = () => {
     if (success) setPage(1);
   }, [success]);
 
+  useEffect(()=>{
+    document.title = 'Products List'
+  }, [])
+
   return !loading ? (
     <section id="product-list">
       <div className="container">

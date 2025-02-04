@@ -35,7 +35,7 @@ exports.sendPasswordResetLink = (user) => {
     }
   );
 
-  return `http://localhost:3000/password/reset?token=${token}&user=${user._id}`;
+  return `${process.env.CLIENT_URL}/password/reset?token=${token}&user=${user._id}`;
   
 };
 

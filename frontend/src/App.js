@@ -20,10 +20,10 @@ import Cart from "./components/Cart";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
 import Loader from "./components/Loader";
-import CreateProduct from "./pages/CreateProduct";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import Wishlist from "./pages/Wishlist";
+const CreateProduct = lazy(()=>import("./pages/CreateProduct"));
+const ForgotPassword = lazy(()=>import("./pages/ForgotPassword"));
+const ResetPassword = lazy(()=>import("./pages/ResetPassword"))
+const Wishlist = lazy(()=>import("./pages/Wishlist"));
 const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
 const Browse = lazy(() => import("./pages/Browse"));
@@ -39,7 +39,7 @@ const ProductsList = lazy(() => import("./pages/ProductsList"));
 const OrdersList = lazy(() => import("./pages/OrdersList"));
 const EditProduct = lazy(() => import("./pages/EditProduct"));
 const UserInfo = lazy(() => import("./pages/UserInfo"));
-const NotFound = lazy(() => import("./components/NotFound"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const App = () => {
   const dispatch = useDispatch();

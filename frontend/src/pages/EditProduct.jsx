@@ -63,6 +63,10 @@ const EditProduct = () => {
     }
   }, [productDetails]);
 
+  useEffect(()=>{
+    document.title = `Edit ${name}'s details`
+  }, [name])
+
   return !loading ? (
     <section id="edit-product">
       <div className="container">

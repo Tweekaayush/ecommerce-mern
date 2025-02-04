@@ -66,6 +66,10 @@ const Product = () => {
     }
   }, [error])
 
+  useEffect(()=>{
+    document.title = name
+  }, [name])
+
   return !loading ? (
     <>
       <section id="product-content">

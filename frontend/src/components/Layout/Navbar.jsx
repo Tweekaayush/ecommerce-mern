@@ -91,15 +91,6 @@ const Navbar = ({ setCartStatus }) => {
                 Browse
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/faq"
-                className={({ isActive }) => (isActive ? "link-active" : "")}
-                onClick={() => setToggle(false)}
-              >
-                FAQ
-              </NavLink>
-            </li>
           </ul>
         </div>
         <ul className="nav-user-links">

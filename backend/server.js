@@ -32,7 +32,7 @@ cloudinary.config({
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.CLIENT_URL,
     credentials:true
 }))
 app.use(cookieParser())
@@ -67,8 +67,8 @@ app.post('/api/v1/payment', async(req, res)=>{
         const session = await stripe.checkout.sessions.create({
             mode: 'payment',
             ui_mode: 'hosted',
-            success_url: `http://localhost:3000/success/${order._id}`,
-            cancel_url: `http://localhost:3000/failed`,
+            success_url: `${process.env.CLIENT_URL}/success/${order._id}`,
+            cancel_url: `${process.env.CLIENT_URL}/failed`,
             line_items: line_items,
             payment_method_types: ['card'],
             customer_email: email,

@@ -107,6 +107,10 @@ const Profile = () => {
     [profileLink]
   );
 
+  useEffect(()=>{
+    document.title = 'Profile'
+  }, [])
+
   return !loading ? (
     <section id="profile">
       <div className="container">

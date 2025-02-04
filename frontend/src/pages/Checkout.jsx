@@ -38,7 +38,7 @@ const Checkout = () => {
       button: "Continue",
     },
     {
-      name: "Address",
+      name: "Shipping Address",
       component: <ShippingAddress />,
       func: function () {
         if (fullAddress) {
@@ -78,6 +78,10 @@ const Checkout = () => {
     const res = checkoutSteps[step - 1].func();
     if (res) setStep((p) => p + 1);
   };
+
+  useEffect(()=>{
+    document.title = checkoutSteps[step-1].name
+  }, [step])
 
   return !loading ? (
     <>
