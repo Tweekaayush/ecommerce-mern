@@ -1,6 +1,6 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const Product = require("../models/productModel");
-// const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary");
 
 exports.getProducts = asyncHandler(async (req, res) => {
   const paginate = 6;
@@ -83,9 +83,9 @@ exports.createProduct = asyncHandler(async (req, res) => {
   const { name, price, description, brand, category, countInStock, image } =
     req.body; 
 
-  // const uploadResult = await cloudinary.uploader.upload(image, {
-  //   folder: "products",
-  // });
+  const uploadResult = await cloudinary.uploader.upload(image, {
+    folder: "products",
+  });
 
   if (uploadResult) {
     const product = new Product({
@@ -95,7 +95,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
       brand,
       category,
       countInStock,
-      // image: uploadResult.url,
+      image: uploadResult.url,
       user: req.user.id,
       numReviews: 0,
     });

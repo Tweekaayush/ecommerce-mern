@@ -1,18 +1,17 @@
 const express = require('express')
-// dotenv.config()
-// const dotenv = require('dotenv')
-// const connectDb = require('./config/db')
-// const product = require('./routes/productRoutes')
-// const user = require('./routes/userRoutes')
-// const order = require('./routes/orderRoutes')
-// const payment = require('./routes/paymentRoutes')
-// const {notFound, errorHandler} = require('./middleware/error')
-// const cors = require('cors')
-// const cookieParser = require('cookie-parser')
-// // const cloudinary = require('cloudinary')
-// const fileUpload = require("express-fileupload")
-// const PORT = process.env.PORT || 5000
-const PORT = 5000
+dotenv.config()
+const dotenv = require('dotenv')
+const connectDb = require('./config/db')
+const product = require('./routes/productRoutes')
+const user = require('./routes/userRoutes')
+const order = require('./routes/orderRoutes')
+const payment = require('./routes/paymentRoutes')
+const {notFound, errorHandler} = require('./middleware/error')
+const cors = require('cors')
+const cookieParser = require('cookie-parser')
+const cloudinary = require('cloudinary')
+const fileUpload = require("express-fileupload")
+const PORT = process.env.PORT || 5000
 const app = express()
 
 
@@ -22,38 +21,38 @@ app.get('/', (req, res)=>{
 
 // connecting database
 
-// connectDb()
+connectDb()
 
-//cloudinary config
+// cloudinary config
 
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET
-// })
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
-// middleware
+middleware
 
-// app.use(express.json())
-// app.use(express.urlencoded({extended: true}))
-// app.use(cors({
-//     origin: [process.env.CLIENT_URL, 'http://localhost:3000'],
-//     credentials:true
-// }))
-// app.use(cookieParser())
-// app.use(fileUpload())
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(cors({
+    origin: [process.env.CLIENT_URL, 'http://localhost:3000'],
+    credentials:true
+}))
+app.use(cookieParser())
+app.use(fileUpload())
 
-// // Routes 
+// Routes 
 
-// app.use('/api/v1/products', product)
-// app.use('/api/v1/users', user)
-// app.use('/api/v1/orders', order)
-// app.use('/api/v1/payment', payment)
+app.use('/api/v1/products', product)
+app.use('/api/v1/users', user)
+app.use('/api/v1/orders', order)
+app.use('/api/v1/payment', payment)
 
-// // error middleware
+// error middleware
 
-// app.use(notFound)
-// app.use(errorHandler)
+app.use(notFound)
+app.use(errorHandler)
 
 
 app.listen(PORT, ()=>{
