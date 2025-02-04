@@ -10,7 +10,6 @@ const {notFound, errorHandler} = require('./middleware/error')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const PORT = process.env.PORT || 5000
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const cloudinary = require('cloudinary')
 const fileUpload = require("express-fileupload")
 const app = express()
@@ -37,7 +36,7 @@ cloudinary.config({
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.CLIENT_URL, 'https://primart-frontend.vercel.app'],
     credentials:true
 }))
 app.use(cookieParser())

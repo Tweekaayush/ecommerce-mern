@@ -271,7 +271,6 @@ exports.addToWishlist = asyncHandler(async (req, res) => {
       message: "Added to wishlist",
     });
   } else {
-    console.log("hi");
     const newWishlist = new Wishlist({
       user: req.user.id,
       wishlist_items: [],
@@ -297,11 +296,8 @@ exports.removeFromWishlist = asyncHandler(async (req, res) => {
 
   if (wishlist) {
     const newWishlist = wishlist.wishlist_items.filter((item) => {
-      console.log(item.product.toString(), req.body._id);
       return item.product.toString() !== req.body._id;
     });
-
-    console.log(newWishlist);
 
     wishlist.wishlist_items = newWishlist;
 

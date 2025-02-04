@@ -122,6 +122,13 @@ exports.updateOrderToDelivered = asyncHandler(async (req, res) => {
   if (order) {
     order.isDelivered = true;
     order.deliveredAt = Date.now();
+
+    if(!order.isPaid){
+      order.isPaid = true
+      order.paidAt = Date.now()
+      order.paymentMethod = 'Cash'
+    }
+
     const updatedOrder = await order.save();
     res.status(200).json({
       success: true,
@@ -181,33 +188,44 @@ exports.ordersInfo = asyncHandler(async (req, res) => {
     },
     { $limit: 6 },
     { $sort: { _id: -1 } },
-  //   {$addFields: {
-  //     dates: {$map: {
-  //         input: {$range: [0, 8]},
-  //         in: {
-  //           date: {$dateAdd: {
-  //               startDate: "2022-10-19T00:00:00.000Z",
-  //               unit: "day",
-  //               amount: "$$this"
-  //           }},
-  //           tasks: []
-  //         }
-  //     }}
-  // }},
-  // {$project: {data: {$concatArrays: ["$data", "$dates"]}}},
-  // {$unwind: "$data"}
+    //   {$addFields: {
+    //     dates: {$map: {
+    //         input: {$range: [0, 8]},
+    //         in: {
+    //           date: {$dateAdd: {
+    //               startDate: "2022-10-19T00:00:00.000Z",
+    //               unit: "day",
+    //               amount: "$$this"
+    //           }},
+    //           tasks: []
+    //         }
+    //     }}
+    // }},
+    // {$project: {data: {$concatArrays: ["$data", "$dates"]}}},
+    // {$unwind: "$data"}
   ]);
 
-  deliveryStatus[0].fill = '#cf4b4b'
-  deliveryStatus[0].name = 'Not Delivered'
-  deliveryStatus[1].fill = '#4bb64b'
-  deliveryStatus[1].name = 'Delivered'
+
+
+  if (deliveryStatus.length) {
+    deliveryStatus.forEach((status)=>{
+      if(status._id === true){
+        status.fill = "#4bb64b"
+        status.name = 'Delivered'
+      }else{
+        status.fill = "#cf4b4b"
+        status.name = 'Not Delivered'
+      }
+    })
+  }
+
+  const totalRevenue = revenueByStatus.reduce((a, c) => a + c.count, 0)
 
   res.status(200).json({
     success: true,
     orderCount,
     deliveryStatus,
-    totalRevenue: revenueByStatus[0].count + revenueByStatus[1].count,
+    totalRevenue,
     revenueByStatus,
     monthlyRevenue,
   });

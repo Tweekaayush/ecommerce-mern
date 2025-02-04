@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
-router.route('/api/v1/payment').post(async(req, res)=>{
+router.route('/').post(async(req, res)=>{
 
     const {order, email} = req.body
-    console.log(order._id)
+    
     try{
 
         const line_items = order.orderItems.map((item)=>{
@@ -57,7 +58,7 @@ router.route('/api/v1/payment').post(async(req, res)=>{
         })
         res.json({session_id:session.id, url: session.url})
     }catch(e){
-        console.log(e)
+
         res.status(500)
     }
 })
