@@ -28,6 +28,7 @@ export const loadUser = createAsyncThunk('loadUser', async(payload, {rejectWithV
 export const signup = createAsyncThunk('signup', async(payload, {rejectWithValue})=>{
     try {
         const res = await axios.post('/api/v1/users/signup', payload,{
+            headers: { "Content-Type": "multipart/form-data" },
             withCredentials: 'include'
         })
         return res.data.user

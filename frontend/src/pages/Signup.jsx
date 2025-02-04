@@ -23,6 +23,7 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    image: "",
   });
   const [formErrors, setFormErrors] = useState({
     firstName: "",
@@ -61,7 +62,19 @@ const Signup = () => {
 
     setFormErrors({ ...err });
 
-    return !err.password && !err.email;
+    return !err.password && !err.email && !err.firstName && !err.lastName;
+  };
+
+  const handleImages = (e) => {
+    const file = Array.from(e.target.files)[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setFormData({ ...formData, image: reader.result });
+      }
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const handleSumbit = (e) => {
@@ -70,16 +83,12 @@ const Signup = () => {
     const v = validate();
 
     if (v) {
-      const img = profileImages.filter(
-        (p) => p.id === formData.firstName[0].toLowerCase()
-      );
-
       dispatch(
         signup({
           name: formData.firstName + " " + formData.lastName,
           email: formData.email,
           password: formData.password,
-          image: img[0].image,
+          image: formData.image,
         })
       );
       setFormData({
@@ -88,22 +97,28 @@ const Signup = () => {
         email: "",
         password: "",
         confirmPassword: "",
-      })
+      });
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === "firstName" && !formData.image) {
+      const img = profileImages.filter((p) => p.id === value[0].toLowerCase());
+
+      setFormData({ ...formData, image: img[0].image });
+    }
   };
 
   useEffect(() => {
     if (_id) navigate("/profile");
   }, [_id]);
 
-  useEffect(()=>{
-    document.title = 'Sign Up'
-  },[])
+  useEffect(() => {
+    document.title = "Sign Up";
+  }, []);
 
   return !loading ? (
     <section id="auth-container">
@@ -177,6 +192,21 @@ const Signup = () => {
                 <p className="form-error-msg">{formErrors.confirmPassword}</p>
               )}
             </label>
+            <label htmlFor="image" className="form-label">
+              <input
+                type="file"
+                name="image"
+                id="image"
+                onChange={handleImages}
+                required
+              />
+              <span>image</span>
+            </label>
+            {formData?.image && (
+              <div className="profile-preview-img">
+                <img src={formData.image} alt={formData.firstName} />
+              </div>
+            )}
             <Link to="/forgot-password" className="form-link">
               Forget password?
             </Link>
