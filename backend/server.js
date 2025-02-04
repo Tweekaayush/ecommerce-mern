@@ -21,7 +21,7 @@ app.get('/', (req, res)=>{
 
 // connecting database
 
-connectDb()
+// connectDb()
 
 //cloudinary config
 
