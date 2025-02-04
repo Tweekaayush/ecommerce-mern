@@ -15,6 +15,11 @@ const cloudinary = require('cloudinary')
 const fileUpload = require("express-fileupload")
 const app = express()
 
+
+app.get('/', (req, res)=>{
+  res.json('Server Running')
+})
+
 // connecting database
 
 connectDb()
@@ -46,10 +51,6 @@ app.use('/api/v1/orders', order)
 app.use('/api/v1/payment', payment)
 
 // error middleware
-
-app.get('/', (req, res)=>{
-  res.json('Server Running')
-})
 
 app.use(notFound)
 app.use(errorHandler)
