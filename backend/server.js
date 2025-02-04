@@ -48,7 +48,7 @@ app.use('/api/v1/payment', payment)
 // error middleware
 
 app.get('/', (req, res)=>{
-  res.send('Server is Running')
+  res.json('Server Running')
 })
 
 app.use(notFound)
