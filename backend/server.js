@@ -45,7 +45,7 @@ app.use(fileUpload())
 // Routes 
 
 app.use('/api/v1/products', product)
-app.use('/api/v1/users', user)
+// app.use('/api/v1/users', user)
 app.use('/api/v1/orders', order)
 app.use('/api/v1/payment', payment)
 
