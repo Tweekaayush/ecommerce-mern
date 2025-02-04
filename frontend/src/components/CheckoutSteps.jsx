@@ -15,7 +15,9 @@ const CheckoutSteps = ({ stepNo, checkoutSteps, setStep }) => {
             disabled={stepNo < i+1}
             onClick={()=>setStep(i+1)}
           >
-            {i+1}
+            {
+              checkoutSteps[i].icon
+            }
           </button>    
           })
         }

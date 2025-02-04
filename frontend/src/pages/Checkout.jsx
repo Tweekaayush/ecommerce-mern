@@ -6,8 +6,9 @@ import CheckoutCart from "../components/CheckoutCart";
 import Payment from "../components/Payment";
 import { saveShippingAddress } from "../slices/cartSlice";
 import { createOrder } from "../slices/orderSlice";
-import { useNavigate } from "react-router-dom";
+import {toast} from 'react-toastify'
 import Loader from "../components/Loader";
+import { FaShoppingCart, FaAddressBook, FaRegCreditCard  } from "react-icons/fa";
 
 const Checkout = () => {
   const {
@@ -36,6 +37,7 @@ const Checkout = () => {
         return true;
       },
       button: "Continue",
+      icon: <FaShoppingCart/>
     },
     {
       name: "Shipping Address",
@@ -45,9 +47,11 @@ const Checkout = () => {
           dispatch(saveShippingAddress({ ...fullAddress }));
           return true;
         }
+        toast.error('Please enter your shipping address')
         return false;
       },
       button: "Continue",
+      icon: <FaAddressBook/>
     },
     {
       name: "Payment",
@@ -66,6 +70,7 @@ const Checkout = () => {
         return false;
       },
       button: "place order",
+      icon: <FaRegCreditCard/>
     },
   ];
 
