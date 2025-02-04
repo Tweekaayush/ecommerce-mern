@@ -7,7 +7,7 @@ const {
 } = require("../utils/generateToken");
 const Wishlist = require("../models/wishlistModel");
 const sendEmail = require("../utils/sendEmail");
-const cloudinary = require("cloudinary");
+const cloudinary = require('cloudinary')
 
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -34,12 +34,7 @@ exports.signup = asyncHandler(async (req, res) => {
     folder: "users",
   });
 
-  const user = await User.create({
-    name,
-    email,
-    password,
-    image: uploadResult.url,
-  });
+  const user = await User.create({ name, email, password, image: uploadResult.url });
 
   if (user) {
     sendToken(user, 201, res);
@@ -50,10 +45,7 @@ exports.signup = asyncHandler(async (req, res) => {
 });
 
 exports.logout = asyncHandler(async (req, res) => {
-  res.cookie("token", null, {
-    expires: new Date(Date.now()),
-    httpOnly: true,
-  });
+  res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully" });
 });
 
