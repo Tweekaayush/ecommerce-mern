@@ -21,7 +21,7 @@ app.get('/', (req, res)=>{
 
 // connecting database
 
-connectDb()
+// connectDb()
 
 //cloudinary config
 
@@ -33,26 +33,26 @@ connectDb()
 
 // middleware
 
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
-app.use(cors({
-    origin: [process.env.CLIENT_URL, 'http://localhost:3000'],
-    credentials:true
-}))
-app.use(cookieParser())
-app.use(fileUpload())
+// app.use(express.json())
+// app.use(express.urlencoded({extended: true}))
+// app.use(cors({
+//     origin: [process.env.CLIENT_URL, 'http://localhost:3000'],
+//     credentials:true
+// }))
+// app.use(cookieParser())
+// app.use(fileUpload())
 
-// Routes 
+// // Routes 
 
-app.use('/api/v1/products', product)
+// app.use('/api/v1/products', product)
 // app.use('/api/v1/users', user)
-app.use('/api/v1/orders', order)
-app.use('/api/v1/payment', payment)
+// app.use('/api/v1/orders', order)
+// app.use('/api/v1/payment', payment)
 
-// error middleware
+// // error middleware
 
-app.use(notFound)
-app.use(errorHandler)
+// app.use(notFound)
+// app.use(errorHandler)
 
 
 app.listen(PORT, ()=>{
