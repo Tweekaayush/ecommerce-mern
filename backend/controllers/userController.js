@@ -45,7 +45,12 @@ exports.signup = asyncHandler(async (req, res) => {
 });
 
 exports.logout = asyncHandler(async (req, res) => {
-  res.clearCookie("token");
+  res.cookie("token",null,{
+    expires: new Date(Date.now()),
+    httpOnly:true,
+    secure: true,
+    sameSite: 'none'
+});
   res.status(200).json({ message: "Logged out successfully" });
 });
 
