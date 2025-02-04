@@ -45,8 +45,7 @@ exports.signup = asyncHandler(async (req, res) => {
 });
 
 exports.logout = asyncHandler(async (req, res) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "Logged out successfully" });
+  res.status(200).clearCookie('token').json({ message: "Logged out successfully" });
 });
 
 exports.getUserProfile = asyncHandler(async (req, res) => {
