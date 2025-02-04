@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 import { clearOrders } from './orderSlice'
 import BASE_URL from '../constants/constants'
+import { addToCart } from './cartSlice'
 
 const initialState = {
     loading: false,
@@ -184,6 +185,21 @@ export const removeFromWishlist = createAsyncThunk('removeFromWishlist', async(p
         })
 
         dispatch(getWishlist())
+        return res.data
+    } catch (error) {
+        return rejectWithValue(error.response.data.message)
+    }
+})
+
+export const moveToCart = createAsyncThunk('moveToCart', async(payload, {dispatch, rejectWithValue})=>{
+    try {
+        const res = await axios.put(`${BASE_URL}/api/v1/users/wishlist/cart`, payload, {
+            withCredentials: true
+        })
+
+        dispatch(getWishlist())
+        dispatch(addToCart({...res.data.product, quantity: 1}))
+
         return res.data
     } catch (error) {
         return rejectWithValue(error.response.data.message)
@@ -379,10 +395,20 @@ const userSlice = createSlice({
         })
         builder.addCase(removeFromWishlist.fulfilled, (state, action)=>{
             state.loading = false
-            state.data.wishlist = action.payload.wishlist
             state.successMessage = action.payload.message
         })
         builder.addCase(removeFromWishlist.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.payload
+        })
+        builder.addCase(moveToCart.pending, (state, action)=>{
+            state.loading = true
+        })
+        builder.addCase(moveToCart.fulfilled, (state, action)=>{
+            state.loading = false
+            state.successMessage = action.payload.message
+        })
+        builder.addCase(moveToCart.rejected, (state, action)=>{
             state.loading = false
             state.error = action.payload
         })

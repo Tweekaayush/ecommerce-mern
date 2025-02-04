@@ -15,6 +15,7 @@ const {
   getWishlist,
   addToWishlist,
   removeFromWishlist,
+  moveToCart,
 } = require("../controllers/userController");
 const { protected, admin } = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -35,6 +36,7 @@ router
   .get(protected, getWishlist)
   .post(protected, addToWishlist)
   .put(protected, removeFromWishlist);
+router.route("/wishlist/cart").put(protected, moveToCart);
 router
   .route("/:id")
   .delete(protected, admin, deleteUser)

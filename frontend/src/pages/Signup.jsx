@@ -105,7 +105,7 @@ const Signup = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    if (name === "firstName" && !formData.image) {
+    if (name === "firstName") {
       const img = profileImages.filter((p) => p.id === value[0].toLowerCase());
 
       setFormData({ ...formData, image: img[0].image });
@@ -198,7 +198,6 @@ const Signup = () => {
                 name="image"
                 id="image"
                 onChange={handleImages}
-                required
               />
               <span>image</span>
             </label>

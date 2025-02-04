@@ -7,7 +7,9 @@ const {
 } = require("../utils/generateToken");
 const Wishlist = require("../models/wishlistModel");
 const sendEmail = require("../utils/sendEmail");
-const cloudinary = require('cloudinary')
+const cloudinary = require("cloudinary");
+const { findOne } = require("../models/productModel");
+const Product = require('../models/productModel')
 
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -34,7 +36,12 @@ exports.signup = asyncHandler(async (req, res) => {
     folder: "users",
   });
 
-  const user = await User.create({ name, email, password, image: uploadResult.url });
+  const user = await User.create({
+    name,
+    email,
+    password,
+    image: uploadResult.url,
+  });
 
   if (user) {
     sendToken(user, 201, res);
@@ -45,12 +52,12 @@ exports.signup = asyncHandler(async (req, res) => {
 });
 
 exports.logout = asyncHandler(async (req, res) => {
-  res.cookie("token",null,{
+  res.cookie("token", null, {
     expires: new Date(Date.now()),
-    httpOnly:true,
+    httpOnly: true,
     secure: true,
-    sameSite: 'none'
-});
+    sameSite: "none",
+  });
   res.status(200).json({ message: "Logged out successfully" });
 });
 
@@ -317,3 +324,33 @@ exports.removeFromWishlist = asyncHandler(async (req, res) => {
     throw new Error("Some error occured");
   }
 });
+
+exports.moveToCart = asyncHandler(async(req, res)=>{
+
+  const {product_id} = req.body
+
+  const wishlist = await Wishlist.findOne({user: req.user.id})
+
+  const product = await Product.findById(product_id)
+
+  if(product.countInStock > 0){
+
+    const newWishlist = wishlist.wishlist_items.filter((item) => {
+      return item.product.toString() !== product_id;
+    });
+
+    wishlist.wishlist_items = newWishlist;
+
+    const updatedWishlist = await wishlist.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Moved To Cart',
+      product
+    })
+  }else{
+    res.status(400)
+    throw new Error('Product Out of Stock')
+  }
+
+})

@@ -2,32 +2,32 @@ import { useEffect, useState } from "react";
 import { LuHeart, LuShoppingCart } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import Rating from "./Rating";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/cartSlice";
 import {toast} from 'react-toastify'
-import { addToWishlist, removeFromWishlist } from "../slices/userSlice";
+import { addToWishlist, moveToCart, removeFromWishlist } from "../slices/userSlice";
 
 const WishlistCard = (props) => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const { product, name, image, price, rating,} = props
+  const {cartItems} = useSelector((state)=>state.cart)
 
   const handleProductClick = (e) => {
     e.stopPropagation();
     navigate(`/product/${product}`);
   };
 
-//   const handleAddToCart = (e) => {
-//     e.stopPropagation();
-//     dispatch(
-//           addToCart({
-//             ...productDetails,
-//             quantity: 1,
-//           })
-//         )
-//     toast.success('Added to cart')
-//   };
+  const handleMoveToCart = (e) => {
+    e.stopPropagation();
+    const f = cartItems.find((item)=>item._id === product)
+    if(!f){
+      dispatch(moveToCart({product_id: product}))
+    }else{
+      toast.error('Item already in cart')
+    }
+  };
 
   const handleRemoveFromWishlist = (e) => {
     e.stopPropagation();
@@ -50,7 +50,7 @@ const WishlistCard = (props) => {
         <h4>${price}</h4>
         <div className="wishlist-card-options">
             <button onClick={handleRemoveFromWishlist}>Remove</button>
-            <button >Move to Cart</button>
+            <button onClick={handleMoveToCart}>Move to Cart</button>
         </div>
       </div>
     </div>
