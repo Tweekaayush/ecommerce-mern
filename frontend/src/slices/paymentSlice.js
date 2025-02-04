@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 import {loadStripe} from '@stripe/stripe-js';
+import BASE_URL from '../constants/constants'
 
 
 const initialState = {
@@ -12,7 +13,7 @@ export const makePayment = createAsyncThunk('makePayment', async(payload, {rejec
     try {
         const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY)
 
-        const res = await axios.post(`/api/v1/payment`, payload, {
+        const res = await axios.post(`${BASE_URL}/api/v1/payment`, payload, {
             withCredentials: true
         })
 

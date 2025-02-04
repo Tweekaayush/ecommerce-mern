@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 import { clearOrders } from './orderSlice'
+import BASE_URL from '../constants/constants'
 
 const initialState = {
     loading: false,
@@ -16,7 +17,7 @@ const initialState = {
 
 export const loadUser = createAsyncThunk('loadUser', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.get('/api/v1/users/profile', {
+        const res = await axios.get(`${BASE_URL}/api/v1/users/profile`, {
             withCredentials: true
         })
         return res.data.user
@@ -27,7 +28,7 @@ export const loadUser = createAsyncThunk('loadUser', async(payload, {rejectWithV
 
 export const signup = createAsyncThunk('signup', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.post('/api/v1/users/signup', payload,{
+        const res = await axios.post(`${BASE_URL}/api/v1/users/signup`, payload,{
             headers: { "Content-Type": "multipart/form-data" },
             withCredentials: 'include'
         })
@@ -39,7 +40,7 @@ export const signup = createAsyncThunk('signup', async(payload, {rejectWithValue
 
 export const login = createAsyncThunk('login', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.post('/api/v1/users/login', payload,{
+        const res = await axios.post(`${BASE_URL}/api/v1/users/login`, payload,{
             withCredentials: 'include'
         })
         return res.data.user
@@ -50,7 +51,7 @@ export const login = createAsyncThunk('login', async(payload, {rejectWithValue})
 
 export const logout = createAsyncThunk('logout', async(payload, {dispatch, rejectWithValue})=>{
     try {
-        const res = await axios.post('/api/v1/users/logout', payload, {
+        const res = await axios.post(`${BASE_URL}/api/v1/users/logout`, payload, {
           withCredentials: 'include'  
         })
 
@@ -65,7 +66,7 @@ export const logout = createAsyncThunk('logout', async(payload, {dispatch, rejec
 
 export const forgetPassword = createAsyncThunk('forgetPassword', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.post('/api/v1/users/forget', payload, {
+        const res = await axios.post(`${BASE_URL}/api/v1/users/forget`, payload, {
           withCredentials: 'include'  
         })
 
@@ -78,7 +79,7 @@ export const forgetPassword = createAsyncThunk('forgetPassword', async(payload, 
 
 export const resetPassword = createAsyncThunk('resetPassword', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.post('/api/v1/users/reset', payload, {
+        const res = await axios.post(`${BASE_URL}/api/v1/users/reset`, payload, {
           withCredentials: 'include'  
         })
 
@@ -91,7 +92,7 @@ export const resetPassword = createAsyncThunk('resetPassword', async(payload, {r
 
 export const updateUserProfile = createAsyncThunk('updateUserProfile', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.put(`/api/v1/users/profile`, payload, {
+        const res = await axios.put(`${BASE_URL}/api/v1/users/profile`, payload, {
             withCredentials: true
         })
 
@@ -103,7 +104,7 @@ export const updateUserProfile = createAsyncThunk('updateUserProfile', async(pay
 
 export const getAllUsers= createAsyncThunk('getAllUser', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.get(`/api/v1/users/all?page=${payload}`,{
+        const res = await axios.get(`${BASE_URL}/api/v1/users/all?page=${payload}`,{
             withCredentials: true
         })
 
@@ -115,7 +116,7 @@ export const getAllUsers= createAsyncThunk('getAllUser', async(payload, {rejectW
 
 export const deleteUser= createAsyncThunk('deleteUser', async(payload, {rejectWithValue, dispatch})=>{
     try {
-        const res = await axios.delete(`/api/v1/users/${payload}`,{
+        const res = await axios.delete(`${BASE_URL}/api/v1/users/${payload}`,{
             withCredentials: true
         })
 
@@ -130,7 +131,7 @@ export const deleteUser= createAsyncThunk('deleteUser', async(payload, {rejectWi
 
 export const updateUser = createAsyncThunk('updateUser', async(payload, {dispatch, rejectWithValue})=>{
     try {
-        const res = await axios.put(`/api/v1/users/${payload._id}`, payload, {
+        const res = await axios.put(`${BASE_URL}/api/v1/users/${payload._id}`, payload, {
             withCredentials: true
         })
 
@@ -142,7 +143,7 @@ export const updateUser = createAsyncThunk('updateUser', async(payload, {dispatc
 
 export const getUserById = createAsyncThunk('getUserById', async(payload, {dispatch, rejectWithValue})=>{
     try {
-        const res = await axios.get(`/api/v1/users/${payload}`, {
+        const res = await axios.get(`${BASE_URL}/api/v1/users/${payload}`, {
             withCredentials: true
         })
 
@@ -155,7 +156,7 @@ export const getUserById = createAsyncThunk('getUserById', async(payload, {dispa
 
 export const getUserCount = createAsyncThunk('getUserCount', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.get('/api/v1/users/count', {
+        const res = await axios.get(`${BASE_URL}/api/v1/users/count`, {
             withCredentials: true
         })
 
@@ -167,7 +168,7 @@ export const getUserCount = createAsyncThunk('getUserCount', async(payload, {rej
 
 export const addToWishlist = createAsyncThunk('addToWishlist', async(payload, {dispatch, rejectWithValue})=>{
     try {
-        const res = await axios.post('/api/v1/users/wishlist', payload, {
+        const res = await axios.post(`${BASE_URL}/api/v1/users/wishlist`, payload, {
             withCredentials: true
         })
         return res.data
@@ -178,7 +179,7 @@ export const addToWishlist = createAsyncThunk('addToWishlist', async(payload, {d
 
 export const removeFromWishlist = createAsyncThunk('removeFromWishlist', async(payload, {dispatch, rejectWithValue})=>{
     try {
-        const res = await axios.put('/api/v1/users/wishlist', payload, {
+        const res = await axios.put(`${BASE_URL}/api/v1/users/wishlist`, payload, {
             withCredentials: true
         })
 
@@ -191,7 +192,7 @@ export const removeFromWishlist = createAsyncThunk('removeFromWishlist', async(p
 
 export const getWishlist = createAsyncThunk('getWishlist', async(payload, {rejectWithValue})=>{
     try {
-        const res = await axios.get('/api/v1/users/wishlist', {
+        const res = await axios.get(`${BASE_URL}/api/v1/users/wishlist`, {
             withCredentials: true
         })
         return res.data

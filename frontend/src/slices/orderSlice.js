@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 import { clearCartItems } from './cartSlice'
 import { makePayment } from './paymentSlice'
+import BASE_URL from '../constants/constants'
 
 const initialState = {
     loading: false,
@@ -18,7 +19,7 @@ export const createOrder = createAsyncThunk('createOrder', async(payload, {rejec
 
         const {email} = getState().user.data.user
         
-        const res = await axios.post('/api/v1/orders', payload, {
+        const res = await axios.post(`${BASE_URL}/api/v1/orders`, payload, {
             withCredentials: 'include'
         })
 
@@ -32,7 +33,7 @@ export const createOrder = createAsyncThunk('createOrder', async(payload, {rejec
 
 export const getOrderById = createAsyncThunk('getOrderById', async(payload, {rejectWithValue, dispatch})=>{
     try {
-        const res = await axios.get(`/api/v1/orders/${payload}`, {
+        const res = await axios.get(`${BASE_URL}/api/v1/orders/${payload}`, {
             withCredentials: 'include'
         })
 
@@ -44,7 +45,7 @@ export const getOrderById = createAsyncThunk('getOrderById', async(payload, {rej
 
 export const getMyOrders = createAsyncThunk('getMyOrders', async(payload, {rejectWithValue, dispatch})=>{
     try {
-        const res = await axios.get(`/api/v1/orders/user?page=${payload}`, {
+        const res = await axios.get(`${BASE_URL}/api/v1/orders/user?page=${payload}`, {
             withCredentials: 'include'
         })
 
@@ -56,7 +57,7 @@ export const getMyOrders = createAsyncThunk('getMyOrders', async(payload, {rejec
 
 export const getAllOrders = createAsyncThunk('getAllOrders', async(payload, {rejectWithValue, dispatch})=>{
     try {
-        const res = await axios.get(`/api/v1/orders?page=${payload}`, {
+        const res = await axios.get(`${BASE_URL}/api/v1/orders?page=${payload}`, {
             withCredentials: 'include'
         })
 
@@ -68,7 +69,7 @@ export const getAllOrders = createAsyncThunk('getAllOrders', async(payload, {rej
 
 export const updateOrderToDelivered = createAsyncThunk('updateOrderToDelivered', async(payload, {dispatch, rejectWithValue})=>{
     try {
-        const res = await axios.put(`/api/v1/orders/${payload}/deliver`, payload, {
+        const res = await axios.put(`${BASE_URL}/api/v1/orders/${payload}/deliver`, payload, {
             withCredentials: true
         })
 
@@ -80,7 +81,7 @@ export const updateOrderToDelivered = createAsyncThunk('updateOrderToDelivered',
 
 export const updateOrderToPaid = createAsyncThunk('updateOrderToPaid', async(payload, {dispatch, rejectWithValue})=>{
     try {
-        const res = await axios.put(`/api/v1/orders/${payload}/pay`, payload, {
+        const res = await axios.put(`${BASE_URL}/api/v1/orders/${payload}/pay`, payload, {
             withCredentials: true
         })
 
@@ -91,7 +92,7 @@ export const updateOrderToPaid = createAsyncThunk('updateOrderToPaid', async(pay
 
 export const getOrdersInfo = createAsyncThunk('ordersInfo', async(payload, {dispatch, rejectWithValue})=>{
     try {
-        const res = await axios.get(`/api/v1/orders/info`, {
+        const res = await axios.get(`${BASE_URL}/api/v1/orders/info`, {
             withCredentials: true
         })
 
