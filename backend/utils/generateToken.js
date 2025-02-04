@@ -12,7 +12,7 @@ exports.sendToken = (user, statusCode, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-    sameSite: "strict",
+    sameSite: "Strict",
     expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   };
 
