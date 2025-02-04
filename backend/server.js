@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 5000
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const cloudinary = require('cloudinary')
 const fileUpload = require("express-fileupload")
-
 const app = express()
 
 // connecting database
@@ -47,6 +46,10 @@ app.use('/api/v1/orders', order)
 app.use('/api/v1/payment', payment)
 
 // error middleware
+
+app.get('/', (req, res)=>{
+  res.send('Server is Running')
+})
 
 app.use(notFound)
 app.use(errorHandler)
