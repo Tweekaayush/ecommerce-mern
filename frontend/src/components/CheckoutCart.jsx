@@ -38,7 +38,7 @@ const CheckoutCartItem = (props) => {
           {update && <button onClick={increaseQty} disabled={qty === countInStock}>+</button>}
         </div>
       </div>
-      <p>${price * quantity}</p>
+      <p>${(price * quantity).toFixed(2)}</p>
     </div>
   );
 };
