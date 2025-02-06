@@ -4,15 +4,20 @@ import { useNavigate } from "react-router-dom";
 import Rating from "./Rating";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/cartSlice";
-import {toast} from 'react-toastify'
-import { addToWishlist, moveToCart, removeFromWishlist } from "../slices/userSlice";
+import { toast } from "react-toastify";
+import {
+  addToWishlist,
+  moveToCart,
+  removeFromWishlist,
+} from "../slices/userSlice";
+import { ImSpinner2 } from "react-icons/im";
 
 const WishlistCard = (props) => {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { product, name, image, price, rating,} = props
-  const {cartItems} = useSelector((state)=>state.cart)
+  const { product, name, image, price, rating } = props;
+  const { cartItems } = useSelector((state) => state.cart);
+  const { loading } = useSelector((state) => state.user);
 
   const handleProductClick = (e) => {
     e.stopPropagation();
@@ -21,24 +26,21 @@ const WishlistCard = (props) => {
 
   const handleMoveToCart = (e) => {
     e.stopPropagation();
-    const f = cartItems.find((item)=>item._id === product)
-    if(!f){
-      dispatch(moveToCart({product_id: product}))
-    }else{
-      toast.error('Item already in cart')
+    const f = cartItems.find((item) => item._id === product);
+    if (!f) {
+      dispatch(moveToCart({ product_id: product }));
+    } else {
+      toast.error("Item already in cart");
     }
   };
 
   const handleRemoveFromWishlist = (e) => {
     e.stopPropagation();
-    dispatch(removeFromWishlist({_id: product}))
+    dispatch(removeFromWishlist({ _id: product }));
   };
 
   return (
-    <div
-      className="product-card"
-      onClick={handleProductClick}
-    >
+    <div className="product-card" onClick={handleProductClick}>
       <div className="product-card-img">
         <img src={image} alt={name} />
       </div>
@@ -49,8 +51,12 @@ const WishlistCard = (props) => {
         </div>
         <h4>${price}</h4>
         <div className="wishlist-card-options">
-            <button onClick={handleRemoveFromWishlist}>Remove</button>
-            <button onClick={handleMoveToCart}>Move to Cart</button>
+          <button onClick={handleRemoveFromWishlist} disabled={loading}>
+            Remove
+          </button>
+          <button onClick={handleMoveToCart} disabled={loading}>
+            Move to cart
+          </button>
         </div>
       </div>
     </div>

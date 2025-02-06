@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { forgetPassword } from "../slices/userSlice";
+import { ImSpinner2 } from "react-icons/im";
 
 const ForgotPassword = () => {
   const { state } = useLocation();
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('')
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     loading,
     data: {
@@ -17,21 +18,20 @@ const ForgotPassword = () => {
     error,
   } = useSelector((state) => state.user);
 
-  const validate = () =>{
-    let error = ''
+  const validate = () => {
+    let error = "";
     const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if(!pattern.test(email)){
-        error = 'enter a valid email'
+    if (!pattern.test(email)) {
+      error = "enter a valid email";
     }
 
-    setEmailError(error)
-    return error === ''
-  }
+    setEmailError(error);
+    return error === "";
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(validate())
-        dispatch(forgetPassword({email}))
+    if (validate()) dispatch(forgetPassword({ email }));
   };
 
   useEffect(() => {
@@ -40,18 +40,16 @@ const ForgotPassword = () => {
     }
   }, [_id]);
 
-  useEffect(()=>{
-    document.title = 'Forget Password'
-  },[])
+  useEffect(() => {
+    document.title = "Forget Password";
+  }, []);
 
   return (
     <section id="auth-container">
       <div className="container">
         <div className="form-container">
           <h1 className="heading-2">Forget Password</h1>
-          <p className="body-text-1">
-            We'll send you a password reset link.
-          </p>
+          <p className="body-text-1">We'll send you a password reset link.</p>
           <form onSubmit={handleSubmit}>
             <label htmlFor="email" className="form-label">
               <input
@@ -62,11 +60,11 @@ const ForgotPassword = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <span>email</span>
-              {
-                emailError && <p className="form-error-msg">{emailError}</p>
-              }
+              {emailError && <p className="form-error-msg">{emailError}</p>}
             </label>
-            <input type="submit" value="Send" className="button-1" />
+            <button type="submit" disabled={loading} className="button-1">
+              {loading ? <ImSpinner2 className="fa-spin" /> : "Send"}
+            </button>
           </form>
         </div>
       </div>

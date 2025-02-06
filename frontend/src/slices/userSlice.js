@@ -298,6 +298,7 @@ const userSlice = createSlice({
             state.loading = false
             state.data.usersListAdmin = action.payload.users
             state.data.totalPages = action.payload.totalPages
+            state.data.page = action.payload.page
         })
         builder.addCase(getAllUsers.rejected, (state, action)=>{
             state.loading = false

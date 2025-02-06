@@ -6,9 +6,10 @@ import CheckoutCart from "../components/CheckoutCart";
 import Payment from "../components/Payment";
 import { saveShippingAddress } from "../slices/cartSlice";
 import { createOrder } from "../slices/orderSlice";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import Loader from "../components/Loader";
-import { FaShoppingCart, FaAddressBook, FaRegCreditCard  } from "react-icons/fa";
+import { FaShoppingCart, FaAddressBook, FaRegCreditCard } from "react-icons/fa";
+import { ImSpinner2 } from "react-icons/im";
 
 const Checkout = () => {
   const {
@@ -21,11 +22,12 @@ const Checkout = () => {
     shippingAddress,
   } = useSelector((state) => state.cart);
   const {
-    loading,
+    loading: userLoading,
     data: {
       user: { fullAddress },
     },
   } = useSelector((state) => state.user);
+  const { loading: orderLoading } = useSelector(state => state.orders);
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
 
@@ -37,7 +39,7 @@ const Checkout = () => {
         return true;
       },
       button: "Continue",
-      icon: <FaShoppingCart/>
+      icon: <FaShoppingCart />,
     },
     {
       name: "Shipping Address",
@@ -47,11 +49,11 @@ const Checkout = () => {
           dispatch(saveShippingAddress({ ...fullAddress }));
           return true;
         }
-        toast.error('Please enter your shipping address')
+        toast.error("Please enter your shipping address");
         return false;
       },
       button: "Continue",
-      icon: <FaAddressBook/>
+      icon: <FaAddressBook />,
     },
     {
       name: "Payment",
@@ -70,7 +72,7 @@ const Checkout = () => {
         return false;
       },
       button: "place order",
-      icon: <FaRegCreditCard/>
+      icon: <FaRegCreditCard />,
     },
   ];
 
@@ -84,11 +86,11 @@ const Checkout = () => {
     if (res) setStep((p) => p + 1);
   };
 
-  useEffect(()=>{
-    document.title = checkoutSteps[step-1].name
-  }, [step])
+  useEffect(() => {
+    document.title = checkoutSteps[step - 1].name;
+  }, [step]);
 
-  return !loading ? (
+  return (
     <>
       <CheckoutSteps
         stepNo={step}
@@ -116,15 +118,21 @@ const Checkout = () => {
               <h4 className="heading-4">total price</h4>
               <p>${totalPrice}</p>
             </div>
-            <button className="button-1" onClick={handleNextStep}>
-              {checkoutSteps[step - 1]?.button}
+            <button
+              className="button-1"
+              onClick={handleNextStep}
+              disabled={orderLoading || userLoading}
+            >
+              {orderLoading || userLoading ? (
+                <ImSpinner2 />
+              ) : (
+                checkoutSteps[step - 1]?.button
+              )}
             </button>
           </div>
         </div>
       </section>
     </>
-  ) : (
-    <Loader />
   );
 };
 

@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { signup } from "../slices/userSlice";
 import { profileImages } from "../avatarlist";
-import { clearUsersErrors } from "../slices/userSlice";
-import { toast, Bounce } from "react-toastify";
 import Loader from "../components/Loader";
+import { ImSpinner2 } from "react-icons/im";
 
 const Signup = () => {
   const {
@@ -120,7 +119,7 @@ const Signup = () => {
     document.title = "Sign Up";
   }, []);
 
-  return !loading ? (
+  return (
     <section id="auth-container">
       <div className="container">
         <div className="form-container">
@@ -206,10 +205,9 @@ const Signup = () => {
                 <img src={formData.image} alt={formData.firstName} />
               </div>
             )}
-            <Link to="/forgot-password" className="form-link">
-              Forget password?
-            </Link>
-            <input type="submit" value="Register" className="button-1" />
+            <button type="submit" disabled={loading} className="button-1">
+              {loading ? <ImSpinner2 className="fa-spin" /> : "Register"}
+            </button>
             <p>
               Already have an account?{" "}
               <Link to="/login" className="form-link">
@@ -220,8 +218,6 @@ const Signup = () => {
         </div>
       </div>
     </section>
-  ) : (
-    <Loader />
   );
 };
 

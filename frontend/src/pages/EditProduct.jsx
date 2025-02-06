@@ -8,6 +8,7 @@ import {
 } from "../slices/productSlice";
 import { toast, Bounce } from "react-toastify";
 import Loader from "../components/Loader";
+import { ImSpinner2 } from "react-icons/im";
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -63,11 +64,11 @@ const EditProduct = () => {
     }
   }, [productDetails]);
 
-  useEffect(()=>{
-    document.title = `Edit ${name}'s details`
-  }, [name])
+  useEffect(() => {
+    document.title = `Edit ${name}'s details`;
+  }, [name]);
 
-  return !loading ? (
+  return (
     <section id="edit-product">
       <div className="container">
         <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
@@ -80,7 +81,7 @@ const EditProduct = () => {
               type="text"
               name="name"
               id="name"
-              value={formData.name}
+              value={formData?.name}
               onChange={handleChange}
             />
             <span>Name</span>
@@ -91,7 +92,7 @@ const EditProduct = () => {
               name="description"
               id="description"
               rows={5}
-              value={formData.description}
+              value={formData?.description}
               onChange={handleChange}
             />
             <span>Description</span>
@@ -101,7 +102,7 @@ const EditProduct = () => {
               type="number"
               name="price"
               id="price"
-              value={formData.price}
+              value={formData?.price}
               onChange={handleChange}
             />
             <span>Price</span>
@@ -111,7 +112,7 @@ const EditProduct = () => {
               type="text"
               name="brand"
               id="brand"
-              value={formData.brand}
+              value={formData?.brand}
               onChange={handleChange}
             />
             <span>brand</span>
@@ -121,7 +122,7 @@ const EditProduct = () => {
               type="text"
               name="category"
               id="category"
-              value={formData.category}
+              value={formData?.category}
               onChange={handleChange}
             />
             <span>category</span>
@@ -131,17 +132,17 @@ const EditProduct = () => {
               type="number"
               name="countInStock"
               id="countInStock"
-              value={formData.countInStock}
+              value={formData?.countInStock}
               onChange={handleChange}
             />
             <span>stock</span>
           </label>
-          <input type="submit" value="update" className="button-1" />
+          <button type="submit" disabled={loading} className="button-1">
+            {loading ? <ImSpinner2 className="fa-spin" /> : "Update"}
+          </button>
         </form>
       </div>
     </section>
-  ) : (
-    <Loader />
   );
 };
 

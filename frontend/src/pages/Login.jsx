@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUsersErrors, login } from "../slices/userSlice";
 import { toast, Bounce } from "react-toastify";
 import Loader from "../components/Loader";
+import { ImSpinner2 } from "react-icons/im";
 
 const Login = () => {
   const { state } = useLocation();
@@ -50,12 +51,12 @@ const Login = () => {
 
     const v = validate();
     if (v) {
-      dispatch(login({ ...formData }))
+      dispatch(login({ ...formData }));
       setFormData({
         email: "",
         password: "",
-      })
-    };
+      });
+    }
   };
 
   const handleChange = (e) => {
@@ -69,7 +70,7 @@ const Login = () => {
     }
   }, [_id]);
 
-  return !loading ? (
+  return (
     <section id="auth-container">
       <div className="container">
         <div className="form-container">
@@ -105,7 +106,7 @@ const Login = () => {
             <Link to="/password/forget" className="form-link">
               Forget password?
             </Link>
-            <input type="submit" value="Login" className="button-1" />
+            <button type="submit" disabled={loading} className="button-1">{loading ? <ImSpinner2 className="fa-spin"/> : "Login"}</button>
             <p>
               Don't have an account?{" "}
               <Link to="/signup" className="form-link">
@@ -116,8 +117,6 @@ const Login = () => {
         </div>
       </div>
     </section>
-  ) : (
-    <Loader />
   );
 };
 

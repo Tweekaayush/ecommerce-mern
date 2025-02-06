@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../slices/productSlice";
 import Loader from "../components/Loader";
+import { ImSpinner2 } from "react-icons/im";
 
 const CreateProduct = () => {
   const [formData, setFormData] = useState({
@@ -47,13 +48,22 @@ const CreateProduct = () => {
       formData.image !== ""
     ) {
       dispatch(createProduct({ ...formData }));
+      setFormData({
+        name: "",
+        description: "",
+        brand: "",
+        category: "",
+        price: "",
+        countInStock: "",
+        image: "",
+      })
     }
   };
 
-  useEffect(()=>{
-    document.title = 'Create a new Product'
-  },[])
-  return !loading ? (
+  useEffect(() => {
+    document.title = "Create a new Product";
+  }, []);
+  return (
     <section id="create-product">
       <div className="container">
         <h1 className="dashboard-link" onClick={() => navigate("/dashboard")}>
@@ -66,7 +76,7 @@ const CreateProduct = () => {
               type="text"
               name="name"
               id="name"
-              value={formData.name}
+              value={formData?.name}
               onChange={handleChange}
               required
             />
@@ -78,7 +88,7 @@ const CreateProduct = () => {
               name="description"
               id="description"
               rows={5}
-              value={formData.description}
+              value={formData?.description}
               onChange={handleChange}
               required
             />
@@ -89,7 +99,7 @@ const CreateProduct = () => {
               type="number"
               name="price"
               id="price"
-              value={formData.price}
+              value={formData?.price}
               onChange={handleChange}
               required
             />
@@ -100,7 +110,7 @@ const CreateProduct = () => {
               type="text"
               name="brand"
               id="brand"
-              value={formData.brand}
+              value={formData?.brand}
               onChange={handleChange}
               required
             />
@@ -111,7 +121,7 @@ const CreateProduct = () => {
               type="text"
               name="category"
               id="category"
-              value={formData.category}
+              value={formData?.category}
               onChange={handleChange}
               required
             />
@@ -122,7 +132,7 @@ const CreateProduct = () => {
               type="number"
               name="countInStock"
               id="countInStock"
-              value={formData.countInStock}
+              value={formData?.countInStock}
               onChange={handleChange}
               required
             />
@@ -140,15 +150,15 @@ const CreateProduct = () => {
           </label>
           {formData.image && (
             <div className="product-img-preview">
-              <img src={formData.image} alt={formData.name} />
+              <img src={formData?.image} alt={formData?.name} />
             </div>
           )}
-          <input type="submit" value="create" className="button-1" />
+          <button type="submit" disabled={loading} className="button-1">
+            {loading ? <ImSpinner2 className="fa-spin" /> : "Create"}
+          </button>
         </form>
       </div>
     </section>
-  ) : (
-    <Loader />
   );
 };
 

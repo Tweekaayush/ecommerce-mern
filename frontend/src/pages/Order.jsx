@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getOrderById, updateOrderToDelivered } from "../slices/orderSlice";
 import Loader from "../components/Loader";
+import { ImSpinner2 } from "react-icons/im";
 
 const OrderItem = (props) => {
   const { _id, name, brand, image, quantity, price } = props;
@@ -65,7 +66,7 @@ const Order = () => {
     document.title = 'Order Details'
   },[])
 
-  return !userLoading && !orderLoading ? (
+  return (
     <section id="order">
       <div className="container">
         <div className="order-container">
@@ -120,16 +121,14 @@ const Order = () => {
             <p>${totalPrice}</p>
           </div>
           {isAdmin && !isDelivered && (
-            <button className="button-1" onClick={deliverOrder}>
-              mark as delivered
+            <button className="button-1" onClick={deliverOrder} disabled={orderLoading}>
+              {orderLoading? <ImSpinner2 className="fa-spin"/> :'mark as delivered'}
             </button>
           )}
         </div>
       </div>
     </section>
-  ) : (
-    <Loader />
-  );
+  )
 };
 
 export default Order;

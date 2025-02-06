@@ -11,11 +11,15 @@ const UsersList = () => {
   const navigate = useNavigate();
   const {
     loading,
-    data: { usersListAdmin, totalPages },
+    data: { usersListAdmin, totalPages, page:currentPage },
     error,
   } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
+
+  useEffect(()=>{
+    if(currentPage !== page) setPage(currentPage)
+  }, [currentPage])
 
   useEffect(() => {
     dispatch(getAllUsers(page));

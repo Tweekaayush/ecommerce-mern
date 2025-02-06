@@ -113,7 +113,7 @@ const Product = () => {
                   Add to cart
                 </button>
               )}
-              <button className="button-2" onClick={()=>dispatch(addToWishlist(productDetails))}>Wishlist</button>
+              <button className="button-2" onClick={()=>dispatch(addToWishlist(productDetails))} disabled={loading}>Wishlist</button>
             </div>
           </div>
         </div>

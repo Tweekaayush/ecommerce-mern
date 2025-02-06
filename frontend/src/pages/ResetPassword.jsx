@@ -2,21 +2,22 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetPassword } from "../slices/userSlice";
+import { ImSpinner2 } from "react-icons/im";
 
 const ResetPassword = () => {
   const { state, search } = useLocation();
-  const token = new URLSearchParams(search).get('token')
-  const user = new URLSearchParams(search).get('user')
+  const token = new URLSearchParams(search).get("token");
+  const user = new URLSearchParams(search).get("user");
   const [formData, setFormData] = useState({
-    password: '',
-    confirmPassword: ''
+    password: "",
+    confirmPassword: "",
   });
   const [formDataError, setFormDataError] = useState({
-    password: '',
-    confirmPassword: ''
+    password: "",
+    confirmPassword: "",
   });
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     loading,
     data: {
@@ -26,28 +27,28 @@ const ResetPassword = () => {
     error,
   } = useSelector((state) => state.user);
 
-  const validate = () =>{
+  const validate = () => {
     let error = {
-        password: '',
-        confirmPassword: ''
+      password: "",
+      confirmPassword: "",
+    };
+
+    if (formData.password === "") {
+      error.password = "Please enter a new password";
     }
 
-    if(formData.password === ''){
-        error.password = 'Please enter a new password'
+    if (formData.password !== formData.confirmPassword) {
+      error.confirmPassword = "Password does not match";
     }
 
-    if(formData.password !== formData.confirmPassword){
-        error.confirmPassword = 'Password does not match'
-    }
-
-    setFormDataError(error)
-    return error.password === '' && error.confirmPassword === ''
-  }
+    setFormDataError(error);
+    return error.password === "" && error.confirmPassword === "";
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(validate())
-        dispatch(resetPassword({password: formData.password, user, token}))
+    if (validate())
+      dispatch(resetPassword({ password: formData.password, user, token }));
   };
 
   useEffect(() => {
@@ -56,24 +57,22 @@ const ResetPassword = () => {
     }
   }, [_id]);
 
-  useEffect(()=>{
-    if(successMessage){
-        navigate('/login')
+  useEffect(() => {
+    if (successMessage) {
+      navigate("/login");
     }
-  }, [successMessage])
+  }, [successMessage]);
 
-  useEffect(()=>{
-    document.title = 'Reset Password'
-  }, [])
+  useEffect(() => {
+    document.title = "Reset Password";
+  }, []);
 
   return (
     <section id="auth-container">
       <div className="container">
         <div className="form-container">
           <h1 className="heading-2">Reset Password</h1>
-          <p className="body-text-1">
-            Make a new password.
-          </p>
+          <p className="body-text-1">Make a new password.</p>
           <form onSubmit={handleSubmit}>
             <label htmlFor="password" className="form-label">
               <input
@@ -81,12 +80,14 @@ const ResetPassword = () => {
                 name="password"
                 id="password"
                 value={formData.password}
-                onChange={(e) => setFormData({...formData, [e.target.name]:e.target.value})}
+                onChange={(e) =>
+                  setFormData({ ...formData, [e.target.name]: e.target.value })
+                }
               />
               <span>password</span>
-              {
-                formDataError.password && <p className="form-error-msg">{formDataError.password}</p>
-              }
+              {formDataError.password && (
+                <p className="form-error-msg">{formDataError.password}</p>
+              )}
             </label>
             <label htmlFor="confirmPassword" className="form-label">
               <input
@@ -94,14 +95,20 @@ const ResetPassword = () => {
                 name="confirmPassword"
                 id="confirmPassword"
                 value={formData.confirmPassword}
-                onChange={(e) => setFormData({...formData, [e.target.name]:e.target.value})}
+                onChange={(e) =>
+                  setFormData({ ...formData, [e.target.name]: e.target.value })
+                }
               />
               <span>confirm Password</span>
-              {
-                formDataError.confirmPassword && <p className="form-error-msg">{formDataError.confirmPassword}</p>
-              }
+              {formDataError.confirmPassword && (
+                <p className="form-error-msg">
+                  {formDataError.confirmPassword}
+                </p>
+              )}
             </label>
-            <input type="submit" value="Reset" className="button-1" />
+            <button type="submit" disabled={loading} className="button-1">
+              {loading ? <ImSpinner2 className="fa-spin" /> : "Reset"}
+            </button>
           </form>
         </div>
       </div>

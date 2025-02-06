@@ -111,7 +111,7 @@ const Profile = () => {
     document.title = 'Profile'
   }, [])
 
-  return !loading ? (
+  return (
     <section id="profile">
       <div className="container">
         <div className="profile-container">
@@ -159,9 +159,7 @@ const Profile = () => {
         </div>
       </div>
     </section>
-  ) : (
-    <Loader />
-  );
+  )
 };
 
 export default Profile;

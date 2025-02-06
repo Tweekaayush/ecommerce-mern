@@ -163,6 +163,7 @@ const productSlice = createSlice({
             state.loading = false
             state.data.products = action.payload.products
             state.data.totalPages = action.payload.totalPages
+            state.data.page = action.payload.page
         })
         builder.addCase(getProducts.rejected, (state, action)=>{
             state.loading = false

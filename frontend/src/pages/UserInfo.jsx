@@ -24,7 +24,7 @@ const UserInfo = () => {
     document.title = 'User Info'
   }, [])
 
-  return !loading?(
+  return (
     <section id="user-info">
       <div className="container">
         <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
@@ -78,7 +78,7 @@ const UserInfo = () => {
         <div className="users-orders"></div>
       </div>
     </section>
-  ):<Loader/>
+  )
 };
 
 export default UserInfo;

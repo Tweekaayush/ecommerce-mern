@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {updateUserProfile} from '../slices/userSlice'
+import { updateUserProfile } from "../slices/userSlice";
+import { ImSpinner2 } from "react-icons/im";
 
 const UpdateProfile = () => {
-  const { user: {name, email} } = useSelector((state) => state.user.data);
+  const {
+    loading,
+    data: {
+      user: { name, email },
+    },
+  } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
     name: name,
@@ -11,11 +17,11 @@ const UpdateProfile = () => {
     password: "",
   });
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUserProfile(formData))
+    dispatch(updateUserProfile(formData));
   };
 
   const handleChange = (e) => {
@@ -57,7 +63,9 @@ const UpdateProfile = () => {
           />
           <span>Update Password</span>
         </label>
-        <input type="submit" value="Save Changes" className="button-1" />
+        <button type="submit" disabled={loading} className="button-1">
+          {loading ? <ImSpinner2 className="fa-spin" /> : "Save Changes"}
+        </button>
       </form>
     </div>
   );

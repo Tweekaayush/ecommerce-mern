@@ -189,6 +189,10 @@ button {
   cursor: pointer;
 }
 
+.fa-spin{
+  animation: spin 1s linear infinite;
+}
+
 .ellipses {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -213,6 +217,15 @@ button {
   height: 100%;
   background-color: var(--overlay-2);
   z-index: 998;
+}
+
+@keyframes spin {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
 }
 
 /* --------------------loader-------------------- */
@@ -1050,7 +1063,7 @@ nav > .container {
   text-transform: capitalize;
 }
 
-.form-container > form > input[type="submit"] {
+.form-container > form > button{
   background-color: var(--danger);
   border-radius: 4px;
 }
@@ -1090,9 +1103,8 @@ nav > .container {
     "e e"
     "f f"
     "g ."
-    ". h"
-    'i i'
-    'j j';
+    "h h"
+    'i i';
     gap: 16px;
 }
 
@@ -1111,19 +1123,14 @@ nav > .container {
 .signup-form > label:nth-child(5) {
   grid-area: e;
 }
-.signup-form > a {
-  grid-area: h;
-  width: fit-content;
-  margin-left: auto;
-}
 .signup-form > label:nth-child(6) {
   grid-area: f;
 }
-.signup-form > input[type='submit'] {
-  grid-area: i;
+.signup-form > button {
+  grid-area: h;
 }
 .signup-form > p {
-  grid-area: j;
+  grid-area: i;
 }
 
 .profile-preview-img{
@@ -1967,7 +1974,19 @@ nav > .container {
   padding-inline: 4px;
 }
 
+.edit-product-form{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 /* --------------------Create Product-------------------- */
+
+.create-product-form{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
 .product-img-preview{
   width: 120px;
@@ -2575,8 +2594,7 @@ footer {
     'f'
     'g'
     'h'
-    'i'
-    'j';
+    'i';
   }
 
   .signup-form > label:nth-child(2) {

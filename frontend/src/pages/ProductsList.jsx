@@ -12,7 +12,7 @@ const ProductsList = () => {
   const dispatch = useDispatch();
   const {
     loading,
-    data: { products, totalPages, success },
+    data: { products, totalPages, page: currentPage },
     error,
   } = useSelector((state) => state.products);
   const [page, setPage] = useState(1);
@@ -39,14 +39,14 @@ const ProductsList = () => {
   }, [error]);
 
   useEffect(() => {
-    if (success) setPage(1);
-  }, [success]);
+    if (currentPage !== page) setPage(currentPage);
+  }, [currentPage]);
 
-  useEffect(()=>{
-    document.title = 'Products List'
-  }, [])
+  useEffect(() => {
+    document.title = "Products List";
+  }, []);
 
-  return !loading ? (
+  return (
     <section id="product-list">
       <div className="container">
         <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
@@ -54,7 +54,7 @@ const ProductsList = () => {
         </h5>
         <div className="product-list-page-head">
           <h1 className="heading-5">Products List</h1>
-          <button onClick={()=>navigate('/product/create')}>create</button>
+          <button onClick={() => navigate("/product/create")}>create</button>
         </div>
         <div className="product-list-container">
           <div className="product-list-head">
@@ -71,8 +71,6 @@ const ProductsList = () => {
         <Pagination page={page} setPage={setPage} totalPages={totalPages} />
       </div>
     </section>
-  ) : (
-    <Loader />
   );
 };
 

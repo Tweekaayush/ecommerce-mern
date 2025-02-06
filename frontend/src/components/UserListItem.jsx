@@ -1,6 +1,6 @@
 import React from 'react'
 import { LuTrash } from 'react-icons/lu'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteUser, updateUser } from '../slices/userSlice'
 import { useNavigate } from 'react-router-dom'
 
@@ -13,9 +13,12 @@ const UserListItem = ({
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const {loading} = useSelector(state=>state.user)
     const handleDelete = (e) =>{
         e.stopPropagation()
-        dispatch(deleteUser(_id))
+        if(!loading){
+          dispatch(deleteUser(_id))
+        }
     }
 
   return (
