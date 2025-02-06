@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { getOrderById, updateOrderToDelivered } from "../slices/orderSlice";
 import Loader from "../components/Loader";
 import { ImSpinner2 } from "react-icons/im";
+import Skeleton from "../components/Skeleton";
 
 const OrderItem = (props) => {
   const { _id, name, brand, image, quantity, price } = props;
@@ -62,9 +63,9 @@ const Order = () => {
     dispatch(getOrderById(id));
   }, [id]);
 
-  useEffect(()=>{
-    document.title = 'Order Details'
-  },[])
+  useEffect(() => {
+    document.title = "Order Details";
+  }, []);
 
   return (
     <section id="order">
@@ -72,21 +73,35 @@ const Order = () => {
         <div className="order-container">
           <div className="shipping-address">
             <h1 className="heading-3">Shipping Address</h1>
-            <p className="body-text-1">
-              {shippingAddress?.address}, {shippingAddress?.postalCode},
-              <br />
-              {shippingAddress?.city}, {shippingAddress?.country}
-            </p>
-            <p className={`status ${isDelivered ? "true" : false}`}>
-              {isDelivered ? `Delivered on ${deliveredAt}` : "Not Delivered"}
-            </p>
+            {!orderLoading ? (
+              <>
+                <p className="body-text-1">
+                  {shippingAddress?.address}, {shippingAddress?.postalCode},
+                  <br />
+                  {shippingAddress?.city}, {shippingAddress?.country}
+                </p>
+                <p className={`status ${isDelivered ? "true" : false}`}>
+                  {isDelivered
+                    ? `Delivered on ${deliveredAt}`
+                    : "Not Delivered"}
+                </p>
+              </>
+            ) : (
+              <Skeleton cls="address-skeleton" />
+            )}
           </div>
           <div className="order-payment">
             <h1 className="heading-3">Payment Method</h1>
-            <h4>Method: {paymentMethod}</h4>
-            <p className={`status ${isPaid ? "true" : false}`}>
-              {isPaid ? `Paid on ${paidAt}` : "Not Paid"}
-            </p>
+            {!orderLoading ? (
+              <>
+                <h4>Method: {paymentMethod}</h4>
+                <p className={`status ${isPaid ? "true" : false}`}>
+                  {isPaid ? `Paid on ${paidAt}` : "Not Paid"}
+                </p>
+              </>
+            ) : (
+              <Skeleton cls="address-skeleton" />
+            )}
           </div>
 
           <div className="order-items-container">
@@ -97,38 +112,50 @@ const Order = () => {
               <span>Quantity</span>
               <span>total</span>
             </div>
-            {orderItems?.map((item) => {
-              return <OrderItem key={item._id} {...item} />;
-            })}
+            {!orderLoading
+              ? orderItems?.map((item) => {
+                  return <OrderItem key={item._id} {...item} />;
+                })
+              : new Array(3).fill(0).map((_, i) => {
+                  return <Skeleton cls="list-item-skeleton" />;
+                })}
           </div>
         </div>
         <div className="order-summary">
           <h1 className="heading-3">Order summary</h1>
           <div>
             <h4>Items</h4>
-            <p>${itemsPrice}</p>
+            {!orderLoading? <p>${itemsPrice}</p>:<Skeleton cls="price-skeleton"/>}
           </div>
           <div>
             <h4>shipping</h4>
-            <p>${shippingPrice}</p>
+            {!orderLoading? <p>${shippingPrice}</p>:<Skeleton cls="price-skeleton"/>}
           </div>
           <div>
             <h4>tax</h4>
-            <p>${taxPrice}</p>
+            {!orderLoading? <p>${taxPrice}</p>:<Skeleton cls="price-skeleton"/>}
           </div>
           <div>
             <h4>total</h4>
-            <p>${totalPrice}</p>
+            {!orderLoading ? <p>${totalPrice}</p>:<Skeleton cls="price-skeleton"/>}
           </div>
           {isAdmin && !isDelivered && (
-            <button className="button-1" onClick={deliverOrder} disabled={orderLoading}>
-              {orderLoading? <ImSpinner2 className="fa-spin"/> :'mark as delivered'}
+            <button
+              className="button-1"
+              onClick={deliverOrder}
+              disabled={orderLoading}
+            >
+              {orderLoading ? (
+                <ImSpinner2 className="fa-spin" />
+              ) : (
+                "mark as delivered"
+              )}
             </button>
           )}
         </div>
       </div>
     </section>
-  )
+  );
 };
 
 export default Order;

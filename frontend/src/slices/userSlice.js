@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 import { clearOrders } from './orderSlice'
 import BASE_URL from '../constants/constants'
-import { addToCart } from './cartSlice'
+import { addToCart, clearCartItems } from './cartSlice'
 
 const initialState = {
     loading: false,
@@ -57,6 +57,7 @@ export const logout = createAsyncThunk('logout', async(payload, {dispatch, rejec
         })
 
         dispatch(clearOrders())
+        dispatch(clearCartItems())
 
         return res.data.message
 
@@ -272,7 +273,8 @@ const userSlice = createSlice({
             state.data = {
                 user: {},
                 usersListAdmin: [],
-                userDetailsAdmin: {}
+                userDetailsAdmin: {},
+                wishlist: []
             }
             state.successMessage = action.payload
         })

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearProductErrors,
@@ -14,24 +14,26 @@ import Skeleton from "../components/Skeleton";
 
 const Browse = () => {
   const location = useLocation();
-  const category = new URLSearchParams(location.search).get("category");
+  const cat = new URLSearchParams(location.search).get("category");
   const {
     loading,
     data: { products, categories, totalPages },
   } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const [currentCategory, setCurrentCategory] = useState("");
+  const [currentCategory, setCurrentCategory] = useState(cat || '');
+  const navigate = useNavigate()
+
+  useEffect(() => {
+      setCurrentCategory(cat || '');
+      setPage(1);
+  }, [cat]);
 
   useEffect(() => {
     dispatch(getProducts({ page, category: currentCategory }));
     document.title = `Browse ${currentCategory}`;
   }, [page, currentCategory]);
 
-  useEffect(() => {
-    setCurrentCategory(category || "");
-    setPage(1);
-  }, [category]);
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -47,7 +49,7 @@ const Browse = () => {
               {!loading && (
                 <span
                   className={currentCategory === "" ? "active-category" : ""}
-                  onClick={() => [setCurrentCategory(""), setPage(1)]}
+                  onClick={() => navigate(`/browse`)}
                 >
                   All
                 </span>
@@ -60,10 +62,7 @@ const Browse = () => {
                         className={
                           currentCategory === category ? "active-category" : ""
                         }
-                        onClick={() => [
-                          setCurrentCategory(category),
-                          setPage(1),
-                        ]}
+                        onClick={() => navigate(`/browse?category=${category}`)}
                       >
                         {category}
                       </span>
