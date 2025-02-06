@@ -5,6 +5,7 @@ import { getAllOrders } from "../slices/orderSlice";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import Loader from "../components/Loader";
+import Skeleton from "../components/Skeleton";
 
 const OrdersList = () => {
   const {
@@ -19,11 +20,11 @@ const OrdersList = () => {
     dispatch(getAllOrders(page));
   }, [page]);
 
-  useEffect(()=>{
-    document.title='Orders List'
-  },[])
+  useEffect(() => {
+    document.title = "Orders List";
+  }, []);
 
-  return !loading ? (
+  return (
     <section id="order-list">
       <div className="container">
         <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
@@ -39,15 +40,19 @@ const OrdersList = () => {
             <span>paid</span>
             <span>delivered</span>
           </div>
-          {allOrders?.map((order) => {
-            return <OrderListItem key={order._id} {...order} admin={true} />;
-          })}
+          {!loading
+            ? allOrders?.map((order) => {
+                return (
+                  <OrderListItem key={order._id} {...order} admin={true} />
+                );
+              })
+            : new Array(5).fill(0).map((_, i) => {
+                return <Skeleton cls="list-item-skeleton" />;
+              })}
         </div>
         <Pagination page={page} setPage={setPage} totalPages={totalPages} />
       </div>
     </section>
-  ) : (
-    <Loader />
   );
 };
 

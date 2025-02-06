@@ -10,6 +10,7 @@ import {
 } from "../slices/productSlice";
 import { toast, Bounce } from "react-toastify";
 import Loader from "../components/Loader";
+import Skeleton from "../components/Skeleton";
 
 const Browse = () => {
   const location = useLocation();
@@ -24,55 +25,68 @@ const Browse = () => {
 
   useEffect(() => {
     dispatch(getProducts({ page, category: currentCategory }));
-    document.title = `Browse ${currentCategory}`
+    document.title = `Browse ${currentCategory}`;
   }, [page, currentCategory]);
 
-  useEffect(()=>{
-    setCurrentCategory(category||'')
-    setPage(1)
-  }, [category])
+  useEffect(() => {
+    setCurrentCategory(category || "");
+    setPage(1);
+  }, [category]);
 
   useEffect(() => {
     dispatch(getAllCategories());
   }, []);
 
-  return !loading ? (
+  return (
     <>
       <section id="browse-filters">
         <div className="container">
           <div className="browse-container">
             <h4 className="heading-3">Categories</h4>
             <div className="category-container">
-              <span
-                className={currentCategory === "" ? "active-category" : ""}
-                onClick={() => [setCurrentCategory(""), setPage(1)]}
-              >
-                All
-              </span>
-              {categories.map((category) => {
-                return (
-                  <span
-                    key={category}
-                    className={
-                      currentCategory === category ? "active-category" : ""
-                    }
-                    onClick={() => [setCurrentCategory(category), setPage(1)]}
-                  >
-                    {category}
-                  </span>
-                );
-              })}
+              {!loading && (
+                <span
+                  className={currentCategory === "" ? "active-category" : ""}
+                  onClick={() => [setCurrentCategory(""), setPage(1)]}
+                >
+                  All
+                </span>
+              )}
+              {!loading
+                ? categories?.map((category) => {
+                    return (
+                      <span
+                        key={category}
+                        className={
+                          currentCategory === category ? "active-category" : ""
+                        }
+                        onClick={() => [
+                          setCurrentCategory(category),
+                          setPage(1),
+                        ]}
+                      >
+                        {category}
+                      </span>
+                    );
+                  })
+                : new Array(6).fill(0).map((_, i) => {
+                    return <Skeleton cls="category-skeleton" />;
+                  })}
             </div>
           </div>
         </div>
       </section>
       <section id="browse-results">
         <div className="container">
-          {products.map((product) => {
-            return (
-              <ProductCard key={product._id} {...product} slider={false} />
-            );
-          })}
+          {!loading
+            ? products?.map((product) => {
+                return (
+                  <ProductCard key={product._id} {...product} slider={false} />
+                );
+              })
+            : new Array(5).fill(0).map((_, i) => {
+                return <Skeleton cls="product-card-skeleton" />;
+              })}
         </div>
       </section>
       <section id="pagination">
@@ -81,8 +95,6 @@ const Browse = () => {
         </div>
       </section>
     </>
-  ) : (
-    <Loader />
   );
 };
 

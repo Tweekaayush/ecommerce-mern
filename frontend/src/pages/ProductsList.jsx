@@ -6,6 +6,7 @@ import ProductListItem from "../components/ProductListItem";
 import Pagination from "../components/Pagination";
 import { toast, Bounce } from "react-toastify";
 import Loader from "../components/Loader";
+import Skeleton from "../components/Skeleton";
 
 const ProductsList = () => {
   const navigate = useNavigate();
@@ -64,9 +65,13 @@ const ProductsList = () => {
             <span>category</span>
             <span>brand</span>
           </div>
-          {products?.map((product) => {
-            return <ProductListItem key={product._id} {...product} />;
-          })}
+          {!loading
+            ? products?.map((product) => {
+                return <ProductListItem key={product._id} {...product} />;
+              })
+            : new Array(6).fill(0).map((_, i) => {
+                return <Skeleton cls="list-item-skeleton" />;
+              })}
         </div>
         <Pagination page={page} setPage={setPage} totalPages={totalPages} />
       </div>

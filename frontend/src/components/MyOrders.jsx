@@ -5,6 +5,7 @@ import OrderListItem from "./OrderListItem";
 import Pagination from "./Pagination";
 import { getMyOrders } from "../slices/orderSlice";
 import Loader from "./Loader";
+import Skeleton from "./Skeleton";
 
 const MyOrders = () => {
   const {
@@ -19,27 +20,23 @@ const MyOrders = () => {
   return (
     <div className="orders-history-container">
       <h1 className="heading-3">my orders</h1>
-      {!loading ? (
-        <>
-          <div className="profile-order-list">
-            <div className="order-list-head">
-              <span>ID</span>
-              <span>date</span>
-              <span>total</span>
-              <span>paid</span>
-              <span>delivered</span>
-            </div>
-            {myOrders?.map((order) => {
-              return <OrderListItem key={order._id} {...order} admin={false} />;
-            })}
-          </div>
-          <Pagination page={page} setPage={setPage} totalPages={totalPages} />
-        </>
-      ) : (
-        <div style={{display: 'flex', justifyContent: 'center'}}>
-          <div className="loader"></div>
+      <div className="profile-order-list">
+        <div className="order-list-head">
+          <span>ID</span>
+          <span>date</span>
+          <span>total</span>
+          <span>paid</span>
+          <span>delivered</span>
         </div>
-      )}
+        {!loading
+          ? myOrders?.map((order) => {
+              return <OrderListItem key={order._id} {...order} admin={false} />;
+            })
+          : new Array(5).fill(0).map((_, i) => {
+              return <Skeleton cls="list-item-skeleton" />;
+            })}
+      </div>
+      <Pagination page={page} setPage={setPage} totalPages={totalPages} />
     </div>
   );
 };

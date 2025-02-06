@@ -14,6 +14,7 @@ import {
 } from "react-icons/lu";
 import AddressForm from "../components/AddressForm";
 import Loader from "../components/Loader";
+import Skeleton from "../components/Skeleton";
 
 const UpdateAddress = () => {
   const dispatch = useDispatch();
@@ -33,36 +34,45 @@ const UpdateAddress = () => {
 
 const AccountInfo = () => {
   const {
-    user: { name, image, _id, email, isAdmin, createdAt, fullAddress },
-  } = useSelector((state) => state.user.data);
+    loading,
+    data: {
+      user: { name, image, _id, email, isAdmin, createdAt, fullAddress }
+    },
+  } = useSelector((state) => state.user);
   return (
     <div className="account-info-container">
       <h1 className="heading-3">Account</h1>
       <div className="account-content">
-        <div className="account-info">
-          <h5 className="heading-4">Name</h5>
-          <p className="body-text-3">{name}</p>
-        </div>
-        <div className="account-info">
-          <h5 className="heading-4">Email</h5>
-          <p className="body-text-3"> {email}</p>
-        </div>
-        <div className="account-info">
-          <h5 className="heading-4">Address</h5>
-          <p className="body-text-3">
-            {fullAddress?.address && (
-              <>
-                {fullAddress?.address}, {fullAddress?.postalCode}
-                <br />
-                {fullAddress?.city}, {fullAddress?.country}
-              </>
-            )}
-          </p>
-        </div>
-        <div className="account-info">
-          <h5 className="heading-4">Joined On</h5>
-          <p className="body-text-3">{createdAt.substring(0, 10)}</p>
-        </div>
+        {!loading ? (
+          <>
+            <div className="account-info">
+              <h5 className="heading-4">Name</h5>
+              <p className="body-text-3">{name}</p>
+            </div>
+            <div className="account-info">
+              <h5 className="heading-4">Email</h5>
+              <p className="body-text-3"> {email}</p>
+            </div>
+            <div className="account-info">
+              <h5 className="heading-4">Address</h5>
+              <p className="body-text-3">
+                {fullAddress?.address && (
+                  <>
+                    {fullAddress?.address}, {fullAddress?.postalCode}
+                    <br />
+                    {fullAddress?.city}, {fullAddress?.country}
+                  </>
+                )}
+              </p>
+            </div>
+            <div className="account-info">
+              <h5 className="heading-4">Joined On</h5>
+              <p className="body-text-3">{createdAt.substring(0, 10)}</p>
+            </div>
+          </>
+        ) : (
+          <Skeleton cls="profile-info-skeleton"/>
+        )}
       </div>
     </div>
   );
@@ -107,9 +117,9 @@ const Profile = () => {
     [profileLink]
   );
 
-  useEffect(()=>{
-    document.title = 'Profile'
-  }, [])
+  useEffect(() => {
+    document.title = "Profile";
+  }, []);
 
   return (
     <section id="profile">
@@ -117,12 +127,23 @@ const Profile = () => {
         <div className="profile-container">
           <div className="profile-info">
             <div className="profile-img">
-              <img src={image} alt={name} />
+              {!loading ? (
+                <img src={image} alt={name} />
+              ) : (
+                <Skeleton cls="profile-image-skeleton" />
+              )}
             </div>
-            <div>
-              <h1 className="heading-4">{name}</h1>
-              <p className="body-text-3">{email}</p>
-            </div>
+            {!loading ? (
+              <div>
+                <h1 className="heading-4">{name}</h1>
+                <p className="body-text-3">{email}</p>
+              </div>
+            ) : (
+              <div>
+                <Skeleton cls="profile-name-skeleton" />
+                <Skeleton cls="profile-mail-skeleton" />
+              </div>
+            )}
           </div>
           <ul className="profile-links">
             {profileComponents.map((p, i) => {
@@ -159,7 +180,7 @@ const Profile = () => {
         </div>
       </div>
     </section>
-  )
+  );
 };
 
 export default Profile;

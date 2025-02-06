@@ -22,7 +22,8 @@ import {
   Pie,
   ResponsiveContainer,
 } from "recharts";
-import Loader from '../components/Loader'
+import Loader from "../components/Loader";
+import Skeleton from "../components/Skeleton";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -45,106 +46,124 @@ const Dashboard = () => {
     dispatch(getOrdersInfo());
     dispatch(getUserCount());
     dispatch(getProductsCount());
-    document.title='Dashboard'
+    document.title = "Dashboard";
   }, []);
 
-  return !productLoading && !userLoading && !orderLoading? (
+  return (
     <section id="dashboard">
       <div className="container">
         <h1 className="heading-5">Dashboard</h1>
         <div className="dashboard-content">
-          <div className="dashboard-card">
-            <div className="dashboard-card-head">
-              <h1 className="heading-4">Total Revenue</h1>
-              <p>${ordersInfo?.totalRevenue}</p>
-            </div>
-            <div>
-              <span>
-                <LuDollarSign />
-              </span>
-            </div>
-          </div>
-          <div
-            className="dashboard-card"
-            onClick={() => navigate("/orders/list")}
-          >
-            <div className="dashboard-card-head">
-              <h1 className="heading-4">Orders</h1>
-              <p>{ordersInfo?.orderCount}</p>
-            </div>
-            <div>
-              <span>
-                <LuShoppingCart />
-              </span>
-            </div>
-          </div>
-          <div
-            className="dashboard-card"
-            onClick={() => navigate("/users/list")}
-          >
-            <div className="dashboard-card-head">
-              <h1 className="heading-4">Users</h1>
-              <p>{userCount}</p>
-            </div>
-            <div>
-              <span>
-                <LuUserRound />
-              </span>
-            </div>
-          </div>
-          <div
-            className="dashboard-card"
-            onClick={() => navigate("/products/list")}
-          >
-            <div className="dashboard-card-head">
-              <h1 className="heading-4">Products</h1>
-              <p>{productCount}</p>
-            </div>
-            <div>
-              <span>
-                <LuPackageOpen />
-              </span>
-            </div>
-          </div>
-          <div className="revenue-chart">
-            <h1 className="heading-3" style={{marginBottom: 0}}>
-              Revenue
-            </h1>
-            <p className="body-text-1">(last {ordersInfo?.monthlyRevenue.length} days)</p>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={ordersInfo?.monthlyRevenue} style={{fontSize: '14px'}}>
-                <XAxis dataKey="_id"/>
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="revenue" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="revenue-paid">
-          <h1 className="heading-3" style={{marginBottom: '16px'}}>
-              Orders Status
-            </h1>
-            <ResponsiveContainer width='100%' height={300}>
-              <PieChart>
-                <Pie
-                  data={ordersInfo?.deliveryStatus}
-                  dataKey="count"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={70}
-                />
-                <Tooltip/>
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+          {!productLoading && !userLoading && !orderLoading ? (
+            <>
+              <div className="dashboard-card">
+                <div className="dashboard-card-head">
+                  <h1 className="heading-4">Total Revenue</h1>
+                  <p>${ordersInfo?.totalRevenue.toFixed(2)}</p>
+                </div>
+                <div>
+                  <span>
+                    <LuDollarSign />
+                  </span>
+                </div>
+              </div>
+              <div
+                className="dashboard-card"
+                onClick={() => navigate("/orders/list")}
+              >
+                <div className="dashboard-card-head">
+                  <h1 className="heading-4">Orders</h1>
+                  <p>{ordersInfo?.orderCount}</p>
+                </div>
+                <div>
+                  <span>
+                    <LuShoppingCart />
+                  </span>
+                </div>
+              </div>
+              <div
+                className="dashboard-card"
+                onClick={() => navigate("/users/list")}
+              >
+                <div className="dashboard-card-head">
+                  <h1 className="heading-4">Users</h1>
+                  <p>{userCount}</p>
+                </div>
+                <div>
+                  <span>
+                    <LuUserRound />
+                  </span>
+                </div>
+              </div>
+              <div
+                className="dashboard-card"
+                onClick={() => navigate("/products/list")}
+              >
+                <div className="dashboard-card-head">
+                  <h1 className="heading-4">Products</h1>
+                  <p>{productCount}</p>
+                </div>
+                <div>
+                  <span>
+                    <LuPackageOpen />
+                  </span>
+                </div>
+              </div>
+              <div className="revenue-chart">
+                <h1 className="heading-3" style={{ marginBottom: 0 }}>
+                  Revenue
+                </h1>
+                <p className="body-text-1">
+                  (last {ordersInfo?.monthlyRevenue.length} days)
+                </p>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart
+                    data={ordersInfo?.monthlyRevenue}
+                    style={{ fontSize: "14px" }}
+                  >
+                    <XAxis dataKey="_id" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="revenue" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="revenue-paid">
+                <h1 className="heading-3" style={{ marginBottom: "16px" }}>
+                  Orders Status
+                </h1>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={ordersInfo?.deliveryStatus}
+                      dataKey="count"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={50}
+                      outerRadius={70}
+                    />
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </>
+          ) : (
+            <>
+              <Skeleton cls='dashboard-card-skeleton'/>
+              <Skeleton cls='dashboard-card-skeleton'/>
+              <Skeleton cls='dashboard-card-skeleton'/>
+              <Skeleton cls='dashboard-card-skeleton'/>
+              <Skeleton cls='dashboard-bar-chart-skeleton'/>
+              <Skeleton cls='dashboard-pie-chart-skeleton'/>
+            </>
+          )}
         </div>
       </div>
     </section>
-  ): <Loader/>
+  );
 };
 
 export default Dashboard;

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUsersErrors, getAllUsers } from "../slices/userSlice";
 import { toast, Bounce } from "react-toastify";
 import Loader from "../components/Loader";
+import Skeleton from "../components/Skeleton";
 
 const UsersList = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const UsersList = () => {
     document.title='Users List'
   }, [])
 
-  return !loading ? (
+  return (
     <section id="user-list">
       <div className="container">
         <h5 className="dashboard-link" onClick={() => navigate("/dashboard")}>
@@ -43,16 +44,19 @@ const UsersList = () => {
             <span>email</span>
             <span>admin</span>
           </div>
-          {usersListAdmin?.map((user) => {
-            return <UserListItem key={user._id} {...user} />;
-          })}
+          { !loading ?
+            usersListAdmin?.map((user) => {
+              return <UserListItem key={user._id} {...user} />;
+            }):
+            new Array(6).fill(0).map((_, i)=>{
+              return <Skeleton cls="list-item-skeleton"/>
+            })
+          }
         </div>
         <Pagination page={page} setPage={setPage} totalPages={totalPages} />
       </div>
     </section>
-  ) : (
-    <Loader />
-  );
+  )
 };
 
 export default UsersList;
