@@ -11,7 +11,7 @@
   --dark: #111111;
   --white: #ffffff;
   --primary: #475fcc;
-  --secondary: #3d3d3d;
+  --secondary: #0e0e0e;
   --tertiary: #9e9e9e;
   --danger: #cf4b4b;
   --success: #4bb64b;
@@ -21,6 +21,8 @@
   --overlay-1: rgba(0, 0, 0, 0.3);
   --overlay-2: rgba(0, 0, 0, 0.5);
   --gray: #f1f1f16c;
+  --disabled-1: #111111ab;
+  --disabled-2: #cf4b4bbd;
 }
 
 input::-webkit-outer-spin-button,
@@ -166,6 +168,10 @@ button {
   cursor: pointer;
 }
 
+.button-1:disabled{
+  background-color: var(--disabled-1);
+}
+
 .button-2 {
   font-size: 13px;
   font-weight: 700;
@@ -176,6 +182,10 @@ button {
   letter-spacing: 4px;
   border: none;
   cursor: pointer;
+}
+
+.button-2:disabled{
+  background-color: var(--disabled-2);
 }
 
 .button-3 {
@@ -495,26 +505,16 @@ nav > .container {
 
 #hero {
   background-color: var(--main);
+  background-size: cover;
+  background-position:center center;
+  height: 65vh;
 }
 
 #hero > .container {
   display: grid;
   align-items: center;
-  grid-template-columns: 4fr 8fr;
-  gap: 16px;
-}
-
-#hero > .container > div{
-  overflow: visible;
-}
-
-
-.hero-img > img{
-  width: 100%;
+  grid-template-columns: 6fr 6fr;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
-  mix-blend-mode: multiply;
 }
 
 /* --------------------Trending Products-------------------- */
@@ -638,21 +638,16 @@ nav > .container {
 
 #promotion-banner {
   background-color: var(--main);
+  background-size: cover;
+  background-position: 30% 85%;
+  background-repeat: no-repeat;
+  height: 50vh;
 }
 
 #promotion-banner > .container {
   display: grid;
-  grid-template-columns: 8fr 4fr;
-  gap: 16px;
+  grid-template-columns: 6fr 6fr;
   align-items: center;
-}
-
-#promotion-banner > .container > div:first-child {
-  order: 0;
-}
-
-#promotion-banner > .container > div:last-child {
-  order: 1;
 }
 
 
@@ -1070,7 +1065,6 @@ nav > .container {
 }
 
 .form-container > form > button{
-  background-color: var(--danger);
   border-radius: 4px;
 }
 
@@ -1366,6 +1360,7 @@ nav > .container {
   display: grid;
   grid-template-columns: 8fr 4fr;
   gap: 16px;
+  height: 100%;
 }
 
 .checkout-summary {
@@ -1398,6 +1393,24 @@ nav > .container {
   text-transform: capitalize;
 }
 
+.empty-cart-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+#empty-cart{
+  height: 95vh;
+}
+
+#empty-cart > .container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 
 
 /* --------------------Address Form-------------------- */
@@ -2577,7 +2590,8 @@ height: 355px;
 @media screen and (max-width: 768px) {
   .heading-1 {
     font-size: 28px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+    line-height: 28px;
   }
 
   .heading-2 {
@@ -2669,15 +2683,16 @@ height: 355px;
     display: flex;
   }
 
+  #hero{
+    min-height: 50vh;
+  }
+
   #hero > .container {
     grid-template-columns: 1fr;
   }
 
-  #hero > .container > div:first-of-type {
-    order: 1;
-  }
   #hero > .container > div:last-of-type {
-    order: 0;
+    display: none;
   }
 
   #trending-category > .container {

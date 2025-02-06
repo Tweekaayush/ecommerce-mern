@@ -205,7 +205,7 @@ const Signup = () => {
                 <img src={formData.image} alt={formData.firstName} />
               </div>
             )}
-            <button type="submit" disabled={loading} className="button-1">
+            <button type="submit" disabled={loading} className="button-2">
               {loading ? <ImSpinner2 className="fa-spin" /> : "Register"}
             </button>
             <p>

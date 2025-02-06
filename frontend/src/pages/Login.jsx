@@ -106,7 +106,7 @@ const Login = () => {
             <Link to="/password/forget" className="form-link">
               Forget password?
             </Link>
-            <button type="submit" disabled={loading} className="button-1">{loading ? <ImSpinner2 className="fa-spin"/> : "Login"}</button>
+            <button type="submit" disabled={loading} className="button-2">{loading ? <ImSpinner2 className="fa-spin"/> : "Login"}</button>
             <p>
               Don't have an account?{" "}
               <Link to="/signup" className="form-link">

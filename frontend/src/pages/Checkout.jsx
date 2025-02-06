@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import { FaShoppingCart, FaAddressBook, FaRegCreditCard } from "react-icons/fa";
 import { ImSpinner2 } from "react-icons/im";
+import img from '../assets/cart/empty-cart.png'
 
 const Checkout = () => {
   const {
@@ -27,7 +28,7 @@ const Checkout = () => {
       user: { fullAddress },
     },
   } = useSelector((state) => state.user);
-  const { loading: orderLoading } = useSelector(state => state.orders);
+  const { loading: orderLoading } = useSelector((state) => state.orders);
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
 
@@ -90,7 +91,7 @@ const Checkout = () => {
     document.title = checkoutSteps[step - 1].name;
   }, [step]);
 
-  return (
+  return cartItems.length !== 0 ? (
     <>
       <CheckoutSteps
         stepNo={step}
@@ -133,6 +134,12 @@ const Checkout = () => {
         </div>
       </section>
     </>
+  ) : (
+    <section id="empty-cart">
+      <div className="container">
+        <img src={img} alt="empty-cart" />
+      </div>
+    </section>
   );
 };
 
