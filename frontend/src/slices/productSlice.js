@@ -21,7 +21,7 @@ export const getProducts = createAsyncThunk('getProducts', async(payload, {rejec
     try {
         const {page, category} = payload
         const products = await axios.get(`${BASE_URL}/api/v1/products?page=${page}&category=${category}`,{
-            withCredentials: 'include'
+            withCredentials: true
         })
         return products.data   
     } catch (error) {
@@ -33,7 +33,7 @@ export const getAllCategories = createAsyncThunk('getAllCategories', async(paylo
 
     try {
         const products = await axios.get(`${BASE_URL}/api/v1/products/categories`,{
-            withCredentials: 'include'
+            withCredentials: true
         })
         return products.data.categories   
     } catch (error) {
@@ -44,7 +44,7 @@ export const getAllCategories = createAsyncThunk('getAllCategories', async(paylo
 export const getProductById = createAsyncThunk('getProductById', async(payload, {rejectWithValue})=>{
     try {
         const product = await axios.get(`${BASE_URL}/api/v1/products/${payload}`,{
-            withCredentials: 'include'
+            withCredentials: true
         })
         return product.data        
     } catch (error) {
@@ -57,7 +57,7 @@ export const getProductById = createAsyncThunk('getProductById', async(payload, 
 export const getTrendingProducts = createAsyncThunk('getTrendingProducts', async(payload, {rejectWithValue})=>{
     try {
         const products = await axios.get(`${BASE_URL}/api/v1/products/trending`, {
-            withCredentials: 'include'
+            withCredentials: true
         })
         return products.data
     } catch (error) {
@@ -68,7 +68,7 @@ export const getTrendingProducts = createAsyncThunk('getTrendingProducts', async
 export const getBestSellingProducts = createAsyncThunk('getBestSellingProducts', async(payload, {rejectWithValue})=>{
     try {
         const products = await axios.get(`${BASE_URL}/api/v1/products/bestselling`, {
-            withCredentials: 'include'
+            withCredentials: true
         })
         return products.data
     } catch (error) {

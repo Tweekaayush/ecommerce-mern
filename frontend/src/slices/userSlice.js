@@ -31,7 +31,7 @@ export const signup = createAsyncThunk('signup', async(payload, {rejectWithValue
     try {
         const res = await axios.post(`${BASE_URL}/api/v1/users/signup`, payload,{
             headers: { "Content-Type": "multipart/form-data" },
-            withCredentials: 'include'
+            withCredentials: true
         })
         return res.data.user
     } catch (error) {
@@ -42,7 +42,7 @@ export const signup = createAsyncThunk('signup', async(payload, {rejectWithValue
 export const login = createAsyncThunk('login', async(payload, {rejectWithValue})=>{
     try {
         const res = await axios.post(`${BASE_URL}/api/v1/users/login`, payload,{
-            withCredentials: 'include'
+            withCredentials: true
         })
         return res.data.user
     } catch (error) {
@@ -53,7 +53,7 @@ export const login = createAsyncThunk('login', async(payload, {rejectWithValue})
 export const logout = createAsyncThunk('logout', async(payload, {dispatch, rejectWithValue})=>{
     try {
         const res = await axios.post(`${BASE_URL}/api/v1/users/logout`, payload, {
-          withCredentials: 'include'  
+          withCredentials: true  
         })
 
         dispatch(clearOrders())
@@ -69,7 +69,7 @@ export const logout = createAsyncThunk('logout', async(payload, {dispatch, rejec
 export const forgetPassword = createAsyncThunk('forgetPassword', async(payload, {rejectWithValue})=>{
     try {
         const res = await axios.post(`${BASE_URL}/api/v1/users/forget`, payload, {
-          withCredentials: 'include'  
+          withCredentials: true  
         })
 
         return res.data.message
@@ -82,7 +82,7 @@ export const forgetPassword = createAsyncThunk('forgetPassword', async(payload, 
 export const resetPassword = createAsyncThunk('resetPassword', async(payload, {rejectWithValue})=>{
     try {
         const res = await axios.post(`${BASE_URL}/api/v1/users/reset`, payload, {
-          withCredentials: 'include'  
+          withCredentials: true  
         })
 
         return res.data.message
