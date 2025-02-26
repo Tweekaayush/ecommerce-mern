@@ -48,18 +48,22 @@ app.use("/api/v1/orders", order);
 app.use("/api/v1/payment", payment);
 
 
-const __dirname1 = path.resolve();
+// const __dirname1 = path.resolve();
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "/frontend/build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
-  });
-} else {
-  app.get("/", (req, res) => {
-    res.json("Server Running");
-  });
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname1, "/frontend/build")));
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
+//   });
+// } else {
+//   app.get("/", (req, res) => {
+//     res.json("Server Running");
+//   });
+// }
+
+app.get('/', (req, res)=>{
+  res.send('Server is Up and Running')
+})
 
 // error middleware
 
