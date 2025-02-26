@@ -11,7 +11,12 @@ const initialState = {
 
 export const makePayment = createAsyncThunk('makePayment', async(payload, {rejectWithValue})=>{
     try {
-        const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY)
+
+        const key = await axios.get(`${BASE_URL}/api/v1/payment/key`,{
+            withCredentials: true
+        })
+
+        const stripe = await loadStripe(key.data.stripeKey)
 
         const res = await axios.post(`${BASE_URL}/api/v1/payment`, payload, {
             withCredentials: true

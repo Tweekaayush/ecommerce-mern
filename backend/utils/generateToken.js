@@ -12,7 +12,7 @@ exports.sendToken = (user, statusCode, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-    sameSite: "none",
+    sameSite: process.env.NODE_ENV === "production" ? "strict" : "none",
     expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   };
 
@@ -36,7 +36,6 @@ exports.sendPasswordResetLink = (user) => {
   );
 
   return `${process.env.CLIENT_URL}/password/reset?token=${token}&user=${user._id}`;
-  
 };
 
 exports.verifyReceivedToken = (user, token) => {

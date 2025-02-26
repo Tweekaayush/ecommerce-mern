@@ -54,3 +54,10 @@ exports.checkout = asyncHandler(async (req, res) => {
   });
   res.json({ session_id: session.id, url: session.url });
 });
+
+exports.stripeKey = asyncHandler(async(req, res)=>{
+  res.status(200).json({
+    success: true,
+    stripeKey: process.env.REACT_APP_STRIPE_KEY
+  })
+})
