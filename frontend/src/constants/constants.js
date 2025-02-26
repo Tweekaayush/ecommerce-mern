@@ -1,3 +1,3 @@
-const BASE_URL = 'https://ecommerce-mern-a81v.onrender.com'
+const BASE_URL = 'https://primart-backend.vercel.app'
 
 export default BASE_URL
